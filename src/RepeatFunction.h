@@ -21,11 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __REPEATFUNCTION_H_53825__
 
 class RepeatFunction
-/*
- 
-*/
 {
-}<++>
+    private :
+        int number;
+    public :
+        RepeatFunction(int number);
+};
 
 
 #endif

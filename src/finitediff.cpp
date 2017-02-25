@@ -16,8 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+#include <iostream>
 #include "RepeatFunction.h"
 
 
-RepeatFunction::RepeatFunction(int n) : number(n) {};
-
+int main ()
+{
+    auto rf = RepeatFunction(4);
+    std::cout<<"hello"<<std::endl;
+}
