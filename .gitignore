@@ -2,6 +2,7 @@
 
 *.swp
 *~
+finite.vim
 
 # BINARY FILES
 

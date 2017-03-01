@@ -20,13 +20,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __REPEATFUNCTION_H_53825__
 #define __REPEATFUNCTION_H_53825__
 
+#include <functional>
+
 class RepeatFunction
+/*
+ This class takes a function as constructor and then becomes a 
+ functor that repeats that function.
+*/
 {
     private :
-        int number;
+        std::function<double(double)> f;
     public :
-        RepeatFunction(int number);
+        RepeatFunction(std::function<double(double)>);
+        double operator() (double x) const;
 };
-
 
 #endif

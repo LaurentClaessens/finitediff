@@ -16,8 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <functional>
+
 #include "RepeatFunction.h"
 
 
-RepeatFunction::RepeatFunction(int n) : number(n) {};
+RepeatFunction::RepeatFunction(std::function<double(double)> fun) : f(fun) {};
 
+double RepeatFunction::operator() (double x) const
+{
+    return f(x);
+};

@@ -23,6 +23,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int main ()
 {
-    auto rf = RepeatFunction(4);
     std::cout<<"hello"<<std::endl;
 }
