@@ -23,12 +23,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class SNmatrixTest : public CppUnit::TestCase
 {
-    public :
-        void runTest()
+    private :
+        void test1()
         {
             SNmatrix<double,7> sn1;
             CPPUNIT_ASSERT(sn1.getSize()==7);
-            
+        }
+        void test3()
+        {
+            SNmatrix<double,3> A;
+            A.at(0,0)=1;
+            A.at(0,1)=2;
+            A.at(0,2)=3;
+            A.at(1,0)=2;
+            A.at(1,1)=5;
+            A.at(1,2)=0;
+            A.at(2,0)=3;
+            A.at(2,1)=8;
+            A.at(2,2)=0;
+        }
+        void test2()
+        {
             SNmatrix<int,2> sn2;
             sn2.at(0,0)=1;
             sn2.at(0,1)=20;
@@ -38,6 +53,13 @@ class SNmatrixTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(sn2.getSize()==2);
             CPPUNIT_ASSERT(sn2.at(0,0)==1);
             CPPUNIT_ASSERT(sn2.at(0,1)==2);
+        }
+    public :
+        void runTest()
+        {
+            test1();
+            test2();
+            test3();
         }
 };
 
