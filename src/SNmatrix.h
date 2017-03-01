@@ -16,10 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include "RepeatFunction.h"
+#include <array>
 
-int main ()
+/*
+This is my matrix type, designed for numerical computation.
+*/
+
+template <class T,int tp_size>
+class SNmatrix
 {
-    std::cout<<"hello"<<std::endl;
-}
+    private:
+        std::array<T,size> data;
+        int size=tp_size;
+    public:
+        SNmatrix();
+};
+
+template <class T,int size>
+SNmatrix<T,size>::SNmatrix(): data(){};
