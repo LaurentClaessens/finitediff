@@ -9,6 +9,7 @@ finite.vim
 core
 build/*
 finitediff
+tests_RepeatFunction
 
 
 # OTHERS 
