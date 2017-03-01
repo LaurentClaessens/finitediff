@@ -31,11 +31,13 @@ class SNmatrixTest : public CppUnit::TestCase
             
             SNmatrix<int,2> sn2;
             sn2.at(0,0)=1;
-            sn2.at(0,1)=2;
+            sn2.at(0,1)=20;
             sn2.at(1,0)=3;
             sn2.at(1,1)=4;
+            sn2.at(0,1)=2;
             CPPUNIT_ASSERT(sn2.getSize()==2);
             CPPUNIT_ASSERT(sn2.at(0,0)==1);
+            CPPUNIT_ASSERT(sn2.at(0,1)==2);
         }
 };
 
