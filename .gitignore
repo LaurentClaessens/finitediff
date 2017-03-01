@@ -10,6 +10,7 @@ core
 build/*
 finitediff
 tests_RepeatFunction
+tests_SNmatrix
 
 
 # OTHERS 

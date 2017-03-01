@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef __SNMATRIX_H__153113__
+#define __SNMATRIX_H__153113__
+
 #include <array>
 
 /*
@@ -26,11 +29,20 @@ template <class T,int tp_size>
 class SNmatrix
 {
     private:
-        std::array<T,size> data;
+        std::array<T,tp_size> data;
         int size=tp_size;
     public:
         SNmatrix();
+        int getSize() const;
 };
 
-template <class T,int size>
-SNmatrix<T,size>::SNmatrix(): data(){};
+template <class T,int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(): data(){};
+
+template <class T,int tp_size>
+int SNmatrix<T,tp_size>::getSize() const
+{
+    return size;
+};
+
+#endif

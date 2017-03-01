@@ -17,3 +17,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
+#include <cppunit/TestCase.h>
+#include "../src/SNmatrix.h"
+
+class SNmatrixTest : public CppUnit::TestCase
+{
+    public :
+        void runTest()
+        {
+            SNmatrix<double,7> sn;
+            CPPUNIT_ASSERT(sn.getSize()==7);
+        }
+};
+
+int main ()
+{
+    SNmatrixTest sn_test;
+    sn_test.runTest();
+}
