@@ -29,7 +29,7 @@ template <class T,int tp_size>
 class SNmatrix
 {
     private:
-        std::array<T,tp_size> data;
+        std::array<T,tp_size*tp_size> data;
         int size=tp_size;
     public:
         SNmatrix();
