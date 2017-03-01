@@ -44,6 +44,15 @@ The correct way to populate your matrix is :
             sn2.at(1,0)=3;
             sn2.at(1,1)=4;
 
+
+Notice that the elements are numbered from 0 to tp_size-1. Not from 1.
+
+DECOMPOSITION
+
+The mathematics can be found (in French) here :
+http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
+
+
 */
 
 template <class T,int tp_size>
