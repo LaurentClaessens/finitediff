@@ -20,9 +20,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNMATRIX_H__153113__
 
 #include <array>
+#include <iostream>
 
 /*
-This is my matrix type, designed for numerical computation.
+This is my matrix type, designed for numerical computation. It represents a 
+square matrix.
+
+TEMPLATE ARGUMENTS
+
+- class T : the type of the matrix entries (typically 'double')
+- int tp_size : the size of the matrix (the number of entries is the square of that).
+
+CREATING A MATRIX
+
+Internally, SNmatrix uses a std::array to store the matrix entries, but you should
+not try to take advantage of that.
+
+The correct way to populate your matrix is :
+
+            SNmatrix<int,2> sn2;
+            sn2.at(0,0)=1;
+            sn2.at(0,1)=2;
+            sn2.at(1,0)=3;
+            sn2.at(1,1)=4;
+
 */
 
 template <class T,int tp_size>
@@ -34,6 +55,9 @@ class SNmatrix
     public:
         SNmatrix();
         int getSize() const;
+
+        // return a reference to a matrix entry. Allows to populate.
+        T& at(int,int);
 };
 
 template <class T,int tp_size>
@@ -44,5 +68,16 @@ int SNmatrix<T,tp_size>::getSize() const
 {
     return size;
 };
+
+template <class T,int tp_size>
+T& SNmatrix<T,tp_size>::at(const int i,const int j)
+{
+    if (i>tp_size or j>tp_size)
+    {
+        std::cout<<"This SNmatrix has size "<<tp_size<<". Attempt to access element "<<i<<" , "<<j<<std::endl;
+    }
+    return data.at(j*tp_size+i);
+};
+
 
 #endif

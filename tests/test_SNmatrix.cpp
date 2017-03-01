@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <array>
 
 #include <cppunit/TestCase.h>
 #include "../src/SNmatrix.h"
@@ -25,8 +26,16 @@ class SNmatrixTest : public CppUnit::TestCase
     public :
         void runTest()
         {
-            SNmatrix<double,7> sn;
-            CPPUNIT_ASSERT(sn.getSize()==7);
+            SNmatrix<double,7> sn1;
+            CPPUNIT_ASSERT(sn1.getSize()==7);
+            
+            SNmatrix<int,2> sn2;
+            sn2.at(0,0)=1;
+            sn2.at(0,1)=2;
+            sn2.at(1,0)=3;
+            sn2.at(1,1)=4;
+            CPPUNIT_ASSERT(sn2.getSize()==2);
+            CPPUNIT_ASSERT(sn2.at(0,0)==1);
         }
 };
 
