@@ -46,7 +46,7 @@ class RepeatFunctionTest : public CppUnit::TestCase
 class SNmatrixTest : public CppUnit::TestCase
 {
     private :
-        void test1()
+        void test_instantiate()
         {
             SNmatrix<double,7> sn1;
             CPPUNIT_ASSERT(sn1.getSize()==7);
@@ -93,7 +93,7 @@ class SNmatrixTest : public CppUnit::TestCase
     public :
         void runTest()
         {
-            test1();
+            test_instantiate();
             test_populate();
             test_element_reference();
         }
