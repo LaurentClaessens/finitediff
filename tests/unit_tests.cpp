@@ -51,11 +51,12 @@ class SNmatrixTest : public CppUnit::TestCase
             SNmatrix<double,7> sn1;
             CPPUNIT_ASSERT(sn1.getSize()==7);
         }
-        void test3()
+        void test_element_reference()
+            // test if the reference to the original matrix in the matrix element works
         {
             SNmatrix<double,3> A;
             A.at(0,0)=1;
-            A.at(0,1)=2;
+            A.at(0,1)=3/5;
             A.at(0,2)=3;
             A.at(1,0)=2;
             A.at(1,1)=5;
@@ -63,8 +64,21 @@ class SNmatrixTest : public CppUnit::TestCase
             A.at(2,0)=3;
             A.at(2,1)=8;
             A.at(2,2)=0;
+
+            SNelement<double,3> el1=A.getElement(0,0);
+            CPPUNIT_ASSERT(el1.getValue()==1);
+
+            SNelement<double,3> el2=A.getElement(0,1);
+            CPPUNIT_ASSERT(el2.getValue()==3/5);
+
+            double back1=el2.getSNmatrix().at(2,1);
+            CPPUNIT_ASSERT(back1==8);
+
+            A.at(2,2)=12;
+            double back2=el2.getSNmatrix().at(2,2);
+            CPPUNIT_ASSERT(back2==12);
         }
-        void test2()
+        void test_populate()
         {
             SNmatrix<int,2> sn2;
             sn2.at(0,0)=1;
@@ -80,8 +94,8 @@ class SNmatrixTest : public CppUnit::TestCase
         void runTest()
         {
             test1();
-            test2();
-            test3();
+            test_populate();
+            test_element_reference();
         }
 };
 

@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 #include <iostream>
 
+#include "SNelement.h"
+
 /*
 This is my matrix type, designed for numerical computation. It represents a 
 square matrix.
@@ -55,31 +57,46 @@ http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
 
 */
 
-template <class T,int tp_size>
+
+// THE CLASS HEADER -----------------------------------------
+
+template <class T,unsigned int tp_size>
 class SNmatrix
 {
     private:
         std::array<T,tp_size*tp_size> data;
-        int size=tp_size;
+        unsigned int size=tp_size;
     public:
         SNmatrix();
-        int getSize() const;
+        unsigned int getSize() const;
 
-        // return a reference to a matrix entry. Allows to populate.
-        T& at(int,int);
+        // return a reference to the value of the requested matrix entry.
+        T& at(unsigned int,unsigned int);
+
+        // return the matrix element on given (line,column).
+        SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
+
+        // return the larger element (in absolute value) on the given column
+        SNelement<T,tp_size> getMaxOnColumn(unsigned int col) const;
 };
 
-template <class T,int tp_size>
+// IMPLEMENTATIONS  -------------------------------------------
+
+
+template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(): data(){};
 
-template <class T,int tp_size>
-int SNmatrix<T,tp_size>::getSize() const
+
+
+template <class T,unsigned int tp_size>
+unsigned int SNmatrix<T,tp_size>::getSize() const
 {
     return size;
 };
 
-template <class T,int tp_size>
-T& SNmatrix<T,tp_size>::at(const int i,const int j)
+
+template <class T,unsigned int tp_size>
+T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 {
     if (i>tp_size or j>tp_size)
     {
@@ -88,5 +105,16 @@ T& SNmatrix<T,tp_size>::at(const int i,const int j)
     return data.at(j*tp_size+i);
 };
 
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getMaxOnColumn(unsigned int col) const
+{
+    return getElement(1,col);
+}
+
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
+{
+    return SNelement<T,tp_size>(line,col,*this);
+}
 
 #endif

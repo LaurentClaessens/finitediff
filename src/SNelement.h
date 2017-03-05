@@ -30,22 +30,53 @@ An element contains
 
 */
 
-template <class T,int tp_size>
+
+// FORWARD DECLARATION ------------------------ 
+
+template <class T,unsigned int tp_size>
+class SNmatrix;
+
+
+
+// THE CLASS HEADER -----------------------------------------
+
+template <class T,unsigned int tp_size>
 class SNelement
 {
     private :
-        int line;
-        int column;
+        unsigned int line;
+        unsigned int column;
         SNmatrix<T,tp_size>& snmatrix;
     public :
-        SNelement(int line,int column,T value,const SNmatrix<T,tp_size>& snmatrix);
-        T getValue();
+        SNelement(unsigned int line,unsigned int column,SNmatrix<T,tp_size>& snmatrix);
+
+        // return the value of the matrix element
+        T& getValue() const;
+
+        // return the matrix from which the element is extracted
+        SNmatrix<T,tp_size>& getSNmatrix() const;
 };
 
-SNelement::SNelement(int l,int c,T val,const SNmatrix<T,tp_size>& snm) : 
+// IMPLEMENTATIONS  -------------------------------------------
+
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size>::SNelement(unsigned int l,unsigned int c,SNmatrix<T,tp_size>& snm) : 
     line(l),
     column(c),
-    smnatrix(snm)
+    snmatrix(snm)
 {}
+
+
+template <class T,unsigned int tp_size>
+T& SNelement<T,tp_size>::getValue() const
+{
+   return getSNmatrix().at(line,column);
+}
+
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>& SNelement<T,tp_size>::getSNmatrix() const
+{
+    return snmatrix;
+}
 
 #endif
