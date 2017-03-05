@@ -10,4 +10,4 @@
 git status
 make clean
 make all
-build/unit_tests
+./build/unit_tests
