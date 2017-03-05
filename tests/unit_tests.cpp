@@ -76,7 +76,7 @@ class SNmatrixTest : public CppUnit::TestCase
 
             A.at(2,2)=12;
             double back2=el2.getSNmatrix().at(2,2);
-            CPPUNIT_ASSERT(back2==12);
+            CPPUNIT_ASSERT(back2==12);              // test if the matrix is a reference (thus 'automatically' updates itself)
         }
         void test_populate()
         {
@@ -90,12 +90,35 @@ class SNmatrixTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(sn2.at(0,0)==1);
             CPPUNIT_ASSERT(sn2.at(0,1)==2);
         }
+        void test_max_on_column()
+            // test if one get the right maximal element on a column (for the Gauss's pivot)
+        {
+            SNmatrix<double,3> A;
+            A.at(0,0)=1;
+            A.at(0,1)=-3;       // Test negative and first line
+            A.at(0,2)=5;
+            A.at(1,0)=2;
+            A.at(1,1)=1;
+            A.at(1,2)=6;
+            A.at(2,0)=1;
+            A.at(2,1)=2;
+            A.at(2,2)=6.1;      // test last line a decimal value
+
+            SNelement<double,3> max0=A.getMaxOnColumn(0);
+            SNelement<double,3> max1=A.getMaxOnColumn(1);
+            SNelement<double,3> max2=A.getMaxOnColumn(2);
+
+            CPPUNIT_ASSERT(max0.getValue()==2);
+            CPPUNIT_ASSERT(max1.getValue()==-3);
+            CPPUNIT_ASSERT(max2.getValue()==6.1);
+        }
     public :
         void runTest()
         {
             test_instantiate();
             test_populate();
             test_element_reference();
+            test_max_on_column();
         }
 };
 

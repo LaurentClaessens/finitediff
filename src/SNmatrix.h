@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 #include <iostream>
+#include <cmath>
 
 #include "SNelement.h"
 
@@ -33,7 +34,9 @@ TEMPLATE ARGUMENTS
 - class T : the type of the matrix entries (typically 'double')
 - int tp_size : the size of the matrix (the number of entries is the square of that).
 
+
 CREATING A MATRIX
+
 
 Internally, SNmatrix uses a std::array to store the matrix entries, but you should
 not try to take advantage of that.
@@ -77,7 +80,10 @@ class SNmatrix
         SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
 
         // return the larger element (in absolute value) on the given column
-        SNelement<T,tp_size> getMaxOnColumn(unsigned int col) const;
+        // In case of equality, return the last one (the larger line).
+        //   The template type T has to accept arithmetic manipulations
+        //   like abs, comparison.
+        SNelement<T,tp_size> getMaxOnColumn(unsigned int col);
 };
 
 // IMPLEMENTATIONS  -------------------------------------------
@@ -106,9 +112,20 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 };
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getMaxOnColumn(unsigned int col) const
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getMaxOnColumn(unsigned int col) 
 {
-    return getElement(1,col);
+    T max_val=0;
+    unsigned int max_line=0;
+
+    for (unsigned int line=0;line<tp_size;line++)
+    {
+        if (std::abs(at(line,col))>max_val)
+        {
+            max_val=std::abs(at(line,col));
+            max_line=line;
+        };
+    };
+    return getElement(max_line,col);
 }
 
 template <class T,unsigned int tp_size>
