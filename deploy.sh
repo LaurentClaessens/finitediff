@@ -10,5 +10,4 @@
 git status
 make clean
 make all
-./tests_RepeatFunction
-./tests_SNmatrix
+build/unit_tests

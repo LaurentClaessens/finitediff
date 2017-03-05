@@ -16,10 +16,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <array>
 
+#include <array>
 #include <cppunit/TestCase.h>
+
 #include "../src/SNmatrix.h"
+#include "../src/RepeatFunction.h"
+
+double square(double x)
+// return the square of the given number.
+{
+    return x*x;
+};
+
+class RepeatFunctionTest : public CppUnit::TestCase
+{
+    public :
+        void runTest()
+        {
+            RepeatFunction rf(square);
+            CPPUNIT_ASSERT(rf(4)==16);
+            CPPUNIT_ASSERT(rf(0)==0);
+            CPPUNIT_ASSERT(rf(-2)==4);
+            CPPUNIT_ASSERT(rf(1.5)==2.25);
+        }
+};
+
 
 class SNmatrixTest : public CppUnit::TestCase
 {
@@ -67,4 +89,7 @@ int main ()
 {
     SNmatrixTest sn_test;
     sn_test.runTest();
+
+    RepeatFunctionTest rf_test;
+    rf_test.runTest();
 }

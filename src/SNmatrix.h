@@ -38,11 +38,11 @@ not try to take advantage of that.
 
 The correct way to populate your matrix is :
 
-            SNmatrix<int,2> sn2;
-            sn2.at(0,0)=1;
-            sn2.at(0,1)=2;
-            sn2.at(1,0)=3;
-            sn2.at(1,1)=4;
+            SNmatrix<int,2> sn;
+            sn.at(0,0)=1;
+            sn.at(0,1)=2;
+            sn.at(1,0)=3;
+            sn.at(1,1)=4;
 
 
 Notice that the elements are numbered from 0 to tp_size-1. Not from 1.

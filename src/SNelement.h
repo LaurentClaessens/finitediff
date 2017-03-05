@@ -17,30 +17,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include <cppunit/TestCase.h>
-#include "../src/RepeatFunction.h"
+#ifndef __SNELEMENT_H__145452__
+#define __SNELEMENT_H__145452__
 
-double square(double x)
-// return the square of the given number.
-{
-    return x*x;
-};
+/*
+This class describes a matrix element from a matrix of type 'SNmatrix'.
 
-class RepeatFunctionTest : public CppUnit::TestCase
+An element contains
+- line and column
+- a reference to the matrix which it belongs to.
+
+
+*/
+
+template <class T,int tp_size>
+class SNelement
 {
+    private :
+        int line;
+        int column;
+        SNmatrix<T,tp_size>& snmatrix;
     public :
-        void runTest()
-        {
-            RepeatFunction rf(square);
-            CPPUNIT_ASSERT(rf(4)==16);
-            CPPUNIT_ASSERT(rf(0)==0);
-            CPPUNIT_ASSERT(rf(-2)==4);
-            CPPUNIT_ASSERT(rf(1.5)==2.25);
-        }
+        SNelement(int line,int column,T value,const SNmatrix<T,tp_size>& snmatrix);
+        T getValue();
 };
 
-int main ()
-{
-    RepeatFunctionTest rf_test;
-    rf_test.runTest();
-}
+SNelement::SNelement(int l,int c,T val,const SNmatrix<T,tp_size>& snm) : 
+    line(l),
+    column(c),
+    smnatrix(snm)
+{}
+
+#endif
