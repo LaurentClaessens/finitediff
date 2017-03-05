@@ -102,7 +102,7 @@ class SNmatrixTest : public CppUnit::TestCase
             A.at(1,2)=6;
             A.at(2,0)=1;
             A.at(2,1)=2;
-            A.at(2,2)=6.1;      // test last line a decimal value
+            A.at(2,2)=6.1;      // test last line and decimal value
 
             SNelement<double,3> max0=A.getMaxOnColumn(0);
             SNelement<double,3> max1=A.getMaxOnColumn(1);
