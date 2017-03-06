@@ -61,7 +61,7 @@ class SNelementTest : public CppUnit::TestCase
             SNelement<int,2> el=A.getElement(0,0);
             CPPUNIT_ASSERT(el.getValue()==1);
 
-            el=B.getElement(0,0);                   // re-assignation. Now the matrix of 'el' should be B, not A.
+            el=B.getElement(0,0);                   // re-assignation. Now the matrix of 'el' should be B, no A anymore.
             CPPUNIT_ASSERT(el.getValue()==2);
             CPPUNIT_ASSERT(el.getSNmatrix().at(1,1)==5.3);
             CPPUNIT_ASSERT(el.getSNmatrix().getElement(1,1).getValue()==5.3);
