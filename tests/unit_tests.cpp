@@ -42,6 +42,40 @@ class RepeatFunctionTest : public CppUnit::TestCase
         }
 };
 
+class SNelementTest : public CppUnit::TestCase
+{
+    private :
+        void test_assignation()
+        {
+            SNmatrix<int,2> A;
+            A.at(0,0)=1;
+            A.at(0,1)=20;
+            A.at(1,0)=3;
+            A.at(1,1)=4;
+            A.at(0,1)=2;
+
+            SNmatrix<int,2> B;
+            B.at(0,0)=2;
+            B.at(1,1)=5.3;
+
+            SNelement<int,2> el=A.getElement(0,0);
+            CPPUNIT_ASSERT(el.getValue()==1);
+
+            el=B.getElement(0,0);                   // re-assignation. Now the matrix of 'el' should be B, not A.
+            CPPUNIT_ASSERT(el.getValue()==2);
+            CPPUNIT_ASSERT(el.getSNmatrix().at(1,1)==5.3);
+            CPPUNIT_ASSERT(el.getSNmatrix().getElement(1,1).getValue()==5.3);
+
+            // check that A itself is not modified.
+            CPPUNIT_ASSERT(A.at(1,1)==4);
+            CPPUNIT_ASSERT(A.at(0,0)==1);
+        };
+    public :
+        void runTest()
+        {
+            test_assignation();
+        }
+};
 
 class SNmatrixTest : public CppUnit::TestCase
 {
@@ -110,10 +144,18 @@ class SNmatrixTest : public CppUnit::TestCase
             SNelement<double,3> max0=A.getLargerOnColumn(0);
             SNelement<double,3> max1=A.getLargerOnColumn(1);
             SNelement<double,3> max2=A.getLargerOnColumn(2);
-
             CPPUNIT_ASSERT(max0.getValue()==2);
             CPPUNIT_ASSERT(max1.getValue()==-3);
             CPPUNIT_ASSERT(max2.getValue()==6.1);
+
+
+            A.at(2,2)=-2; 
+            max0=A.getLargerUnderDiagonal(0);           // By the way, test the assignation operator.
+            max1=A.getLargerUnderDiagonal(1);
+            max2=A.getLargerUnderDiagonal(2);
+            CPPUNIT_ASSERT(max0.getValue()==2);
+            CPPUNIT_ASSERT(max1.getValue()==2);
+            CPPUNIT_ASSERT(max2.getValue()==-2);
         }
     public :
         void runTest()

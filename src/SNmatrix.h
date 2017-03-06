@@ -67,6 +67,9 @@ Many methods are not 'const'. Here is the rationale.
  Note : the first point is maybe useless and some 'const' could be added in the
         future.
 
+ Note : you cannot instantiate  
+            SNmatrix<const double,7> sn;
+
 When you extract an element 
 
 DECOMPOSITION
@@ -86,8 +89,8 @@ class SNmatrix
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
-        // the larger element on column 'col' under (or on) the line 'line'. 
-        SNelement<T,tp_size> getLargerUnder(unsigned int line, unsigned int col);
+        // the larger element on column 'col' under (or on) the line 'f_line'. 
+        SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col);
     public:
         SNmatrix();
         unsigned int getSize() const;
@@ -114,14 +117,17 @@ class SNmatrix
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(): data(){};
 
-
-
 template <class T,unsigned int tp_size>
 unsigned int SNmatrix<T,tp_size>::getSize() const
 {
     return size;
 };
 
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
+{
+    return SNelement<T,tp_size>(line,col,*this);
+}
 
 template <class T,unsigned int tp_size>
 T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
@@ -134,12 +140,12 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 };
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) 
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col)
 {
     T max_val=0;
     unsigned int max_line=0;
 
-    for (unsigned int line=0;line<tp_size;line++)
+    for (unsigned int line=f_line;line<tp_size;line++)
     {
         if (std::abs(at(line,col))>max_val)
         {
@@ -148,12 +154,19 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col)
         };
     };
     return getElement(max_line,col);
+
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) 
 {
-    return SNelement<T,tp_size>(line,col,*this);
+    return getLargerUnder(0,col);
+}
+
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int col) 
+{
+    return getLargerUnder(col,col);
 }
 
 #endif

@@ -49,6 +49,7 @@ class SNelement
         SNmatrix<T,tp_size>& snmatrix;
     public :
         SNelement(unsigned int line,unsigned int column,SNmatrix<T,tp_size>& snmatrix);
+        SNelement<T,tp_size> operator=(const SNelement<T,tp_size>&);
 
         // return the value of the matrix element
         T& getValue() const;
@@ -66,6 +67,18 @@ SNelement<T,tp_size>::SNelement(unsigned int l,unsigned int c,SNmatrix<T,tp_size
     snmatrix(snm)
 {}
 
+
+template <class T,unsigned int tp_size>
+SNelement<T,tp_size> SNelement<T,tp_size>::operator=(const SNelement<T,tp_size>& other) 
+{
+    if (this!=&other)
+    {
+        line=other.line;
+        column=other.column;
+        snmatrix=other.snmatrix;
+    }
+    return *this;
+}
 
 template <class T,unsigned int tp_size>
 T& SNelement<T,tp_size>::getValue() const
