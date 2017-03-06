@@ -52,6 +52,23 @@ The correct way to populate your matrix is :
 
 Notice that the elements are numbered from 0 to tp_size-1. Not from 1.
 
+
+CONST ? 
+
+Many methods are not 'const'. Here is the rationale.
+
+- When you extract an element from the matrix with the method 'getElement', 
+  the element contains a reference to the original matrix.
+
+- The matrix itself is not constant because, after a 'PLU' decomposition, the
+  matrix itself becomes the 'U' matrix and th original is lost.
+
+
+ Note : the first point is maybe useless and some 'const' could be added in the
+        future.
+
+When you extract an element 
+
 DECOMPOSITION
 
 The mathematics can be found (in French) here :
