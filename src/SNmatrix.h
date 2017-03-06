@@ -86,6 +86,8 @@ class SNmatrix
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
+        // the larger element on column 'col' under (or on) the line 'line'. 
+        SNelement<T,tp_size> getLargerUnder(unsigned int line, unsigned int col);
     public:
         SNmatrix();
         unsigned int getSize() const;
@@ -100,7 +102,10 @@ class SNmatrix
         // In case of equality, return the last one (the larger line).
         //   The template type T has to accept arithmetic manipulations
         //   like abs, comparison.
-        SNelement<T,tp_size> getMaxOnColumn(unsigned int col);
+        SNelement<T,tp_size> getLargerOnColumn(unsigned int col);
+        // return the largest (absolute value) element under the diagonal
+        // on the given column.
+        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
 };
 
 // IMPLEMENTATIONS  -------------------------------------------
@@ -129,7 +134,7 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 };
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getMaxOnColumn(unsigned int col) 
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) 
 {
     T max_val=0;
     unsigned int max_line=0;
