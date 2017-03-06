@@ -56,17 +56,24 @@ class SNelementTest : public CppUnit::TestCase
 
             SNmatrix<int,2> B;
             B.at(0,0)=2;
-            B.at(1,1)=5.3;
+            B.at(1,1)=5.3;              // notice the implicit rounding to 5
 
             SNelement<int,2> el=A.getElement(0,0);
             CPPUNIT_ASSERT(el.getValue()==1);
 
             el=B.getElement(0,0);                   // re-assignation. Now the matrix of 'el' should be B, no A anymore.
+
+            // New value is ok
             CPPUNIT_ASSERT(el.getValue()==2);
-            CPPUNIT_ASSERT(el.getSNmatrix().at(1,1)==5.3);
-            CPPUNIT_ASSERT(el.getSNmatrix().getElement(1,1).getValue()==5.3);
+            // No more the values of the old matrix
+            CPPUNIT_ASSERT(!(el.getSNmatrix().at(1,1)==4));
+
+            // Correct values of the new matrix
+            CPPUNIT_ASSERT(el.getSNmatrix().at(1,1)==5);
+            CPPUNIT_ASSERT(el.getSNmatrix().getElement(1,1).getValue()==5);
 
             // check that A itself is not modified.
+            CPPUNIT_ASSERT(!(A.at(1,1)==5));
             CPPUNIT_ASSERT(A.at(1,1)==4);
             CPPUNIT_ASSERT(A.at(0,0)==1);
         };
@@ -171,6 +178,9 @@ int main ()
 {
     SNmatrixTest sn_test;
     sn_test.runTest();
+
+    SNelementTest se_test;
+    se_test.runTest();
 
     RepeatFunctionTest rf_test;
     rf_test.runTest();
