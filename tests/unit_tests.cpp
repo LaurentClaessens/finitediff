@@ -205,6 +205,39 @@ class SNmatrixTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(max1.getValue()==2);
             CPPUNIT_ASSERT(max2.getValue()==-2);
         }
+        void test_copy_constructor()
+            // test the copy constructor and the equality operator.
+        {
+
+            SNmatrix<int,2> A;
+            A.at(0,0)=1;
+            A.at(0,1)=2;
+            A.at(1,0)=3;
+            A.at(1,1)=4;
+
+            auto B(A);
+            CPPUNIT_ASSERT(A==B);
+        }
+        void test_swap_line()
+        {
+            SNmatrix<double,3> A;
+            A.at(0,0)=1;
+            A.at(0,1)=-3;      
+            A.at(0,2)=5;
+            A.at(1,0)=2;
+            A.at(1,1)=1;
+            A.at(1,2)=6;
+            A.at(2,0)=1;
+            A.at(2,1)=2;
+            A.at(2,2)=6.1;  
+
+            auto B(A);
+
+            A.swapLines(0,1);
+            CPPUNIT_ASSERT(A.at(0,1)==2);
+            A.swapLines(0,1);
+            CPPUNIT_ASSERT(A==B);
+        }
     public :
         void runTest()
         {
@@ -212,6 +245,8 @@ class SNmatrixTest : public CppUnit::TestCase
             test_populate();
             test_element_reference();
             test_max_on_column();
+            test_copy_constructor();
+            test_swap_line();
         }
 };
 

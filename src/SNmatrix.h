@@ -70,9 +70,22 @@ Many methods are not 'const'. Here is the rationale.
  Note : you cannot instantiate  
             SNmatrix<const double,7> sn;
 
-When you extract an element 
+When you extract an element, the latter has a reference (in fact a pointer)
+to the original matrix.
 
-DECOMPOSITION
+EQUALITY OF MATRICES
+
+The data of a matrix is encoded in an object
+        std::array<T,tp_size*tp_size>
+Two matrices are equal when these are equal. The copy constructor is based
+on that idea.
+
+
+PLU DECOMPOSITION
+
+P : permutation matrix
+L : lower triangular matrix
+U : upper triangular matrix
 
 The mathematics can be found (in French) here :
 http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
@@ -93,6 +106,11 @@ class SNmatrix
         SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col);
     public:
         SNmatrix();
+        SNmatrix(const SNmatrix<T,tp_size>&);
+
+        template <class U,class V,unsigned int s>
+        friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,s>&);
+
         unsigned int getSize() const;
 
         // return a reference to the value of the requested matrix entry.
@@ -109,12 +127,27 @@ class SNmatrix
         // return the largest (absolute value) element under the diagonal
         // on the given column.
         SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
+
+        // swap the lines l1 and l2. This is in-place replacement.
+        // The matrix is changed.
+        void swapLines(unsigned int l1,unsigned int l2);
 };
 
-// IMPLEMENTATIONS  -------------------------------------------
+// CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
 
 template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>::SNmatrix(): data() {};
+SNmatrix<T,tp_size>::SNmatrix(): data() { };
+
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
+
+template <class U,class V,unsigned int s>
+bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,s>& B)
+{
+    return A.data==B.data;
+}
+
+// GETTER METHODS  -------------------------------------------
 
 template <class T,unsigned int tp_size>
 unsigned int SNmatrix<T,tp_size>::getSize() const
@@ -137,6 +170,9 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
     }
     return data.at(j*tp_size+i);
 };
+
+
+// GAUSS'S PIVOT METHODS
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col)
@@ -166,6 +202,21 @@ template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int col) 
 {
     return getLargerUnder(col,col);
+}
+
+
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
+{
+    if (l1!=l2)
+    {
+        for (unsigned int col=0;col<tp_size;col++)
+        {
+            T tmp = at(l1,col);
+            at(l1,col)=at(l2,col);
+            at(l2,col)=tmp;
+        }
+    }
 }
 
 #endif
