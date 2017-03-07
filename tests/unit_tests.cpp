@@ -46,11 +46,12 @@ class SNelementTest : public CppUnit::TestCase
 {
     private :
         void test_no_destruct(SNmatrix<int,2>& A)
-        // create an element of A.
+        // extract an SNelement from the matrix A.
         // When we exit the function, the element is deleted and A must not
         // be deleted in the same time.
         // See test_delete.
         {
+            A.at(1,1)=1;
             SNelement<int,2> el=A.getElement(0,0);
             int a=el.getValue();
             CPPUNIT_ASSERT(a==1);
@@ -67,6 +68,9 @@ class SNelementTest : public CppUnit::TestCase
             test_no_destruct(A);
             SNelement<int,2> el=A.getElement(0,0);      // Should not crash.
             CPPUNIT_ASSERT(el.getValue()==1);
+
+            // check that the matrix used in 'test_no_delete' was not a copy.
+            CPPUNIT_ASSERT(A.at(1,1)==1);
         }
         void test_assignation()
         {
