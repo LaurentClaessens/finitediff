@@ -147,19 +147,19 @@ class SNmatrixTest : public CppUnit::TestCase
             A.at(2,1)=8;
             A.at(2,2)=0;
 
-            SNelement<double,3> el1=A.getElement(0,0);
+            auto el1=A.getElement(0,0);
             CPPUNIT_ASSERT(el1.getValue()==1);
 
-            SNelement<double,3> el2=A.getElement(0,1);
+            auto el2=A.getElement(0,1);
             CPPUNIT_ASSERT(el2.getValue()==3/5);
 
-            double back1=el2.getSNmatrix().at(2,1);
+            auto back1=el2.getSNmatrix().at(2,1);
             CPPUNIT_ASSERT(back1==8);
 
             // test if the matrix is a reference 
             // (thus 'automatically' updates itself)
             A.at(2,2)=12;
-            double back2=el2.getSNmatrix().at(2,2);
+            auto back2=el2.getSNmatrix().at(2,2);
             CPPUNIT_ASSERT(back2==12);           
         }
         void test_populate()
@@ -189,9 +189,9 @@ class SNmatrixTest : public CppUnit::TestCase
             A.at(2,1)=2;
             A.at(2,2)=6.1;      // test last line and decimal value
 
-            SNelement<double,3> max0=A.getLargerOnColumn(0);
-            SNelement<double,3> max1=A.getLargerOnColumn(1);
-            SNelement<double,3> max2=A.getLargerOnColumn(2);
+            auto max0=A.getLargerOnColumn(0);
+            auto max1=A.getLargerOnColumn(1);
+            auto max2=A.getLargerOnColumn(2);
             CPPUNIT_ASSERT(max0.getValue()==2);
             CPPUNIT_ASSERT(max1.getValue()==-3);
             CPPUNIT_ASSERT(max2.getValue()==6.1);
