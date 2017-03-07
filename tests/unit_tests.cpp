@@ -234,7 +234,7 @@ class SNmatrixTest : public CppUnit::TestCase
             auto B(A);
 
             A.swapLines(0,1);
-            CPPUNIT_ASSERT(A.at(0,1)==2);
+            CPPUNIT_ASSERT(A.at(0,1)==1);
             A.swapLines(0,1);
             CPPUNIT_ASSERT(A==B);
         }
