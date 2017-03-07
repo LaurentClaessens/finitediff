@@ -7,6 +7,7 @@
 # - compile all
 # - test
 
+mkdir build
 git status
 make clean
 make all
