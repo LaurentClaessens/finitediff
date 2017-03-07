@@ -45,6 +45,29 @@ class RepeatFunctionTest : public CppUnit::TestCase
 class SNelementTest : public CppUnit::TestCase
 {
     private :
+        void test_no_destruct(SNmatrix<int,2>& A)
+        // create an element of A.
+        // When we exit the function, the element is deleted and A must not
+        // be deleted in the same time.
+        // See test_delete.
+        {
+            SNelement<int,2> el=A.getElement(0,0);
+            int a=el.getValue();
+            CPPUNIT_ASSERT(a==1);
+        }
+        void test_delete()
+        {
+            SNmatrix<int,2> A;
+            A.at(0,0)=1;
+            A.at(0,1)=20;
+            A.at(1,0)=3;
+            A.at(1,1)=4;
+            A.at(0,1)=2;
+
+            test_no_destruct(A);
+            SNelement<int,2> el=A.getElement(0,0);      // Should not crash.
+            CPPUNIT_ASSERT(el.getValue()==1);
+        }
         void test_assignation()
         {
             SNmatrix<int,2> A;
@@ -77,10 +100,24 @@ class SNelementTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(A.at(1,1)==4);
             CPPUNIT_ASSERT(A.at(0,0)==1);
         };
+        void test_chain_matrix_element()
+            // The matrix given from SNelement.getSNmatrix is the original one, not a copy.
+            // So modifying the matrix returned by one element should change the original matrix.
+        {
+            SNmatrix<int,2> A;
+            A.at(0,0)=1;
+            A.at(0,1)=20;
+
+            SNelement<int,2> el=A.getElement(0,0);
+            el.getSNmatrix().at(0,1)=12;
+            CPPUNIT_ASSERT(A.at(0,1)=12);
+        }
     public :
         void runTest()
         {
+            test_delete();
             test_assignation();
+            test_chain_matrix_element();
         }
 };
 

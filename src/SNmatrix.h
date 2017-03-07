@@ -113,9 +113,8 @@ class SNmatrix
 
 // IMPLEMENTATIONS  -------------------------------------------
 
-
 template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>::SNmatrix(): data(){};
+SNmatrix<T,tp_size>::SNmatrix(): data() {};
 
 template <class T,unsigned int tp_size>
 unsigned int SNmatrix<T,tp_size>::getSize() const

@@ -20,14 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SNELEMENT_H__145452__
 #define __SNELEMENT_H__145452__
 
+
 /*
 This class describes a matrix element from a matrix of type 'SNmatrix'.
 
 An element contains
 - line and column
 - a reference to the matrix which it belongs to.
-
-
 */
 
 
@@ -35,8 +34,6 @@ An element contains
 
 template <class T,unsigned int tp_size>
 class SNmatrix;
-
-
 
 // THE CLASS HEADER -----------------------------------------
 
@@ -46,10 +43,14 @@ class SNelement
     private :
         unsigned int line;
         unsigned int column;
-        SNmatrix<T,tp_size>& snmatrix;
+
+        // Safe to use a raw pointer because I do not request any ownership.
+        // The matrix is owned by someone else and will be released by that guy.
+        SNmatrix<T,tp_size>* snmatrix;
     public :
         SNelement(unsigned int line,unsigned int column,SNmatrix<T,tp_size>& snmatrix);
-        SNelement<T,tp_size> operator=(const SNelement<T,tp_size>&);
+
+        SNelement<T,tp_size> operator=(const SNelement<T,tp_size>& other);
 
         // return the value of the matrix element
         T& getValue() const;
@@ -58,15 +59,14 @@ class SNelement
         SNmatrix<T,tp_size>& getSNmatrix() const;
 };
 
-// IMPLEMENTATIONS  -------------------------------------------
+// CONSTRUCTOR, ASSIGNATION, ...  -------------------------------------------
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size>::SNelement(unsigned int l,unsigned int c,SNmatrix<T,tp_size>& snm) : 
     line(l),
     column(c),
-    snmatrix(snm)
+    snmatrix(&snm)
 {}
-
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNelement<T,tp_size>::operator=(const SNelement<T,tp_size>& other) 
@@ -80,6 +80,8 @@ SNelement<T,tp_size> SNelement<T,tp_size>::operator=(const SNelement<T,tp_size>&
     return *this;
 }
 
+// OTHER FUNCTIONALITIES -------------------------------------------
+
 template <class T,unsigned int tp_size>
 T& SNelement<T,tp_size>::getValue() const
 {
@@ -89,7 +91,7 @@ T& SNelement<T,tp_size>::getValue() const
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>& SNelement<T,tp_size>::getSNmatrix() const
 {
-    return snmatrix;
+    return *snmatrix;
 }
 
 #endif
