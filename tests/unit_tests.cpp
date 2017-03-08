@@ -298,6 +298,8 @@ class SNlineTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(L1==A1);         // check equality operator
 
             L1.at(0)=0;
+            CPPUNIT_ASSERT(L1.get(0)==0);
+            CPPUNIT_ASSERT(L1.at(0)==0);
             std::array<double,4> a2;
             a2.at(0)=0;
             a2.at(1)=1;
@@ -309,8 +311,6 @@ class SNlineTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(L1==A2);
             L1.makeUnit();
             CPPUNIT_ASSERT(L1==A2);     // twice makeUnit.
-
-
 
             std::array<double,3> d2;
             d2.at(0)=0;

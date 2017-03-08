@@ -51,8 +51,14 @@ class SNline
 
 
     public :
+
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
         SNline(const std::array<T,tp_size>&);       // do not use this constructors otherwise than for testing purpose.
+
+        template <class U,class V,unsigned int s>
+        friend bool operator==(const SNline<U,s>&,const SNline<V,s>&);
+        template <class V,unsigned int s>
+        friend std::ostream& operator<<(std::ostream&, const SNline<V,s>&);
 
         // return the value of the ith element on the line.
         //  - at returns a reference (! non const)
@@ -83,6 +89,25 @@ SNline<T,tp_size>::SNline(unsigned int l,SNmatrix<T,tp_size>& snm) :
 // the following constructor does not initialize the referenced matrix.
 template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(const std::array<T,tp_size>& ar) : data(ar) {};
+
+
+// OPERATORS -------------------------------------------
+
+template <class U,class V,unsigned int s>
+bool operator==(const SNline<U,s>& A,const SNline<V,s>& B)
+{
+    return A.data==B.data;
+}
+
+template <class V,unsigned int s>
+std::ostream& operator<<(std::ostream& stream, const SNline<V,s>& line)
+{
+    for (unsigned int c=0;c<s;c++)
+    {
+        stream<<line.get(c)<<",";
+    }
+    return stream;
+}
 
 // GETTER METHODS -------------------------------------------
 
@@ -136,8 +161,13 @@ void SNline<T,tp_size>::makeUnit()
     unsigned int col=firstNonZeroColumn();
     if (col!=tp_size+1)
     {
+        const T m = get(col);
+        at(col)=1;      // the first one is by hand 1 (because we know it).
+        for (unsigned int c=col+1;c<tp_size;c++)
+        {
+            at(c)=get(c)/m;
+        }
     }
-    int a= 1/0; // to make the test crash for the moment.
 }
 
 #endif
