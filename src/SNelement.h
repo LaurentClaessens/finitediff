@@ -26,7 +26,8 @@ This class describes a matrix element from a matrix of type 'SNmatrix'.
 
 An element contains
 - line and column
-- a reference to the matrix which it belongs to.
+- a pointer to the matrix which it belongs to.
+  The latter it only accessible to the user trough the method 'getSNmatrix' that returns a reference
 */
 
 

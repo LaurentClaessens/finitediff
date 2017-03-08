@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cmath>
 
 #include "SNelement.h"
+#include "SNline.h"
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
@@ -81,7 +82,7 @@ Two matrices are equal when these are equal. The copy constructor is based
 on that idea.
 
 
-PLU DECOMPOSITION
+"PLU" DECOMPOSITION
 
 P : permutation matrix
 L : lower triangular matrix
@@ -89,7 +90,6 @@ U : upper triangular matrix
 
 The mathematics can be found (in French) here :
 http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
-
 
 */
 
@@ -104,6 +104,14 @@ class SNmatrix
         unsigned int size=tp_size;
         // the larger element on column 'col' under (or on) the line 'f_line'. 
         SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col);
+
+        // Substrat the given vector (line) from the line 'line'
+        // Using the Gauss's elimination one need to do many differences like
+        //  L_i -> L_i - k*L_1/m
+        //  where 'k' is the first element of L_i and 'm' is the pivot.
+        //  The function 'lineMinusVector' serves to not compute L_1/m
+        //  as many times as the number of substitutions to do.
+        void lineMinusVector(unsigned int line,SNline<T,tp_size> v);
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
@@ -172,7 +180,7 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 };
 
 
-// GAUSS'S PIVOT METHODS
+// GAUSS'S ELIMINATION METHODS
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col)
@@ -203,7 +211,6 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int co
 {
     return getLargerUnder(col,col);
 }
-
 
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
