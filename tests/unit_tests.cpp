@@ -394,7 +394,7 @@ class GaussTest : public CppUnit::TestCase
         CPPUNIT_ASSERT(lu1.get(1)==0.5);
         CPPUNIT_ASSERT(lu1.get(2)==3);
         CPPUNIT_ASSERT(lu2.get(0)==1);
-        CPPUNIT_ASSERT(lu2.get(1)==2.0/3);      // notice that 2/3 does not works
+        CPPUNIT_ASSERT(lu2.get(1)==2.0/3);      // notice that 2/3 does not work
         CPPUNIT_ASSERT(lu2.get(2)==6.1/3);
 
         SNmatrix<double,3> B;
