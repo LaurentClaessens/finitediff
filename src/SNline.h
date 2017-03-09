@@ -40,7 +40,8 @@ class SNmatrix;
 
 template <class T,unsigned int tp_size>
 class SNline
-{
+{ 
+    friend class GaussTest;
     private :
         std::array<T,tp_size> data;
         unsigned int line;
