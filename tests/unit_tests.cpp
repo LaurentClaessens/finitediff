@@ -334,6 +334,22 @@ class SNlineTest : public CppUnit::TestCase
         }
 };
 
+class GaussTest : public CppUnit::TestCase
+{
+    private :
+        void test_LminusL()
+            // test the matrix manipulation
+            // L_i -> L_i- m*L_k
+        {
+            CPPUNIT_ASSERT(false);
+        }
+    public :
+        void runTest()
+        {
+            test_LminusL();
+        }
+};
+
 int main ()
 {
     SNmatrixTest sn_test;
@@ -344,6 +360,9 @@ int main ()
 
     SNelementTest se_test;
     se_test.runTest();
+
+    GaussTest gauss_test;
+    gauss_test.runTest();
 
     RepeatFunctionTest rf_test;
     rf_test.runTest();

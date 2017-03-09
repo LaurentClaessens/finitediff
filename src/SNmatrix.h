@@ -107,6 +107,7 @@ http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
 template <class T,unsigned int tp_size>
 class SNmatrix
 {
+    friend class SNmatrixTest;
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
@@ -120,6 +121,17 @@ class SNmatrix
         //  The function 'lineMinusVector' serves to not compute L_1/m
         //  as many times as the number of substitutions to do.
         void lineMinusVector(unsigned int line,SNline<T,tp_size> v);
+
+
+        // return the larger element (in absolute value) on the given column
+        // In case of equality, return the last one (the larger line).
+        //   The template type T has to accept arithmetic manipulations
+        //   like abs, comparison.
+        SNelement<T,tp_size> getLargerOnColumn(unsigned int col);
+        // return the largest (absolute value) element under the diagonal
+        // on the given column.
+        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
+
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
@@ -135,15 +147,6 @@ class SNmatrix
 
         // return the matrix element on given (line,column).
         SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
-
-        // return the larger element (in absolute value) on the given column
-        // In case of equality, return the last one (the larger line).
-        //   The template type T has to accept arithmetic manipulations
-        //   like abs, comparison.
-        SNelement<T,tp_size> getLargerOnColumn(unsigned int col);
-        // return the largest (absolute value) element under the diagonal
-        // on the given column.
-        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
 
         // swap the lines l1 and l2. This is in-place replacement.
         // The matrix is changed.
