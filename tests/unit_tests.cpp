@@ -495,6 +495,12 @@ class GaussTest : public CppUnit::TestCase
             */
             auto A_U=testMatrixB_U();
             A.makeUpperTriangular();
+
+            std::cout<<"Obtenu :"<<std::endl;
+            std::cout<<A<<std::endl;
+            std::cout<<"La réponse :"<<std::endl;
+            std::cout<<A_U<<std::endl;
+
             CPPUNIT_ASSERT(A==A_U);
         }
     public :
