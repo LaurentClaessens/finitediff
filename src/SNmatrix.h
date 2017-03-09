@@ -74,6 +74,14 @@ Many methods are not 'const'. Here is the rationale.
 When you extract an element, the latter has a reference (in fact a pointer)
 to the original matrix.
 
+If you want to know the value of a matrix element, you can use two methods :
+        T& at(unsigned int,unsigned int);
+        T get(unsigned int,unsigned int) const;
+The first one returns a reference ans should only be used to populate the matrix
+(or more generally to modify the matrix) and the second one (get) should be
+used whenever you just want to know the value.
+
+
 EQUALITY OF MATRICES
 
 The data of a matrix is encoded in an object
@@ -123,6 +131,7 @@ class SNmatrix
 
         // return a reference to the value of the requested matrix entry.
         T& at(unsigned int,unsigned int);
+        T get(unsigned int,unsigned int) const;
 
         // return the matrix element on given (line,column).
         SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
@@ -179,25 +188,34 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
     return data.at(j*tp_size+i);
 };
 
+template <class T,unsigned int tp_size>
+T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
+{
+    if (i>tp_size or j>tp_size)
+    {
+        std::cout<<"This SNmatrix has size "<<tp_size<<". Attempt to access element "<<i<<" , "<<j<<std::endl;
+    }
+    return data.at(j*tp_size+i);
+};
+
 
 // GAUSS'S ELIMINATION METHODS
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col)
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col) 
 {
     T max_val=0;
     unsigned int max_line=0;
 
     for (unsigned int line=f_line;line<tp_size;line++)
     {
-        if (std::abs(at(line,col))>max_val)
+        if (std::abs(get(line,col))>max_val)
         {
-            max_val=std::abs(at(line,col));
+            max_val=std::abs(get(line,col));
             max_line=line;
         };
     };
     return getElement(max_line,col);
-
 }
 
 template <class T,unsigned int tp_size>
@@ -219,8 +237,8 @@ void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
     {
         for (unsigned int col=0;col<tp_size;col++)
         {
-            T tmp = at(l1,col);
-            at(l1,col)=at(l2,col);
+            T tmp = get(l1,col);
+            at(l1,col)=get(l2,col);
             at(l2,col)=tmp;
         }
     }

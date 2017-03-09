@@ -267,7 +267,7 @@ class SNlineTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(L1.firstNonZeroColumn()==0);      // check the case in which the first is non zero.
 
             L1.at(0)=0;
-            CPPUNIT_ASSERT(L1.at(0)==0);                     // check re-assignation
+            CPPUNIT_ASSERT(L1.get(0)==0);                     // check re-assignation
             CPPUNIT_ASSERT(L1.firstNonZeroColumn()==1);
 
             std::array<double,3> d2;
