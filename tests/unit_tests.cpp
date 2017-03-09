@@ -317,35 +317,115 @@ class SNlineTest : public CppUnit::TestCase
             d2.at(1)=0;
             d2.at(2)=0;
             SNline<double,3> L2(d2);
-            L2.makeUnit();      //should crash for the moment
+            SNline<double,3> A3(L2);
+            L2.makeUnit();   
+            CPPUNIT_ASSERT(L2==A3);
 
             std::array<double,3> d3;
             d3.at(0)=0;
             d3.at(1)=0;
             d3.at(2)=-0.1;
             SNline<double,3> L3(d3);
+            L3.makeUnit();
+            CPPUNIT_ASSERT(L3.get(0)==0);
+            CPPUNIT_ASSERT(L3.get(1)==0);
+            CPPUNIT_ASSERT(L3.get(2)==1);
         }
+
+    void test_get_snline()
+        // check the function 'getSNline'
+    {
+        SNmatrix<double,3> A;
+        A.at(0,0)=1;
+        A.at(0,1)=-3;      
+        A.at(0,2)=5;
+        A.at(1,0)=2;
+        A.at(1,1)=1;
+        A.at(1,2)=6;
+        A.at(2,0)=1;
+        A.at(2,1)=2;
+        A.at(2,2)=6.1;  
+
+        auto l0=A.getSNline(0);
+        auto l1=A.getSNline(1);
+        auto l2=A.getSNline(2);
+        CPPUNIT_ASSERT(l0.get(0)==1);
+        CPPUNIT_ASSERT(l0.get(1)==-3);
+        CPPUNIT_ASSERT(l0.get(2)==5);
+        CPPUNIT_ASSERT(l1.get(1)==1);
+        CPPUNIT_ASSERT(l1.get(2)==6);
+        CPPUNIT_ASSERT(l2.get(0)==1);
+        CPPUNIT_ASSERT(l2.get(2)==6.1);
+    }
 
     public :
         void runTest()
         {
             test_first_nonzero();
             test_make_unit();
+            test_get_snline();
         }
 };
 
 class GaussTest : public CppUnit::TestCase
 {
     private :
+        void test_elimination_line()
+        {
+        SNmatrix<double,3> A;
+        A.at(0,0)=1;
+        A.at(0,1)=-3;      
+        A.at(0,2)=5;
+        A.at(1,0)=2;
+        A.at(1,1)=1;
+        A.at(1,2)=6;
+        A.at(2,0)=3;
+        A.at(2,1)=2;
+        A.at(2,2)=6.1;  
+
+        auto lu0=A.gaussEliminationLine(0);
+        auto lu1=A.gaussEliminationLine(1);
+        auto lu2=A.gaussEliminationLine(2);
+
+        CPPUNIT_ASSERT(lu0.get(0)==1);
+        CPPUNIT_ASSERT(lu0.get(1)==-3);
+        CPPUNIT_ASSERT(lu0.get(2)==5);
+        CPPUNIT_ASSERT(lu1.get(0)==1);
+        CPPUNIT_ASSERT(lu1.get(1)==0.5);
+        CPPUNIT_ASSERT(lu1.get(2)==3);
+        CPPUNIT_ASSERT(lu2.get(0)==1);
+        CPPUNIT_ASSERT(lu2.get(1)==2.0/3);      // notice that 2/3 does not works
+        CPPUNIT_ASSERT(lu2.get(2)==6.1/3);
+
+        SNmatrix<double,3> B;
+        B.at(1,0)=0;
+        B.at(1,1)=0;
+        B.at(1,2)=2;
+        B.at(2,0)=0;
+        B.at(2,1)=3;
+        B.at(2,2)=6;  
+
+        auto lt1=B.gaussEliminationLine(1);
+        auto lt2=B.gaussEliminationLine(2);
+
+        CPPUNIT_ASSERT(lt1.get(0)==0);
+        CPPUNIT_ASSERT(lt1.get(1)==0);
+        CPPUNIT_ASSERT(lt1.get(2)==1);
+        CPPUNIT_ASSERT(lt2.get(0)==0);
+        CPPUNIT_ASSERT(lt2.get(1)==1);
+        CPPUNIT_ASSERT(lt2.get(2)==2);
+        }
         void test_LminusL()
             // test the matrix manipulation
             // L_i -> L_i- m*L_k
+            // that "eliminates" the line i using the line k.
         {
             CPPUNIT_ASSERT(false);
         }
     public :
         void runTest()
         {
+            test_elimination_line();
             test_LminusL();
         }
 };
@@ -359,7 +439,7 @@ int main ()
     sl_test.runTest();
 
     SNelementTest se_test;
-    se_test.runTest();
+   se_test.runTest();
 
     GaussTest gauss_test;
     gauss_test.runTest();

@@ -108,6 +108,7 @@ template <class T,unsigned int tp_size>
 class SNmatrix
 {
     friend class SNmatrixTest;
+    friend class GaussTest;
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
@@ -118,9 +119,9 @@ class SNmatrix
         // Using the Gauss's elimination one need to do many differences like
         //  L_i -> L_i - k*L_1/m
         //  where 'k' is the first element of L_i and 'm' is the pivot.
-        //  The function 'lineMinusVector' serves to not compute L_1/m
+        //  The function 'lineMinusLine' serves to not compute L_1/m
         //  as many times as the number of substitutions to do.
-        void lineMinusVector(unsigned int line,SNline<T,tp_size> v);
+        void lineMinusLine(unsigned int line,SNline<T,tp_size> v);
 
 
         // return the larger element (in absolute value) on the given column
@@ -131,6 +132,10 @@ class SNmatrix
         // return the largest (absolute value) element under the diagonal
         // on the given column.
         SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
+
+        // From the line number "line", return a line normalized in such a way that
+        // the first (non zero) element is 1.
+        SNline<T,tp_size> gaussEliminationLine(unsigned int line);
 
     public:
         SNmatrix();
@@ -151,6 +156,9 @@ class SNmatrix
         // swap the lines l1 and l2. This is in-place replacement.
         // The matrix is changed.
         void swapLines(unsigned int l1,unsigned int l2);
+
+        // return the requested line
+        SNline<T,tp_size> getSNline(unsigned int l);
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -179,6 +187,17 @@ template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
 {
     return SNelement<T,tp_size>(line,col,*this);
+}
+
+template <class T,unsigned int tp_size>
+SNline<T,tp_size> SNmatrix<T,tp_size>::getSNline(unsigned int l)
+{
+    std::array<T,tp_size> al;
+    for (unsigned int c=0;c<tp_size;c++)
+    {
+        al.at(c)=get(l,c);
+    }
+    return SNline<T,tp_size>(al);
 }
 
 template <class T,unsigned int tp_size>
@@ -245,6 +264,24 @@ void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
             at(l2,col)=tmp;
         }
     }
+}
+
+
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::lineMinusLine(unsigned int line,SNline<T,tp_size> v)
+{
+    for (unsigned int c=0;c<tp_size;c++)
+    {
+        at(line,c)=v.get(c);
+    }
+}
+
+template <class T,unsigned int tp_size>
+SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
+{
+    SNline<T,tp_size> l=getSNline(line);
+    l.makeUnit();
+    return l;
 }
 
 #endif
