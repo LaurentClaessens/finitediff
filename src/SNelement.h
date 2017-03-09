@@ -42,9 +42,8 @@ template <class T,unsigned int tp_size>
 class SNelement
 {
     private :
-        unsigned int line;
-        unsigned int column;
-
+        unsigned int p_line;
+        unsigned int p_column;
         // Safe to use a raw pointer because I do not request any ownership.
         // The matrix is owned by someone else and will be released by that guy.
         SNmatrix<T,tp_size>* snmatrix;
@@ -52,6 +51,9 @@ class SNelement
         SNelement(unsigned int line,unsigned int column,SNmatrix<T,tp_size>& snmatrix);
 
         SNelement<T,tp_size> operator=(const SNelement<T,tp_size>& other);
+
+        unsigned int line;
+        unsigned int column;
 
         // return the value of the matrix element
         T& getValue() const;
@@ -64,9 +66,11 @@ class SNelement
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size>::SNelement(unsigned int l,unsigned int c,SNmatrix<T,tp_size>& snm) : 
-    line(l),
-    column(c),
-    snmatrix(&snm)
+    p_line(l),
+    p_column(c),
+    snmatrix(&snm),
+    line(p_line),
+    column(p_column)
 {}
 
 template <class T,unsigned int tp_size>

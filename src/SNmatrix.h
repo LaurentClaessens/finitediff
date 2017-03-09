@@ -159,6 +159,11 @@ class SNmatrix
 
         // return the requested line
         SNline<T,tp_size> getSNline(unsigned int l);
+
+        // Use the Gauss'elimination to transform the SNmatrix
+        // to an upper triangular matrix.
+        // In-place transformation !!
+        void makeUpperTriangular();
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -282,6 +287,37 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
     SNline<T,tp_size> l=getSNline(line);
     l.makeUnit();
     return l;
+}
+
+
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::makeUpperTriangular()
+{
+    for (unsigned int c=0;c<tp_size;c++)
+    {
+        // get the larger element under the diagonal and swap the lines
+        auto max_el = getLargerUnderDiagonal(c);
+        swapLines(c,max_el.line);
+
+        // the line with which we will eliminate.
+        // This is the L_k for which
+        // L_i -> L_i- m*L_k
+        // where m is the value under the diagonal on line 'c'.
+        auto killing_line=gaussEliminationLine(c);
+
+        // now we subtract the correct multiple of the killing line
+        // to each line under the Gauss'pivot.
+        for (unsigned int l=c+1;l<tp_size;l++)
+        {
+            int f_nz = getSNline(l).firstNonZeroColumn();
+            T m = get(l,f_nz);  // the value of the first non zero
+                                // element in the line 'l'
+
+            // TODO : this is not optimal because
+            // we already know the first 'c' differences are 0.
+            lineMinusLine(l,m*killing_line);
+        }
+    }
 }
 
 #endif

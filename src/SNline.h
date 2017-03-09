@@ -58,6 +58,8 @@ class SNline
 
         template <class U,class V,unsigned int s>
         friend bool operator==(const SNline<U,s>&,const SNline<V,s>&);
+        template <class U,unsigned int s>
+        friend SNline<U,s> operator*(const U m, const SNline<U,s>&);
         template <class V,unsigned int s>
         friend std::ostream& operator<<(std::ostream&, const SNline<V,s>&);
 
@@ -92,12 +94,27 @@ template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(const std::array<T,tp_size>& ar) : data(ar) {};
 
 
+
 // OPERATORS -------------------------------------------
 
 template <class U,class V,unsigned int s>
 bool operator==(const SNline<U,s>& A,const SNline<V,s>& B)
 {
     return A.data==B.data;
+}
+
+// multiplication by a scalar.
+// This is not in-place replacement.
+template <class U,unsigned int s>
+SNline<U,s> operator* (U m, const SNline<U,s>& v)
+{
+    std::array<U,s> arr;
+    SNline<U,s> ans(arr);
+    for (unsigned int c=0;c<s;c++)
+    {
+        ans.at(c)=m*v.get(c);
+    }
+    return ans;
 }
 
 template <class V,unsigned int s>

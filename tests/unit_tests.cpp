@@ -44,6 +44,36 @@ auto testMatrixA()
     return B;
 }
 
+auto testMatrixB()
+/*
+ 1  2  3
+ 2  5  0
+ 3  8  0
+*/
+{
+    SNmatrix<double,3> B; 
+    B.at(0,0)=1; B.at(0,1)=2; B.at(0,2)=3; 
+    B.at(1,0)=2; B.at(1,1)=5; B.at(1,2)=0;
+    B.at(2,0)=3; B.at(2,1)=8; B.at(2,2)=0;
+    return B;
+}
+
+auto testMatrixB_U()
+    // this one is the upper triangular of testMatrixB
+/*
+ 1    2     3
+ 0  -2/3    3
+ 0    0    -3/2
+*/
+{
+    SNmatrix<double,3> B; 
+    B.at(0,0)=3; B.at(0,1)=8; B.at(0,2)=0; 
+    B.at(1,0)=0; B.at(1,1)=-2.0/3; B.at(1,2)=3;
+    B.at(2,0)=0; B.at(2,1)=0; B.at(2,2)=-3.0/2;
+    return B;
+}
+
+
 class RepeatFunctionTest : public CppUnit::TestCase
 {
     public :
@@ -450,12 +480,29 @@ class GaussTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(A.get(1,0)==0);
             CPPUNIT_ASSERT(A.get(1,1)==-3);
             CPPUNIT_ASSERT(A.get(1,2)==-4);
+
+            auto B(A);
+            A.lineMinusLine(2,A.getSNline(0));
+            CPPUNIT_ASSERT( A.getSNline(2)==B.getSNline(2) );
+        }
+        void test_upper_triangular()
+        {
+            auto A=testMatrixB();
+            /*
+             1  2  3
+             2  5  0
+             3  8  0
+            */
+            auto A_U=testMatrixB_U();
+            A.makeUpperTriangular();
+            CPPUNIT_ASSERT(A==A_U);
         }
     public :
         void runTest()
         {
             test_elimination_line();
             test_LminusL();
+            test_upper_triangular();
         }
 };
 
