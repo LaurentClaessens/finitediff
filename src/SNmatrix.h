@@ -109,6 +109,10 @@ class SNmatrix
 {
     friend class SNmatrixTest;
     friend class GaussTest;
+
+    template <class V,unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, SNmatrix<V,s>&);
+
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
@@ -178,6 +182,16 @@ template <class U,class V,unsigned int s>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,s>& B)
 {
     return A.data==B.data;
+}
+
+template <class V,unsigned int s>
+std::ostream& operator<<(std::ostream& stream, SNmatrix<V,s>& snm)
+{
+    for (unsigned int l=0;l<s;l++)
+    {
+        stream<<snm.getSNline(l)<<std::endl;
+    }
+    return stream;
 }
 
 // GETTER METHODS  -------------------------------------------
@@ -305,6 +319,8 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
         // where m is the value under the diagonal on line 'c'.
         auto killing_line=gaussEliminationLine(c);
 
+        std::cout<<killing_line<<std::endl;
+
         // now we subtract the correct multiple of the killing line
         // to each line under the Gauss'pivot.
         for (unsigned int l=c+1;l<tp_size;l++)
@@ -312,9 +328,13 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
             int f_nz = getSNline(l).firstNonZeroColumn();
             T m = get(l,f_nz);  // the value of the first non zero
                                 // element in the line 'l'
+                                //
+            std::cout<<"multiplier for line "<<l<<" : "<<m<<std::endl;
 
             // TODO : this is not optimal because
             // we already know the first 'c' differences are 0.
+
+            std::cout<<"Je soustrais "<<getSNline(l)<<" par "<<m*killing_line<<std::endl;
             lineMinusLine(l,m*killing_line);
         }
     }
