@@ -272,7 +272,7 @@ void SNmatrix<T,tp_size>::lineMinusLine(unsigned int line,SNline<T,tp_size> v)
 {
     for (unsigned int c=0;c<tp_size;c++)
     {
-        at(line,c)=v.get(c);
+        at(line,c)=get(line,c)-v.get(c);
     }
 }
 

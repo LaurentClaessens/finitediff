@@ -30,6 +30,20 @@ double square(double x)
     return x*x;
 };
 
+auto testMatrixA()
+/*
+ 0  3  6
+ 0  0  2
+ 0  3  6
+*/
+{
+    SNmatrix<double,3> B; 
+    B.at(0,0)=0; B.at(0,1)=3; B.at(0,2)=6; 
+    B.at(1,0)=0; B.at(1,1)=0; B.at(1,2)=2;
+    B.at(2,0)=0; B.at(2,1)=3; B.at(2,2)=6;
+    return B;
+}
+
 class RepeatFunctionTest : public CppUnit::TestCase
 {
     public :
@@ -420,7 +434,22 @@ class GaussTest : public CppUnit::TestCase
             // L_i -> L_i- m*L_k
             // that "eliminates" the line i using the line k.
         {
-            CPPUNIT_ASSERT(false);
+            auto A=testMatrixA();
+                /*
+               0  3  6
+               0  0  2
+               0  3  6
+                */
+            auto l2=A.getSNline(2);
+            A.lineMinusLine(0,l2);
+            CPPUNIT_ASSERT(A.get(0,0)==0);
+            CPPUNIT_ASSERT(A.get(0,1)==0);
+            CPPUNIT_ASSERT(A.get(0,2)==0);
+
+            A.lineMinusLine(1,l2);
+            CPPUNIT_ASSERT(A.get(1,0)==0);
+            CPPUNIT_ASSERT(A.get(1,1)==-3);
+            CPPUNIT_ASSERT(A.get(1,2)==-4);
         }
     public :
         void runTest()
