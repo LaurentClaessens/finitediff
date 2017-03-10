@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../src/SNmatrix.h"
 #include "../src/SNline.h"
+#include "../src/SNplu.h"
 #include "../src/RepeatFunction.h"
 
 double square(double x)
@@ -540,6 +541,29 @@ class GaussTest : public CppUnit::TestCase
         }
 };
 
+
+class pluTest : public CppUnit::TestCase
+{
+    private :
+        void test_reference()
+        {
+            auto A=testMatrixA();
+            auto plu=A.getPLU();
+            CPPUNIT_ASSERT(A==plu.getU());
+
+            // check that the 'U' matrix in PLU is a reference.
+            // this us however bad practice to modify A after having
+            // the PLU done.
+            A.at(1,1)=0.132;
+            CPPUNIT_ASSERT(plu.getU().get(1,1)==0.132);
+        };
+    public:
+        void runTest()
+        {
+            test_reference();
+        }
+};
+
 int main ()
 {
     std::cout<<"SNmatrixTest"<<std::endl;
@@ -557,6 +581,10 @@ int main ()
     std::cout<<"GaussTest"<<std::endl;
     GaussTest gauss_test;
     gauss_test.runTest();
+
+    std::cout<<"pluTest"<<std::endl;
+    pluTest plu_test;
+    plu_test.runTest();
 
     std::cout<<"RepeatFunctionTest"<<std::endl;
     RepeatFunctionTest rf_test;

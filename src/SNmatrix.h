@@ -30,9 +30,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /*
 This is my matrix type, designed for numerical computation. It represents a 
 square matrix.
-
 */
 
+// forward definition
+
+template <class T,unsigned int tp_size>
+class SNplu;
 
 // THE CLASS HEADER -----------------------------------------
 
@@ -108,6 +111,9 @@ class SNmatrix
         // this is a in-place replacement.
         template <class V,unsigned int s>
         void subtract(const SNmatrix<V,s>& B);
+
+
+        SNplu<T,tp_size> getPLU();
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -298,6 +304,14 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
             lineMinusLine(l,m*killing_line);
         }
     }
+}
+
+
+template <class T,unsigned int tp_size>
+SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
+{
+    SNplu<T,tp_size> plu(*this);
+    return plu;
 }
 
 #endif
