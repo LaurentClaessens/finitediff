@@ -90,6 +90,17 @@ Two matrices are equal when these are equal. The copy constructor is based
 on that idea.
 
 
+WHY 'SUBTRACT' INSTEAD OF 'operator-'  ?
+
+The operation
+A.subtract(B)
+changes A into A-B.
+
+The operation (not yet implemented)
+C=A-B
+creates a new matrix that has the value A-B.
+
+
 "PLU" DECOMPOSITION
 
 P : permutation matrix
@@ -154,12 +165,11 @@ class SNmatrix
         T& at(unsigned int,unsigned int);
         T get(unsigned int,unsigned int) const;
 
+        // return the max of the absolute values of all the matrix elements
+        T max_norm() const;
+
         // return the matrix element on given (line,column).
         SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
-
-        // swap the lines l1 and l2. This is in-place replacement.
-        // The matrix is changed.
-        void swapLines(unsigned int l1,unsigned int l2);
 
         // return the requested line
         SNline<T,tp_size> getSNline(unsigned int l);
@@ -168,6 +178,15 @@ class SNmatrix
         // to an upper triangular matrix.
         // In-place transformation !!
         void makeUpperTriangular();
+
+        // swap the lines l1 and l2. This is in-place replacement.
+        // The matrix is changed.
+        void swapLines(unsigned int l1,unsigned int l2);
+
+        // subtract the given matrix to 'this'.
+        // this is a in-place replacement.
+        template <class V,unsigned int s>
+        void subtract(const SNmatrix<V,s>& B);
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -192,6 +211,15 @@ std::ostream& operator<<(std::ostream& stream, SNmatrix<V,s>& snm)
         stream<<snm.getSNline(l)<<std::endl;
     }
     return stream;
+}
+
+template <class T,unsigned int t> template<class V,unsigned int s>
+void SNmatrix<T,t>::subtract(const SNmatrix<V,s>& B)
+{
+    for (unsigned int i=0;i<data.size();i++)
+    {
+        data.at(i)-=B.data.at(i);
+    }
 }
 
 // GETTER METHODS  -------------------------------------------
@@ -241,6 +269,23 @@ T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
 
 
 // GAUSS'S ELIMINATION METHODS
+
+
+
+template <class T,unsigned int tp_size>
+T SNmatrix<T,tp_size>::max_norm() const
+{
+    T m(0);
+    for (T v:data)
+    {
+        T s=std::abs(v);
+        if (s>m)
+        {
+            m=s;
+        }
+    }
+    return m;
+}
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col) 
@@ -329,8 +374,6 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
 
             // TODO : this is not optimal because
             // we already know the first 'c' differences are 0.
-
-            std::cout<<"Je soustrais "<<getSNline(l)<<" par "<<m*killing_line<<std::endl;
             lineMinusLine(l,m*killing_line);
         }
     }

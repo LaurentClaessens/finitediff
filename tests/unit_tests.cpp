@@ -73,6 +73,26 @@ auto testMatrixB_U()
     return B;
 }
 
+auto testMatrixC()
+    /*
+     1  -3  5
+     2  1   6
+     1  2   6.1
+    */
+{
+    SNmatrix<double,3> A;
+    A.at(0,0)=1;
+    A.at(0,1)=-3;       // Test negative and first line
+    A.at(0,2)=5;
+    A.at(1,0)=2;
+    A.at(1,1)=1;
+    A.at(1,2)=6;
+    A.at(2,0)=1;
+    A.at(2,1)=2;
+    A.at(2,2)=6.1;      // test last line and decimal value
+    return A;
+}
+
 
 class RepeatFunctionTest : public CppUnit::TestCase
 {
@@ -223,16 +243,13 @@ class SNmatrixTest : public CppUnit::TestCase
             // test if one get the right maximal element on a column 
             // (for the Gauss's pivot)
         {
-            SNmatrix<double,3> A;
-            A.at(0,0)=1;
-            A.at(0,1)=-3;       // Test negative and first line
-            A.at(0,2)=5;
-            A.at(1,0)=2;
-            A.at(1,1)=1;
-            A.at(1,2)=6;
-            A.at(2,0)=1;
-            A.at(2,1)=2;
-            A.at(2,2)=6.1;      // test last line and decimal value
+            auto A=testMatrixC();
+
+    /*
+     1  -3  5
+     2  1   6
+     1  2   6.1
+    */
 
             auto max0=A.getLargerOnColumn(0);
             auto max1=A.getLargerOnColumn(1);
@@ -265,16 +282,12 @@ class SNmatrixTest : public CppUnit::TestCase
         }
         void test_swap_line()
         {
-            SNmatrix<double,3> A;
-            A.at(0,0)=1;
-            A.at(0,1)=-3;      
-            A.at(0,2)=5;
-            A.at(1,0)=2;
-            A.at(1,1)=1;
-            A.at(1,2)=6;
-            A.at(2,0)=1;
-            A.at(2,1)=2;
-            A.at(2,2)=6.1;  
+        auto A=testMatrixC();
+    /*
+     1  -3  5
+     2  1   6
+     1  2   6.1
+    */
 
             auto B(A);
 
@@ -283,6 +296,23 @@ class SNmatrixTest : public CppUnit::TestCase
             A.swapLines(0,1);
             CPPUNIT_ASSERT(A==B);
         }
+    void test_max_norm()
+    {
+        auto A=testMatrixC();
+    /*
+     1  -3  5
+     2  1   6
+     1  2   6.1
+    */
+
+        CPPUNIT_ASSERT(A.max_norm()==6.1);
+        A.at(2,2)=-6.1;
+        CPPUNIT_ASSERT(A.max_norm()==6.1);
+        A.at(2,2)=-1;
+        A.at(1,2)=1;
+        CPPUNIT_ASSERT(A.max_norm()==5);
+    }
+
     public :
         void runTest()
         {
@@ -292,6 +322,7 @@ class SNmatrixTest : public CppUnit::TestCase
             test_max_on_column();
             test_copy_constructor();
             test_swap_line();
+            test_max_norm();
         }
 };
 
@@ -496,12 +527,9 @@ class GaussTest : public CppUnit::TestCase
             auto A_U=testMatrixB_U();
             A.makeUpperTriangular();
 
-            std::cout<<"Obtenu :"<<std::endl;
-            std::cout<<A<<std::endl;
-            std::cout<<"La réponse :"<<std::endl;
-            std::cout<<A_U<<std::endl;
-
-            CPPUNIT_ASSERT(A==A_U);
+            A.subtract(A_U);
+            double epsilon(0.0000001);
+            CPPUNIT_ASSERT(A.max_norm()<epsilon);
         }
     public :
         void runTest()
@@ -514,18 +542,23 @@ class GaussTest : public CppUnit::TestCase
 
 int main ()
 {
+    std::cout<<"SNmatrixTest"<<std::endl;
     SNmatrixTest sn_test;
     sn_test.runTest();
 
+    std::cout<<"SNLineTest"<<std::endl;
     SNlineTest sl_test;
     sl_test.runTest();
 
+    std::cout<<"SNelementTest"<<std::endl;
     SNelementTest se_test;
-   se_test.runTest();
+    se_test.runTest();
 
+    std::cout<<"GaussTest"<<std::endl;
     GaussTest gauss_test;
     gauss_test.runTest();
 
+    std::cout<<"RepeatFunctionTest"<<std::endl;
     RepeatFunctionTest rf_test;
     rf_test.runTest();
 }
