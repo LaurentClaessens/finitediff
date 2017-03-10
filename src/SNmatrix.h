@@ -112,7 +112,9 @@ class SNmatrix
         template <class V,unsigned int s>
         void subtract(const SNmatrix<V,s>& B);
 
-
+        // return the PLU decomposition.
+        // This is a heavily non-const method because 'this' is transformed
+        // into the U matrix.
         SNplu<T,tp_size> getPLU();
 };
 
@@ -275,7 +277,6 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
     return l;
 }
 
-
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::makeUpperTriangular()
 {
@@ -283,33 +284,37 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
     {
         // get the larger element under the diagonal and swap the lines
         auto max_el = getLargerUnderDiagonal(c);
-        swapLines(c,max_el.line);
 
-        // the line with which we will eliminate.
-        // This is the L_k for which
-        // L_i -> L_i- m*L_k
-        // where m is the value under the diagonal on line 'c'.
-        auto killing_line=gaussEliminationLine(c);
-
-        // now we subtract the correct multiple of the killing line
-        // to each line under the Gauss'pivot.
-        for (unsigned int l=c+1;l<tp_size;l++)
+        if (max_el.getValue()!=0)   // not a column full of zero's
         {
-            int f_nz = getSNline(l).firstNonZeroColumn();
-            T m = get(l,f_nz);  // the value of the first non zero
-                                // element in the line 'l'
 
-            // TODO : this is not optimal because
-            // we already know the first 'c' differences are 0.
-            lineMinusLine(l,m*killing_line);
+            swapLines(c,max_el.line);
+
+            // the line with which we will eliminate.
+            // This is the L_k for which
+            // L_i -> L_i- m*L_k
+            // where m is the value under the diagonal on line 'c'.
+            auto killing_line=gaussEliminationLine(c);
+
+            // now we subtract the correct multiple of the killing line
+            // to each line under the Gauss'pivot.
+            for (unsigned int l=c+1;l<tp_size;l++)
+            {
+                //unsigned int f_nz = getSNline(l).firstNonZeroColumn();
+                T m = get(l,c);  // the value to be eliminated
+
+                // TODO : this is not optimal because
+                // we already know the first 'c' differences are 0.
+                lineMinusLine(l,m*killing_line);
+            }
         }
     }
 }
 
-
 template <class T,unsigned int tp_size>
 SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 {
+    makeUpperTriangular();
     SNplu<T,tp_size> plu(*this);
     return plu;
 }

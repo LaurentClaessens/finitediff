@@ -161,7 +161,9 @@ SNmatrix<T,tp_size>& SNline<T,tp_size>::getSNmatrix() const
 template <class T,unsigned int tp_size>
 unsigned int SNline<T,tp_size>::firstNonZeroColumn() const
     // return the number of the first non-zero element.
-    // If they are all non-zero, return the size+1.
+    // If they are all zero, return the size+1. This case should be treated
+    // with care because it means that the determinant is zero and the matrix
+    // non invertible.
 {
     for (unsigned int col=0;col<tp_size;col++)
     {

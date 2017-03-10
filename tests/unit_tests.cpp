@@ -36,12 +36,29 @@ auto testMatrixA()
  0  3  6
  0  0  2
  0  3  6
+
+ This matrix is not invertible. So it does not makes really sense to
+ compute its PLU decomposition.
 */
 {
     SNmatrix<double,3> B; 
     B.at(0,0)=0; B.at(0,1)=3; B.at(0,2)=6; 
     B.at(1,0)=0; B.at(1,1)=0; B.at(1,2)=2;
     B.at(2,0)=0; B.at(2,1)=3; B.at(2,2)=6;
+    return B;
+}
+
+auto testMatrixA_U()
+/*
+ 0  3  6
+ 0  3  6
+ 0  0  2
+*/
+{
+    SNmatrix<double,3> B; 
+    B.at(0,0)=0; B.at(0,1)=3; B.at(0,2)=6; 
+    B.at(1,0)=0; B.at(1,1)=3; B.at(1,2)=6;
+    B.at(2,0)=0; B.at(2,1)=0; B.at(2,2)=2;
     return B;
 }
 
@@ -519,6 +536,7 @@ class GaussTest : public CppUnit::TestCase
         }
         void test_upper_triangular()
         {
+            double epsilon(0.0000001);
             auto A=testMatrixB();
             /*
              1  2  3
@@ -529,8 +547,20 @@ class GaussTest : public CppUnit::TestCase
             A.makeUpperTriangular();
 
             A.subtract(A_U);
-            double epsilon(0.0000001);
             CPPUNIT_ASSERT(A.max_norm()<epsilon);
+
+            auto B=testMatrixA();
+                /*
+                 0  3  6
+                 0  0  2
+                 0  3  6
+                */
+
+            auto B_U=testMatrixA_U();
+
+            B.makeUpperTriangular();  
+            B.subtract(B_U);
+            CPPUNIT_ASSERT(B.max_norm()<epsilon);
         }
     public :
         void runTest()
@@ -557,10 +587,27 @@ class pluTest : public CppUnit::TestCase
             A.at(1,1)=0.132;
             CPPUNIT_ASSERT(plu.getU().get(1,1)==0.132);
         };
+        void test_U()
+        {
+            auto A=testMatrixB();
+            /*
+             1  2  3
+             2  5  0
+             3  8  0
+            */
+            auto A_U=testMatrixB_U();
+            auto plu=A.getPLU();
+
+            auto mU(plu.getU());
+            mU.subtract(A_U);
+            double epsilon(0.0000001);
+            CPPUNIT_ASSERT(mU.max_norm()<epsilon);
+        }
     public:
         void runTest()
         {
             test_reference();
+            test_U();
         }
 };
 
