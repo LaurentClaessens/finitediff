@@ -37,6 +37,22 @@ class SNmatrix
 * `tp_size` is the size of the matrix.
 
 
+#### Gauss's PLU decomposition
+
+An invertible matrix `A` can be written as `A=PLU`  where
+* `P` is a permutation matrix,
+* `L` is a lower triangular matrix,
+* `U` is an upper triangular matrix.
+
+When `A` is a `SNmatrix`, we can use the method
+```C++
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::makeUpperTriangular()
+```
+to turn the matrix `A` into its upper triangular matrix. 
+
+I'm currently working on the other two.
+
 ### `SNelement`
 
 This is a template class that represent an element of a `SNmatrix`.
