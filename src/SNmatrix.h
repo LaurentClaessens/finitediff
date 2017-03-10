@@ -26,89 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNelement.h"
 #include "SNline.h"
 
+
 /*
 This is my matrix type, designed for numerical computation. It represents a 
 square matrix.
-
-TEMPLATE ARGUMENTS
-
-- class T : the type of the matrix entries (typically 'double')
-- int tp_size : the size of the matrix (the number of entries is the square of that).
-
-
-CREATING A MATRIX
-
-
-Internally, SNmatrix uses a std::array to store the matrix entries, but you should
-not try to take advantage of that.
-
-The correct way to populate your matrix is :
-
-            SNmatrix<int,2> sn;
-            sn.at(0,0)=1;
-            sn.at(0,1)=2;
-            sn.at(1,0)=3;
-            sn.at(1,1)=4;
-
-
-Notice that the elements are numbered from 0 to tp_size-1. Not from 1.
-
-
-CONST ? 
-
-Many methods are not 'const'. Here is the rationale.
-
-- When you extract an element from the matrix with the method 'getElement', 
-  the element contains a reference to the original matrix.
-
-- The matrix itself is not constant because, after a 'PLU' decomposition, the
-  matrix itself becomes the 'U' matrix and th original is lost.
-
-
- Note : the first point is maybe useless and some 'const' could be added in the
-        future.
-
- Note : you cannot instantiate  
-            SNmatrix<const double,7> sn;
-
-When you extract an element, the latter has a reference (in fact a pointer)
-to the original matrix.
-
-If you want to know the value of a matrix element, you can use two methods :
-        T& at(unsigned int,unsigned int);
-        T get(unsigned int,unsigned int) const;
-The first one returns a reference ans should only be used to populate the matrix
-(or more generally to modify the matrix) and the second one (get) should be
-used whenever you just want to know the value.
-
-
-EQUALITY OF MATRICES
-
-The data of a matrix is encoded in an object
-        std::array<T,tp_size*tp_size>
-Two matrices are equal when these are equal. The copy constructor is based
-on that idea.
-
-
-WHY 'SUBTRACT' INSTEAD OF 'operator-'  ?
-
-The operation
-A.subtract(B)
-changes A into A-B.
-
-The operation (not yet implemented)
-C=A-B
-creates a new matrix that has the value A-B.
-
-
-"PLU" DECOMPOSITION
-
-P : permutation matrix
-L : lower triangular matrix
-U : upper triangular matrix
-
-The mathematics can be found (in French) here :
-http://laurent.claessens-donadello.eu/pdf/mazhe.pdf
 
 */
 
