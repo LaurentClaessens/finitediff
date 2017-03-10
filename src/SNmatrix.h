@@ -319,8 +319,6 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
         // where m is the value under the diagonal on line 'c'.
         auto killing_line=gaussEliminationLine(c);
 
-        std::cout<<killing_line<<std::endl;
-
         // now we subtract the correct multiple of the killing line
         // to each line under the Gauss'pivot.
         for (unsigned int l=c+1;l<tp_size;l++)
@@ -328,8 +326,6 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
             int f_nz = getSNline(l).firstNonZeroColumn();
             T m = get(l,f_nz);  // the value of the first non zero
                                 // element in the line 'l'
-                                //
-            std::cout<<"multiplier for line "<<l<<" : "<<m<<std::endl;
 
             // TODO : this is not optimal because
             // we already know the first 'c' differences are 0.
