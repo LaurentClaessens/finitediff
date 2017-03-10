@@ -37,7 +37,7 @@ class SNmatrix
 * `tp_size` is the size of the matrix.
 
 
-### `SNmatrix`
+### `SNelement`
 
 This is a template class that represent an element of a `SNmatrix`.
 
