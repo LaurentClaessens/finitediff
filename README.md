@@ -41,7 +41,7 @@ class SNmatrix
 
 An invertible matrix `A` can be written as `A=PLU`  where
 * `P` is a permutation matrix,
-* `L` is a lower triangular matrix,
+* `L` is a lower triangular matrix with unital diagonal,
 * `U` is an upper triangular matrix.
 
 When `A` is a `SNmatrix`, we can use the method
