@@ -279,6 +279,14 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
 
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::makeUpperTriangular()
+
+    // for each column :
+    // - get the larger entry under the diagonal
+    // - swap the 'larger' line with the current line
+    // - the 'killing line' is the swapped line multiplied by the right number
+    //   in such a way that the 'diagonal' entry is 1.
+    // - use that 'killing line' to eliminate the column (under the diagonal)
+
 {
     for (unsigned int c=0;c<tp_size;c++)
     {
@@ -289,18 +297,10 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
         {
 
             swapLines(c,max_el.line);
-
-            // the line with which we will eliminate.
-            // This is the L_k for which
-            // L_i -> L_i- m*L_k
-            // where m is the value under the diagonal on line 'c'.
             auto killing_line=gaussEliminationLine(c);
 
-            // now we subtract the correct multiple of the killing line
-            // to each line under the Gauss'pivot.
             for (unsigned int l=c+1;l<tp_size;l++)
             {
-                //unsigned int f_nz = getSNline(l).firstNonZeroColumn();
                 T m = get(l,c);  // the value to be eliminated
 
                 // TODO : this is not optimal because
