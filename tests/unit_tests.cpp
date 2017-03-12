@@ -111,6 +111,33 @@ auto testMatrixC()
     return A;
 }
 
+auto testMatrixD()
+    /*
+    1 2 3
+    4 5 6
+    7 8 9
+    */
+{
+    SNmatrix<double,3> A;
+    A.at(0,0)=1; A.at(0,1)=2; A.at(0,2)=3;
+    A.at(1,0)=4; A.at(1,1)=5; A.at(1,2)=6;
+    A.at(2,0)=7; A.at(2,1)=8; A.at(2,2)=9;   
+    return A;
+}
+
+auto testMatrixD_U()
+    /*
+    7    8      9
+    0   6/7   12/7
+    0    0      0
+    */
+{
+    SNmatrix<double,3> A;
+    A.at(0,0)=7; A.at(0,1)=8; A.at(0,2)=9;
+    A.at(1,0)=0; A.at(1,1)=6./7; A.at(1,2)=12./7;
+    A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=0;   
+    return A;
+}
 
 class RepeatFunctionTest : public CppUnit::TestCase
 {
@@ -555,7 +582,6 @@ class GaussTest : public CppUnit::TestCase
                  0  0  2
                  0  3  6
                 */
-
             auto B_U=testMatrixA_U();
 
             B.makeUpperTriangular();  
@@ -587,15 +613,9 @@ class pluTest : public CppUnit::TestCase
             A.at(1,1)=0.132;
             CPPUNIT_ASSERT(plu.getU().get(1,1)==0.132);
         };
-        void test_U()
+        template <unsigned int s>
+        void test_A(  SNmatrix<double,s> A,SNmatrix<double,s> A_U  )
         {
-            auto A=testMatrixB();
-            /*
-             1  2  3
-             2  5  0
-             3  8  0
-            */
-            auto A_U=testMatrixB_U();
             auto plu=A.getPLU();
 
             auto mU(plu.getU());
@@ -603,11 +623,20 @@ class pluTest : public CppUnit::TestCase
             double epsilon(0.0000001);
             CPPUNIT_ASSERT(mU.max_norm()<epsilon);
         }
+        void test_permutation()
+        {
+            std::cout<<"MON TEST ACTUEL"<<std::endl;
+            auto A=testMatrixD();
+            auto plu=A.getPLU();
+        }
     public:
         void runTest()
         {
             test_reference();
-            test_U();
+            test_A(testMatrixA(),testMatrixA_U());
+            test_A(testMatrixB(),testMatrixB_U());
+            test_A(testMatrixD(),testMatrixD_U());
+            test_permutation();
         }
 };
 
