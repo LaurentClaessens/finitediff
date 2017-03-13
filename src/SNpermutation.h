@@ -57,7 +57,7 @@ std::ostream& operator<<(std::ostream& stream, SNpermutation<s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
-        stream<<perm.data.at(l)<<std::endl;
+        stream<<perm.data.at(l);
     }
     return stream;
 }
