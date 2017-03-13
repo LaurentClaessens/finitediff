@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNelement.h"
 #include "SNline.h"
 
+#include "DebugPrint.h"
+DebugPrint debug_print;
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
@@ -296,6 +298,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
+
             plu.permutations.at(c)=max_el.line;
             swapLines(c,max_el.line);
             auto killing_line=gaussEliminationLine(c);
@@ -309,8 +312,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
                 lineMinusLine(l,m*killing_line);
             }
         }
-        plu.permutations.at(c)=c;  // if no permutations is done,
-                                   // we record the trivial one.
+        else
+        {
+            // if no permutations is done we record the trivial one.
+            plu.permutations.at(c)=c;  
+        }
     }
     return plu;
 }
