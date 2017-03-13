@@ -24,6 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /*
  This class represents a permutation matrix. It could be a 'SNmatrix', but since it is
  for sure a sparse matrix, we use a simpler implementation.
+
+
+ The permutation is recorded in the array
+        std::array<unsigned int,tp_size> permutations;
+ The array
+ (1,4,4,5)
+ represents the permutation
+ (1,1)(2,4)(3,4)(4,5).
 */
 
 // THE CLASS HEADER -----------------------------------------
@@ -32,22 +40,36 @@ template <unsigned int tp_size>
 class SNpermutation
 {
     template <unsigned int s>
-    friend std::ostream& operator<<(std::ostream&, SNpermutation<s>&);
+    friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
     
     private:
-        std::array<tp_size> permutations;
-}
+        std::array<unsigned int,tp_size> data;
+
+    public:
+        unsigned int& at(const unsigned int i);
+};
 
 
 // OPERATORS -------------------------------
 
 template <unsigned int s>
-std::ostream& operator<<(std::ostream& stream, SNpermutation<s>& perm)
+std::ostream& operator<<(std::ostream& stream, SNpermutation<s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
-        stream<<perm.at(l)<<std::endl;
+        stream<<perm.data.at(l)<<std::endl;
     }
     return stream;
 }
 
+template <unsigned int tp_size>
+unsigned int& SNpermutation<tp_size>::at(const unsigned int i)
+{
+    if (i>tp_size)
+    {
+        std::cout<<"This SNpermutation has size "<<tp_size<<". Attempt to access element "<<i<<std::endl;
+    }
+    return data.at(i);
+};
+
+#endif

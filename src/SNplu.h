@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SNmatrix.h"
+#include "SNpermutation.h"
 
 
 // THE CLASS HEADER -----------------------------------------
@@ -28,21 +29,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNplu
 {
+
+    friend SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU();
+
     private :
-        SNmatrix<T,tp_size> m_P;
+        SNpermutation<tp_size> permutations;
         SNmatrix<T,tp_size> m_L;
         SNmatrix<T,tp_size>& m_U;
     public:
         SNplu(SNmatrix<T,tp_size>& original);
 
         SNmatrix<T,tp_size>& getU();
+        SNpermutation<tp_size> getPermutation() const;
+
 };
 
 // CONSTRUCTORS ---------------------------------------------- 
 
 template <class T,unsigned int tp_size>
 SNplu<T,tp_size>::SNplu(SNmatrix<T,tp_size>& original) : 
-    m_P(),
+    permutations(),
     m_L(),
     m_U(original)
 {}
@@ -53,6 +59,12 @@ template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>& SNplu<T,tp_size>::getU()
 {
     return m_U;
+}
+
+template <class T,unsigned int tp_size>
+SNpermutation<tp_size> SNplu<T,tp_size>::getPermutation() const
+{
+    return  permutations;
 }
 
 #endif

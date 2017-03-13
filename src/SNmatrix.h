@@ -72,8 +72,8 @@ class SNmatrix
         // on the given column.
         SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
 
-        // From the line number "line", return a line normalized in such a way that
-        // the first (non zero) element is 1.
+        // From the line number "line", return a line normalized
+        // in such a way that the first (non zero) element is 1.
         SNline<T,tp_size> gaussEliminationLine(unsigned int line);
 
     public:
@@ -278,7 +278,7 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
 }
 
 template <class T,unsigned int tp_size>
-void SNmatrix<T,tp_size>::makeUpperTriangular()
+SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 
     // for each column :
     // - get the larger entry under the diagonal
@@ -288,14 +288,15 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
     // - use that 'killing line' to eliminate the column (under the diagonal)
 
 {
+    SNplu<T,tp_size> plu(*this);
+
     for (unsigned int c=0;c<tp_size;c++)
     {
-        // get the larger element under the diagonal and swap the lines
         auto max_el = getLargerUnderDiagonal(c);
 
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
-
+            plu.permutations.at(c)=max_el.line;
             swapLines(c,max_el.line);
             auto killing_line=gaussEliminationLine(c);
 
@@ -308,14 +309,9 @@ void SNmatrix<T,tp_size>::makeUpperTriangular()
                 lineMinusLine(l,m*killing_line);
             }
         }
+        plu.permutations.at(c)=c;  // if no permutations is done,
+                                   // we record the trivial one.
     }
-}
-
-template <class T,unsigned int tp_size>
-SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
-{
-    makeUpperTriangular();
-    SNplu<T,tp_size> plu(*this);
     return plu;
 }
 

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestCase.h>
 
 #include "../src/SNmatrix.h"
+#include "../src/SNpermutation.h"
 #include "../src/SNline.h"
 #include "../src/SNplu.h"
 #include "../src/RepeatFunction.h"
@@ -138,6 +139,44 @@ auto testMatrixD_U()
     A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=0;   
     return A;
 }
+
+auto testMatrixE()
+    /*
+    4 6 8 9
+    5 1 7 1
+    3 2 3 4
+    2 5 6 7
+    */
+{
+    SNmatrix<double,4> A;
+    A.at(0,0)=4; A.at(0,1)=6; A.at(0,2)=8; A.at(0,3)=9;
+    A.at(1,0)=5; A.at(1,1)=1; A.at(1,2)=7; A.at(1,3)=1;
+    A.at(2,0)=3; A.at(2,1)=2; A.at(2,2)=3; A.at(2,3)=4;  
+    A.at(3,0)=2; A.at(3,1)=5; A.at(3,2)=6; A.at(3,3)=7;  
+    return A;
+}
+
+auto testMatrixE_U()
+{
+    SNmatrix<double,4> A;
+
+ // The answer given by Sage :
+ //sage: A=matrix(  [   [4,6,8,9],[5,1,7,1],[3,2,3,4],[2,5,6,7]  ]  )
+ //sage: print(  A.LU()[2] )
+ // 
+ //[     5      1      7      1]
+ //[     0   26/5   12/5   41/5]
+ //[     0      0 -24/13  31/26]
+ //[     0      0      0   1/24]
+
+
+    A.at(0,0)=5; A.at(0,1)=1; A.at(0,2)=7; A.at(0,3)=1;
+    A.at(1,0)=0; A.at(1,1)=26./5; A.at(1,2)=12./5; A.at(1,3)=41./5;
+    A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=-24./13; A.at(2,3)=31./26;  
+    A.at(3,0)=0; A.at(3,1)=0; A.at(3,2)=0; A.at(3,3)=1./24;  
+    return A;
+}
+
 
 class RepeatFunctionTest : public CppUnit::TestCase
 {
@@ -571,7 +610,7 @@ class GaussTest : public CppUnit::TestCase
              3  8  0
             */
             auto A_U=testMatrixB_U();
-            A.makeUpperTriangular();
+            auto plu_A= A.getPLU();
 
             A.subtract(A_U);
             CPPUNIT_ASSERT(A.max_norm()<epsilon);
@@ -584,8 +623,8 @@ class GaussTest : public CppUnit::TestCase
                 */
             auto B_U=testMatrixA_U();
 
-            B.makeUpperTriangular();  
-            B.subtract(B_U);
+            auto plu_B=B.getPLU();  
+            plu_B.getU().subtract(B_U);
             CPPUNIT_ASSERT(B.max_norm()<epsilon);
         }
     public :
@@ -625,18 +664,24 @@ class pluTest : public CppUnit::TestCase
         }
         void test_permutation()
         {
-            std::cout<<"MON TEST ACTUEL"<<std::endl;
-            auto A=testMatrixD();
+            auto A=testMatrixE();
             auto plu=A.getPLU();
+            std::cout<<"La permutation :"<<std::endl;
+            std::cout<<plu.getPermutation()<<std::endl;
         }
     public:
         void runTest()
         {
-            test_reference();
-            test_A(testMatrixA(),testMatrixA_U());
-            test_A(testMatrixB(),testMatrixB_U());
-            test_A(testMatrixD(),testMatrixD_U());
             test_permutation();
+            test_reference();
+            std::cout<<"pluTest A"<<std::endl;
+            test_A(testMatrixA(),testMatrixA_U());
+            std::cout<<"pluTest B"<<std::endl;
+            test_A(testMatrixB(),testMatrixB_U());
+            std::cout<<"pluTest D"<<std::endl;
+            test_A(testMatrixD(),testMatrixD_U());
+            std::cout<<"pluTest E"<<std::endl;
+            test_A(testMatrixE(),testMatrixE_U());
         }
 };
 
