@@ -16,8 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __UTILITIES_H__085438__
-#define __UTILITIES_H__085438__
+#ifndef __DEBUGPRINT_H__085438__
+#define __DEBUGPRINT_H__085438__
+
+
+/*
+   I often need to pack my code with 'std::cout<<' for debugging purposes.o
+
+   This class serves to make
+   'debug_print<<'
+   and to remove them easier with a small grep/ack.
+*/
 
 #include <iostream>
 
