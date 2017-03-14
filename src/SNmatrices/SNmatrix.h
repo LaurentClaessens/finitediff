@@ -288,10 +288,15 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
     // - the 'killing line' is the swapped line multiplied by the right number
     //   in such a way that the 'diagonal' entry is 1.
     // - use that 'killing line' to eliminate the column (under the diagonal)
+    //
+    // All the mathematics is explained with some details here :
+    // http://laurent.claessens-donadello.eu/pdf/lefrido.pdf
 
 {
     SNplu<T,tp_size> plu(*this);
-
+    SNmatrix<T,tp_size> L;
+    SNvector<T,tp_size> a;
+    
     for (unsigned int c=0;c<tp_size;c++)
     {
         auto max_el = getLargerUnderDiagonal(c);
@@ -302,6 +307,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
             plu.permutations.at(c)=max_el.line;
             swapLines(c,max_el.line);
             auto killing_line=gaussEliminationLine(c);
+
+
 
             for (unsigned int l=c+1;l<tp_size;l++)
             {

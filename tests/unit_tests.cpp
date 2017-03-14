@@ -612,7 +612,9 @@ class GaussTest : public CppUnit::TestCase
             auto A_U=testMatrixB_U();
             auto plu_A= A.getPLU();
 
-            A.subtract(A_U);
+            // check that 'A' is turned into its 'U'
+            CPPUNIT_ASSERT(plu_A.getU()==A);
+            A.subtract(A_U); 
             CPPUNIT_ASSERT(A.max_norm()<epsilon);
 
             auto B=testMatrixA();
@@ -664,6 +666,9 @@ class pluTest : public CppUnit::TestCase
         }
         void test_permutation()
         {
+            debug_print<<"MON TEST ACTUEL";
+            debug_print.endl();
+
             auto A=testMatrixE();
             auto plu=A.getPLU();
             std::cout<<"La permutation :"<<std::endl;
@@ -672,7 +677,6 @@ class pluTest : public CppUnit::TestCase
     public:
         void runTest()
         {
-            test_permutation();
             test_reference();
             std::cout<<"pluTest A"<<std::endl;
             test_A(testMatrixA(),testMatrixA_U());
@@ -682,11 +686,16 @@ class pluTest : public CppUnit::TestCase
             test_A(testMatrixD(),testMatrixD_U());
             std::cout<<"pluTest E"<<std::endl;
             test_A(testMatrixE(),testMatrixE_U());
+            test_permutation();
         }
 };
 
 int main ()
 {
+    std::cout<<"RepeatFunctionTest"<<std::endl;
+    RepeatFunctionTest rf_test;
+    rf_test.runTest();
+
     std::cout<<"SNmatrixTest"<<std::endl;
     SNmatrixTest sn_test;
     sn_test.runTest();
@@ -706,8 +715,4 @@ int main ()
     std::cout<<"pluTest"<<std::endl;
     pluTest plu_test;
     plu_test.runTest();
-
-    std::cout<<"RepeatFunctionTest"<<std::endl;
-    RepeatFunctionTest rf_test;
-    rf_test.runTest();
 }
