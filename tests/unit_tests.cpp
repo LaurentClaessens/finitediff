@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 #include <cppunit/TestCase.h>
+#include <cppunit/extensions/TypeInfoHelper.h>
+#include <cppunit/TestAssert.h>
 
 #include "../src/SNmatrices/SNmatrix.h"
 #include "../src/SNmatrices/SNpermutation.h"
@@ -213,13 +215,12 @@ class ExceptionsTests : public CppUnit::TestCase
         {
             SNmatrix<int,4> A;
             int a;
-            CPPUNIT_ASSERT_THROW(a=A.get(5,1),SNexceptions::SNoutOfRangeException);
+            CPPUNIT_ASSERT_THROW(a=A.get(5,1),SNoutOfRangeException);
         }
         void change_not_allowed_test()
         {
             SNlowerTriangularMatrix<int,4> A;
-            int a;
-            CPPUNIT_ASSERT_THROW(a=A.at(5,1),SNexceptions::SNchangeNotAllowedException);
+            CPPUNIT_ASSERT_THROW(A.at(5,1)==4,SNchangeNotAllowedException);
             A.at(1,2);
         }
     public:
@@ -804,7 +805,7 @@ class MultiplicationTest : public CppUnit::TestCase
 
 
     public :
-        runTest()
+        void runTest()
         {
             test_gauss_times_matrix();
             test_gauss_times_lower_trig();
