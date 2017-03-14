@@ -32,6 +32,12 @@ double square(double x)
     return x*x;
 };
 
+// To copy-paste for creating own matrix
+    //F.at(0,0)=<++>; F.at(0,1)=<++>; F.at(0,2)=<++>; F.at(0,3)=<++>;
+    //F.at(1,0)=<++>; F.at(1,1)=<++>; F.at(1,2)=<++>; F.at(1,3)=<++>;
+    //F.at(2,0)=<++>; F.at(2,1)=<++>; F.at(2,2)=<++>; F.at(2,3)=<++>;
+    //F.at(3,0)=<++>; F.at(3,1)=<++>; F.at(3,2)=<++>; F.at(3,3)=<++>;
+
 auto testMatrixA()
 /*
  0  3  6
@@ -174,6 +180,27 @@ auto testMatrixE_U()
     A.at(1,0)=0; A.at(1,1)=26./5; A.at(1,2)=12./5; A.at(1,3)=41./5;
     A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=-24./13; A.at(2,3)=31./26;  
     A.at(3,0)=0; A.at(3,1)=0; A.at(3,2)=0; A.at(3,3)=1./24;  
+    return A;
+}
+
+auto testsMatrixF()
+{
+    SNmatrix<double,4> F;
+
+    F.at(0,0)=1; F.at(0,1)=0; F.at(0,2)=3; F.at(0,3)=9;
+    F.at(1,0)=6; F.at(1,1)=2; F.at(1,2)=3; F.at(1,3)=5;
+    F.at(2,0)=7; F.at(2,1)=8; F.at(2,2)=1; F.at(2,3)=3;
+    F.at(3,0)=7; F.at(3,1)=7; F.at(3,2)=4; F.at(3,3)=6;
+}
+
+auto testMatrixG()
+{
+    SNlowerTriangularMatrix<double,4> A;
+    A.at(0,0)=3; 
+    A.at(1,0)=1; A.at(1,1)=2; 
+    A.at(2,0)=3; A.at(2,1)=4; A.at(2,2)=5;
+    A.at(3,0)=6; A.at(3,1)=7; A.at(3,2)=8; A.at(3,3)=1;
+    
     return A;
 }
 
@@ -690,11 +717,85 @@ class pluTest : public CppUnit::TestCase
         }
 };
 
+class MultiplicationTest : public CppUnit::TestCase
+{
+    private :
+        void test_gauss_times_matrix()
+        {
+            auto F=testMatrixF();
+            auto G=F.getGaussian(1);    // the gaussian matrix of F
+
+// computations from Sage :
+//  
+// sage: F=matrix(  [ [1,0,3,9],[6,2,3,5],[7,8,1,3],[7,7,4,6] ]  )
+// sage: G=matrix(   [     [1,0,0,0],[0,1,0,0],[0,-4,1,0],[0,-7/2,0,1]   ]   )
+// sage: G*F
+//[    1     0     3     9]
+//[    6     2     3     5]
+//[  -17     0   -11   -17]
+//[  -14     0 -13/2 -23/2]
+
+            SNmatrix<double,4> ans_G;
+            ans_G.at(0,0)=1; ans_G.at(0,1)=0; ans_G.at(0,2)=0; ans_G.at(0,3)=0;
+            ans_G.at(1,0)=0; ans_G.at(1,1)=1; ans_G.at(1,2)=0; ans_G.at(1,3)=0;
+            ans_G.at(2,0)=0; ans_G.at(2,1)=4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
+            ans_G.at(3,0)=0; ans_G.at(3,1)=7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
+
+            CPPUNIT_ASSERT(G==ans_G);
+
+            SNmatrix<double,4> GstarF;
+            GstarF.at(0,0)=1; GstarF.at(0,1)=0; GstarF.at(0,2)=3; GstarF.at(0,3)=9;
+            GstarF.at(1,0)=6; GstarF.at(1,1)=2; GstarF.at(1,2)=3; GstarF.at(1,3)=5;
+            GstarF.at(2,0)=-17; GstarF.at(2,1)=0; GstarF.at(2,2)=-11; GstarF.at(2,3)=-17;
+            GstarF.at(3,0)=-14; GstarF.at(3,1)=0; GstarF.at(3,2)=-13./2; GstarF.at(3,3)=-23./2;
+
+            CPPUNIT_ASSERT(F*G==GstarF);
+        }
+        void test_gauss_times_lower_trig()
+        {
+            auto A=testMatrixG();
+            auto G=A.getGaussian(0); 
+
+            SNmatrix<double,4> ans_G;
+            ans_G.at(0,0)=1; ans_G.at(0,1)=0; ans_G.at(0,2)=0; ans_G.at(0,3)=0;
+            ans_G.at(1,0)=-1./3; ans_G.at(1,1)=1; ans_G.at(1,2)=0; ans_G.at(1,3)=0;
+            ans_G.at(2,0)=-1; ans_G.at(2,1)=0; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
+            ans_G.at(3,0)=-2; ans_G.at(3,1)=0; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
+
+            CPPUNIT_ASSERT(G==ans_G);
+
+            SNmatrix<double,4> GstarA;
+//[3 0 0 0]
+//[0 2 0 0]
+//[0 4 5 0]
+//[0 7 8 1]
+            GstarA.at(0,0)=3; GstarA.at(0,1)=0; GstarA.at(0,2)=0; GstarA.at(0,3)=0;
+            GstarA.at(1,0)=0; GstarA.at(1,1)=2; GstarA.at(1,2)=0; GstarA.at(1,3)=0;
+            GstarA.at(2,0)=0; GstarA.at(2,1)=4; GstarA.at(2,2)=5; GstarA.at(2,3)=0;
+            GstarA.at(3,0)=0; GstarA.at(3,1)=7; GstarA.at(3,2)=8; GstarA.at(3,3)=1;
+
+            CPPUNIT_ASSERT(G*A==GstarA);
+        }
+
+
+    public :
+        runTest()
+        {
+            test_gauss_times_matrix()
+            test_gauss_times_lower_trig()
+        }
+};
+
 int main ()
 {
     std::cout<<"RepeatFunctionTest"<<std::endl;
     RepeatFunctionTest rf_test;
     rf_test.runTest();
+
+    std::cout<<"Matrix multiplication tests"<<std::endl;
+    MultiplicationTest mul_test;
+    mul_test.runTest();
+
 
     std::cout<<"SNmatrixTest"<<std::endl;
     SNmatrixTest sn_test;
