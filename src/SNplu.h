@@ -41,7 +41,6 @@ class SNplu
 
         SNmatrix<T,tp_size>& getU();
         SNpermutation<tp_size> getPermutation() const;
-
 };
 
 // CONSTRUCTORS ---------------------------------------------- 

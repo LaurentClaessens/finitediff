@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
-#include "../Exceptions.cpp"
+#include "../SNexceptions.cpp"
 
 /*
    This represents a lower triangular matrix (the diagonal can be non zero).
@@ -38,23 +38,37 @@ class SNlowerTriangularMatrix
     public :
         SNlowerTriangularMatrix();
 
-        T get(unsigned int) const;
-        
-}
+        T get(unsigned int l, unsigned int c) const;
+        T& at(unsigned int l, unsigned int c);
+};
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>::SNmatrix(): data() { };
+SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(): data() { };
 
 // GETTER METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int i,unsigned int j) const
+T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int l,unsigned int c) const
+{
+    if (l>tp_size or c>tp_size)
+    {
+        throw SNoutOfRangeException(l,c,tp_size);
+    }
+    if (l<c)
+    {
+        return 0;
+    }
+    return data.at(c*tp_size+l);
+}
+
+template <class T,unsigned int tp_size>
+T& SNlowerTriangularMatrix<T,tp_size>::at(unsigned int i,unsigned int j) 
 {
     if (i>tp_size or j>tp_size)
     {
-        throw SNOutOfRangeException(i,j,tp_size);
+        throw SNoutOfRangeException(i,j,tp_size);
     }
     if (i<j)
     {
@@ -62,5 +76,6 @@ T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int i,unsigned int j) const
     }
     return data.at(j*tp_size+i);
 }
+
 
 #endif

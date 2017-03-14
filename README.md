@@ -30,3 +30,23 @@ On the long run, I'm going to create a class for each and give them all the matr
 
 The code for these matrices are in [./src/SNmatrices](src/SNmatrices/README.md).
 
+## Exceptions
+
+### `SNoutOfRangeException`
+
+Raised when one ask by `get` or `at` an element that is out of the range of the matrix. 
+
+```C++
+SNmatrix<int,4> A;
+A.get(5,1);     // raises
+```
+
+### `SNchangeNotAllowed`
+
+Raised when one uses the method `at` for requesting an element that cannot be changed (use `get` instead).
+
+```C++
+SNlowerTriangularMatrix<int,4> A;
+A.at(1,2);     // raises
+```
+A lower diagonal matrix will always have element `(1,2)` set to zero.

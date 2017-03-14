@@ -50,6 +50,13 @@ A `SNelement` contains a reference to its matrix.
 
 The PLU decomposition contains _a priori_ a permutation matrix `P`. This is a large matrix full of zeroes, so I choose to not implement it as a matrix. Instead we have a class `SNpermutation` which will act on vectors in the same way as a matrix, but which will be implemented as only a list of permutations instead as the full matrix.
 
+### `SNlowerTriangularMatrix`
+
+There is a subtlety with the `at` method.
+
+* Usually, the `get` method returns *by value* the value of the requested entry. This is the usual behaviour and it is the behaviour here.
+* The `at` method returns *by reference* the value of the requested entry. This is useful for populate or modify the matrix. However asking for the element `1,3` on a `SNlowerTriangularMatrix` will raise a `SNnonAllowedChange` exception.
+
 ## Implementation details
 
 ### SNmatrix<class T,unsigned int tp_size>
@@ -61,7 +68,6 @@ The PLU decomposition contains _a priori_ a permutation matrix `P`. This is a la
 
 
 #### Creating a matrix
-
 
 Internally, `SNmatrix' uses a `std::array` to store the matrix entries, but you should not try to take advantage of that.
 

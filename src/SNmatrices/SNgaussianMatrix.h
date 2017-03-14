@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
-#include "../Exceptions.cpp"
+#include "../SNexceptions.cpp"
 
 /*
    This represents a gaussian matrix.
@@ -74,7 +74,7 @@ T SNvector<>T,tp_size>::get(unsigned int i,unsigned int j) const
 {
     if (i>tp_size or j>tp_size)
     {
-        throw SNOutOfRangeException(i,j,tp_size);
+        throw SNoutOfRangeException(i,j,tp_size);
     }
     if (i==j)
     {

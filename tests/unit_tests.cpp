@@ -23,8 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "../src/SNmatrices/SNpermutation.h"
 #include "../src/SNmatrices/SNline.h"
+#include "../src/SNmatrices/SNlowerTriangularMatrix.h"
 #include "../src/SNplu.h"
 #include "../src/RepeatFunction.h"
+#include "../src/SNexceptions.cpp"
 
 double square(double x)
 // return the square of the given number.
@@ -204,6 +206,29 @@ auto testMatrixG()
     return A;
 }
 
+class ExceptionsTests : public CppUnit::TestCase
+{
+    private:
+        void out_of_range_test()
+        {
+            SNmatrix<int,4> A;
+            int a;
+            CPPUNIT_ASSERT_THROW(a=A.get(5,1),SNexceptions::SNoutOfRangeException);
+        }
+        void change_not_allowed_test()
+        {
+            SNlowerTriangularMatrix<int,4> A;
+            int a;
+            CPPUNIT_ASSERT_THROW(a=A.at(5,1),SNexceptions::SNchangeNotAllowedException);
+            A.at(1,2);
+        }
+    public:
+        void runTest()
+        {
+            out_of_range_test();
+            change_not_allowed_test();
+        }
+};
 
 class RepeatFunctionTest : public CppUnit::TestCase
 {
@@ -781,8 +806,8 @@ class MultiplicationTest : public CppUnit::TestCase
     public :
         runTest()
         {
-            test_gauss_times_matrix()
-            test_gauss_times_lower_trig()
+            test_gauss_times_matrix();
+            test_gauss_times_lower_trig();
         }
 };
 
@@ -792,10 +817,13 @@ int main ()
     RepeatFunctionTest rf_test;
     rf_test.runTest();
 
+    std::cout<<"Exceptions tests"<<std::endl;
+    ExceptionsTests ex_test;
+    ex_test.runTest();
+
     std::cout<<"Matrix multiplication tests"<<std::endl;
     MultiplicationTest mul_test;
     mul_test.runTest();
-
 
     std::cout<<"SNmatrixTest"<<std::endl;
     SNmatrixTest sn_test;

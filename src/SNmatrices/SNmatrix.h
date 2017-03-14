@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNvector.h"
 
 #include "../DebugPrint.h"
-#include "../Exceptions.cpp"
+#include "../SNexceptions.cpp"
 DebugPrint debug_print;
 
 /*
@@ -185,7 +185,7 @@ T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
 {
     if (i>tp_size or j>tp_size)
     {
-        throw SNOutOfRangeException(i,j,tp_size);
+        throw SNoutOfRangeException(i,j,tp_size);
     }
     return data.at(j*tp_size+i);
 };
@@ -195,7 +195,7 @@ T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
 {
     if (i>tp_size or j>tp_size)
     {
-        throw SNOutOfRangeException(i,j,tp_size);
+        throw SNoutOfRangeException(i,j,tp_size);
     }
     return data.at(j*tp_size+i);
 };
