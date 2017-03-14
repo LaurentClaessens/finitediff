@@ -29,7 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../DebugPrint.h"
 #include "../SNexceptions.cpp"
-DebugPrint debug_print;
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
@@ -297,7 +296,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 {
     SNplu<T,tp_size> plu(*this);
     SNmatrix<T,tp_size> L;
-    SNvector<T,tp_size> a;
     
     for (unsigned int c=0;c<tp_size;c++)
     {
