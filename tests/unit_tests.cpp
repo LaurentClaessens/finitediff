@@ -187,7 +187,7 @@ auto testMatrixE_U()
     return A;
 }
 
-auto testsMatrixF()
+auto testMatrixF()
 {
     SNmatrix<double,4> F;
 
@@ -195,6 +195,7 @@ auto testsMatrixF()
     F.at(1,0)=6; F.at(1,1)=2; F.at(1,2)=3; F.at(1,3)=5;
     F.at(2,0)=7; F.at(2,1)=8; F.at(2,2)=1; F.at(2,3)=3;
     F.at(3,0)=7; F.at(3,1)=7; F.at(3,2)=4; F.at(3,3)=6;
+    return F;
 }
 
 auto testMatrixG()
@@ -214,14 +215,12 @@ class ExceptionsTests : public CppUnit::TestCase
         void out_of_range_test()
         {
             SNmatrix<int,4> A;
-            int a;
-            CPPUNIT_ASSERT_THROW(a=A.get(5,1),SNoutOfRangeException);
+            CPPUNIT_ASSERT_THROW(A.get(5,1),SNoutOfRangeException);
         }
         void change_not_allowed_test()
         {
             SNlowerTriangularMatrix<int,4> A;
-            CPPUNIT_ASSERT_THROW(A.at(5,1)==4,SNchangeNotAllowedException);
-            A.at(1,2);
+            CPPUNIT_ASSERT_THROW(A.at(5,1),SNchangeNotAllowedException);
         }
     public:
         void runTest()
