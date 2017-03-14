@@ -51,14 +51,14 @@ class SNgaussianMatrix
     public :
         SNgaussianMatrix(const SNmatrix<T,tp_size>& , const unsigned int&);
 
-        T get(unsigned int) const;
+        T get(unsigned int,unsigned int) const;
         
-}
+};
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned int& c):
+SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned int& c):
     column(c)
 {
     for (unsigned int i=c+1;i<tp_size;i++)
@@ -70,7 +70,7 @@ SNgaussianMatrix::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned
 // GETTER METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNvector<>T,tp_size>::get(unsigned int i,unsigned int j) const
+T SNgaussianMatrix<T,tp_size>::get(unsigned int i,unsigned int j) const
 {
     if (i>tp_size or j>tp_size)
     {
