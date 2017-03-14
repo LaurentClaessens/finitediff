@@ -20,9 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 #include <cppunit/TestCase.h>
 
-#include "../src/SNmatrix.h"
-#include "../src/SNpermutation.h"
-#include "../src/SNline.h"
+#include "../src/SNmatrices/SNmatrix.h"
+#include "../src/SNmatrices/SNpermutation.h"
+#include "../src/SNmatrices/SNline.h"
 #include "../src/SNplu.h"
 #include "../src/RepeatFunction.h"
 

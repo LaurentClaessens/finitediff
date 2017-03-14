@@ -20,8 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNPLU_H__142039__
 
 
-#include "SNmatrix.h"
-#include "SNpermutation.h"
+#include "SNmatrices/SNmatrix.h"
+#include "SNmatrices/SNpermutation.h"
 
 
 // THE CLASS HEADER -----------------------------------------

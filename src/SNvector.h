@@ -36,16 +36,16 @@ class SNvector
     public :
         T get(unsigned int) const;
         T& at(unsigned int);
-}
+};
 
 
 template <class T,unsigned int tp_size>
-T SNvector<>T,tp_size>::get(unsigned int i) const
+T SNvector<T,tp_size>::get(unsigned int i) const
 {
     return data.at(i);
 }
 template <class T,unsigned int tp_size>
-T& SNvector<>T,tp_size>::at(unsigned int i) const
+T& SNvector<T,tp_size>::at(unsigned int i)
 {
     return data.at(i);
 }

@@ -25,8 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SNelement.h"
 #include "SNline.h"
+#include "../SNvector.h"
 
-#include "DebugPrint.h"
+#include "../DebugPrint.h"
 DebugPrint debug_print;
 
 /*
