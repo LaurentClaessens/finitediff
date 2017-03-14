@@ -72,7 +72,7 @@ T& SNlowerTriangularMatrix<T,tp_size>::at(unsigned int i,unsigned int j)
     }
     if (i<j)
     {
-        return 0;
+        throw SNchangeNotAllowedException(i,j);
     }
     return data.at(j*tp_size+i);
 }
