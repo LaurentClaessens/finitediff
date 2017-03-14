@@ -47,8 +47,9 @@ class SNgaussianMatrix
 
     private:
         std::array<T,tp_size> data;     // the first 'c' are unused and remain uninitialized
-        unsigned int column;
     public :
+        unsigned int column;
+
         SNgaussianMatrix(const SNmatrix<T,tp_size>& , const unsigned int&);
 
         T get(unsigned int,unsigned int) const;

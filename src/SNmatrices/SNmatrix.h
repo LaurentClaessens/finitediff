@@ -53,6 +53,12 @@ class SNmatrix
     template <class V,unsigned int s>
     friend std::ostream& operator<<(std::ostream&, SNmatrix<V,s>&);
 
+    template <class U,class V,unsigned int s>
+    friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,s>&);
+
+    template <class U,class V,unsigned int s>
+    friend bool operator==(const SNgaussianMatrix<U,s>&,const SNmatrix<V,s>&);
+
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
@@ -85,8 +91,6 @@ class SNmatrix
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
 
-        template <class U,class V,unsigned int s>
-        friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,s>&);
 
         unsigned int getSize() const;
 
@@ -139,6 +143,22 @@ template <class U,class V,unsigned int s>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,s>& B)
 {
     return A.data==B.data;
+}
+
+template <class U,class V,unsigned int s>
+bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,s>& A)
+{
+    for (unsigned int l=0;l<s;l++)
+    {
+        for (unsigned int c=0;c<s;c++)
+        {
+            if (G.get(l,c)!=A.get(l,c))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 template <class V,unsigned int s>
