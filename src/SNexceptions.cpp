@@ -29,16 +29,16 @@ class IncompatibleMatrixSizeException : public std::exception
         unsigned int size2;
 
     public: 
-        SNchangeNotAllowedException(const unsigned int s1, const unsigned int s2): 
+        IncompatibleMatrixSizeException(const unsigned int s1, const unsigned int s2): 
             size1(s1),
             size2(s2)
     {}
         virtual const char* what() const throw()
         {
-            std::string s_line=std::to_string(line);
-            std::string s_col=std::to_string(column);
+            std::string s_s1=std::to_string(size1);
+            std::string s_s2=std::to_string(size2);
 
-            std::string text= "You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'.";
+            std::string text= "First matrix has size "+s_s1+" while second matrix has size "+s_s2;
             return text.c_str();
         }
 };

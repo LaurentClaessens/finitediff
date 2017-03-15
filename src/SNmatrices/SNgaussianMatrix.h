@@ -52,6 +52,7 @@ class SNgaussianMatrix
 
         SNgaussianMatrix(const SNmatrix<T,tp_size>& , const unsigned int&);
 
+        unsigned int getSize() const;
         T get(unsigned int,unsigned int) const;
         
 };
@@ -69,6 +70,12 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , con
 }
 
 // GETTER METHODS ---------------------------------------
+
+template <class T,unsigned int tp_size>
+unsigned int SNgaussianMatrix<T,tp_size>::getSize() const
+{
+    return tp_size;
+}
 
 template <class T,unsigned int tp_size>
 T SNgaussianMatrix<T,tp_size>::get(unsigned int i,unsigned int j) const

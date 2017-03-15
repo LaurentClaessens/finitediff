@@ -222,11 +222,24 @@ class ExceptionsTests : public CppUnit::TestCase
             SNlowerTriangularMatrix<int,4> A;
             CPPUNIT_ASSERT_THROW(A.at(5,1),SNchangeNotAllowedException);
         }
+
+        void incompatible_matrix_size_test()
+        {
+            SNlowerTriangularMatrix<int,4> A;
+            SNmatrix<double,2> B;
+            CPPUNIT_ASSERT_THROW(A==B,IncompatibleMatrixSizeException);
+
+            SNmatrix<double,2> C;
+            SNmatrix<double,3> D;
+            CPPUNIT_ASSERT_THROW(auto K=C*D,IncompatibleMatrixSizeException);
+        }
+
     public:
         void runTest()
         {
             out_of_range_test();
             change_not_allowed_test();
+            incompatible_matrix_size_test();
         }
 };
 
@@ -774,7 +787,7 @@ class MultiplicationTest : public CppUnit::TestCase
             GstarF.at(2,0)=-17; GstarF.at(2,1)=0; GstarF.at(2,2)=-11; GstarF.at(2,3)=-17;
             GstarF.at(3,0)=-14; GstarF.at(3,1)=0; GstarF.at(3,2)=-13./2; GstarF.at(3,3)=-23./2;
 
-            CPPUNIT_ASSERT(F*G==GstarF);
+            CPPUNIT_ASSERT(G*F==GstarF);
         }
         void test_gauss_times_lower_trig()
         {

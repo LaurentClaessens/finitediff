@@ -26,11 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNelement.h"
 #include "SNline.h"
 #include "SNgaussianMatrix.h"
+#include "MathUtilities.h"
+#include "SNoperators.h"
 #include "../SNvector.h"
 
-#include "../DebugPrint.h"
 #include "../SNexceptions.cpp"
-DebugPrint debug_print;
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
@@ -91,7 +91,6 @@ class SNmatrix
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
 
-
         unsigned int getSize() const;
 
         // return a reference to the value of the requested matrix entry.
@@ -138,28 +137,6 @@ SNmatrix<T,tp_size>::SNmatrix(): data() { };
 
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
-
-template <class U,class V,unsigned int s>
-bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,s>& B)
-{
-    return A.data==B.data;
-}
-
-template <class U,class V,unsigned int s>
-bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,s>& A)
-{
-    for (unsigned int l=0;l<s;l++)
-    {
-        for (unsigned int c=0;c<s;c++)
-        {
-            if (G.get(l,c)!=A.get(l,c))
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
 
 template <class V,unsigned int s>
 std::ostream& operator<<(std::ostream& stream, SNmatrix<V,s>& snm)
