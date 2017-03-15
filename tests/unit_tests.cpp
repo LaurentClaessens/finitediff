@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNpermutation.h"
 #include "../src/SNmatrices/SNline.h"
 #include "../src/SNmatrices/SNlowerTriangularMatrix.h"
+#include "../src/SNmatrices/SNoperators.h"
 #include "../src/SNplu.h"
 #include "../src/RepeatFunction.h"
 #include "../src/SNexceptions.cpp"
