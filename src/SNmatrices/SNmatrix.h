@@ -56,9 +56,6 @@ class SNmatrix
     template <class U,class V,unsigned int s>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,s>&);
 
-    template <class U,class V,unsigned int s>
-    friend bool operator==(const SNgaussianMatrix<U,s>&,const SNmatrix<V,s>&);
-
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
