@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
+#include "SNgeneric.h"
 #include "../SNexceptions.cpp"
 
 /*
@@ -42,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
-class SNgaussianMatrix
+class SNgaussianMatrix : public SNgeneric<T,tp_size>
 {
 
     private:

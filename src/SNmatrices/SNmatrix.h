@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <cmath>
 
+#include "SNgeneric.h"
 #include "SNelement.h"
 #include "SNline.h"
 #include "SNgaussianMatrix.h"
@@ -45,7 +46,7 @@ class SNplu;
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
-class SNmatrix
+class SNmatrix  : public SNgeneric<T,tp_size>
 {
     friend class SNmatrixTest;
     friend class GaussTest;
@@ -83,6 +84,7 @@ class SNmatrix
         // From the line number "line", return a line normalized
         // in such a way that the first (non zero) element is 1.
         SNline<T,tp_size> gaussEliminationLine(unsigned int line);
+        T _get(const unsigned int,const unsigned int) const;
 
     public:
         SNmatrix();
@@ -156,11 +158,6 @@ void SNmatrix<T,t>::subtract(const SNmatrix<V,s>& B)
 
 // GETTER METHODS  -------------------------------------------
 
-template <class T,unsigned int tp_size>
-unsigned int SNmatrix<T,tp_size>::getSize() const
-{
-    return size;
-};
 
 template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
@@ -180,22 +177,8 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::getSNline(unsigned int l)
 }
 
 template <class T,unsigned int tp_size>
-T& SNmatrix<T,tp_size>::at(const unsigned int i,const unsigned int j)
+T SNmatrix<T,tp_size>::_get(const unsigned int i,const unsigned int j) const
 {
-    if (i>tp_size or j>tp_size)
-    {
-        throw SNoutOfRangeException(i,j,tp_size);
-    }
-    return data.at(j*tp_size+i);
-};
-
-template <class T,unsigned int tp_size>
-T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
-{
-    if (i>tp_size or j>tp_size)
-    {
-        throw SNoutOfRangeException(i,j,tp_size);
-    }
     return data.at(j*tp_size+i);
 };
 

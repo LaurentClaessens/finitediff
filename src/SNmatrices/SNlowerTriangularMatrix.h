@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
+#include "SNgeneric.h"
 #include "../SNexceptions.cpp"
 
 /*
@@ -30,18 +31,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
-class SNlowerTriangularMatrix
+class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
 {
 
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
+        T _get(const unsigned int,const unsigned int) const;
     public :
         SNlowerTriangularMatrix();
 
         unsigned int getSize() const;
 
-        T get(unsigned int l, unsigned int c) const;
-        T& at(unsigned int l, unsigned int c);
 };
 
 // CONSTRUCTOR  ---------------------------------------
@@ -58,12 +58,8 @@ unsigned int SNlowerTriangularMatrix<T,tp_size>::getSize() const
 };
 
 template <class T,unsigned int tp_size>
-T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int l,unsigned int c) const
+T SNlowerTriangularMatrix<T,tp_size>::_get(unsigned int l,unsigned int c) const
 {
-    if (l>tp_size or c>tp_size)
-    {
-        throw SNoutOfRangeException(l,c,tp_size);
-    }
     if (l<c)
     {
         return 0;
@@ -74,15 +70,11 @@ T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int l,unsigned int c) const
 template <class T,unsigned int tp_size>
 T& SNlowerTriangularMatrix<T,tp_size>::at(unsigned int i,unsigned int j) 
 {
-    if (i>tp_size or j>tp_size)
-    {
-        throw SNoutOfRangeException(i,j,tp_size);
-    }
     if (i<j)
     {
         throw SNchangeNotAllowedException(i,j);
     }
-    return data.at(j*tp_size+i);
+    return get(i,j);
 }
 
 

@@ -48,18 +48,20 @@ bool componentWiseeEquality(const T& A,const U& B)
     return true;
 }
 
-template <class T,class U,class V>
-V matrixProductComponent(const T& A,const U& B,unsigned int i,unsigned int j,unsigned int s)
+template <class T,class U,unsigned int s,unsigned int t>
+T matrixProductComponent(const SNgeneric<T,s>& A,const SNgeneric<U,t>& B,unsigned int i,unsigned int j)
     // compute the component (i,j) of the matrix product A*B
     // - A,B  : matrices
     // - i,j  : the element of A*B to be computed
-    // - s : the common size of A and B
     //
     // The size compatibility is not checked since this functions is supposed 
     // to be called from something like an operator * that has already checked
     // the compatibility.
+    //
+    // As stated in the README.md, the type of the elements in the returned matrix
+    // is the one of the first matrix of the product.
 {
-    V acc=0;
+    T acc=0;
     for (unsigned int k=0;k<s;k++)
     {
         acc+=A.get(i,k)*B.get(k,j);

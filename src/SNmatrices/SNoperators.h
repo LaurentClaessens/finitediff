@@ -49,7 +49,7 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
     {
         for (unsigned int j=0;j<s;j++)
         {
-            ans.at(i,j)=matrixProductComponent(A,B,i,j,s);
+            ans.at(i,j)=matrixProductComponent(A,B,i,j);
         }
     }
     return ans;   //relies on RVO.
@@ -78,7 +78,7 @@ SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
     {
         for (unsigned int j=0;j<s;j++)
         {
-            ans.at(i,j)=matrixProductComponent(A,B,i,j,s);
+            ans.at(i,j)=matrixProductComponent(A,B,i,j);
         }
     }
     return ans;  
