@@ -57,6 +57,50 @@ There is a subtlety with the `at` method.
 * Usually, the `get` method returns *by value* the value of the requested entry. This is the usual behaviour and it is the behaviour here.
 * The `at` method returns *by reference* the value of the requested entry. This is useful for populate or modify the matrix. However asking for the element `1,3` on a `SNlowerTriangularMatrix` will raise a `SNnonAllowedChange` exception.
 
+## Operators
+
+We define some operators between different types of matrices : mainly `==` and `*`. For optimization reasons, the implementation depend on the precise types.
+
+Remark : many operators depend on the "return value optimization" because they are building a local object and then returning it by value. A (simplified) example with the matrix product :
+
+
+```C++
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
+{
+    SNmatrix<U,s> ans;
+    // populate ans
+    return ans      // do not copy by RVO 
+}
+```
+
+
+### Product operator `*`
+
+The declaration of the product `SNmatrix*SNmatrix` is as follow : 
+
+```C++
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
+```
+
+The matching of the size if checked but the return type will be the one of the left matrix.
+
+Let the example :
+```C++
+SNmatrix<int,2> A; 
+SNmatrix<double,2> B; 
+// populate the matrices A and B
+auto C=A*B   // inacurate !
+```
+Here the type of `C` will be `SNmatrix<int,2>` and the product will be inaccurate  because of the products `int*double` are casted to `int`.
+
+By the way, the matrix product is not commutative, so do not try to workaround with
+```C++
+auto C=B*A    // instead of A*B
+```
+
+
 ## Implementation details
 
 ### SNmatrix<class T,unsigned int tp_size>
