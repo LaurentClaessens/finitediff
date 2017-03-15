@@ -21,15 +21,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  This file contains operators *,== between different types of matrices.
 */
 
-template <class U,class V,unsigned int s>
-bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,s>& B)
+#ifndef  OPERATORS_H__064802_
+#define  OPERATORS_H__064802_
+
+#include "SNgaussianMatrix.h"
+#include "SNlowerTriangularMatrix.h"
+
+template <class U,class V,unsigned int s,unsigned int t>
+bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
     return A.data==B.data;
 }
 
-template <class U,class V,unsigned int s>
-bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,s>& A)
+template <class U,class V,unsigned int s,unsigned int t>
+bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,t>& A)
 {
     return componentWiseeEquality(G,A);
 }
 
+template <class U,class V,unsigned int s,unsigned int t>
+bool operator==(const SNlowerTriangularMatrix<U,s>& G,const SNmatrix<V,t>& A)
+{
+    return componentWiseeEquality(G,A);
+}
+
+
+#endif
