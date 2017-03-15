@@ -52,9 +52,9 @@ SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(): data() { };
 // GETTER METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-unsigned int SNmatrix<T,tp_size>::getSize() const
+unsigned int SNlowerTriangularMatrix<T,tp_size>::getSize() const
 {
-    return size;
+    return tp_size;
 };
 
 template <class T,unsigned int tp_size>

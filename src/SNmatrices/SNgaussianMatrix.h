@@ -47,8 +47,13 @@ class SNgaussianMatrix
 
     private:
         std::array<T,tp_size> data;     // the first 'c' are unused and remain uninitialized
+
+
+        // populate the matrix from the elements of the given matrix
+        template <class M>
+        void populate_from_(const M&);
     public :
-        unsigned int column;
+        const unsigned int column;
 
         SNgaussianMatrix(const SNmatrix<T,tp_size>& , const unsigned int&);
 
@@ -59,14 +64,20 @@ class SNgaussianMatrix
 
 // CONSTRUCTOR  ---------------------------------------
 
-template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned int& c):
-    column(c)
+template <class M,class T,unsigned int tp_size>
+void SNgaussianMatrix<T,tp_size>::populate_from(const M& A)
 {
     for (unsigned int i=c+1;i<tp_size;i++)
     {
         data.at(i)=-A.get(i,c)/A.get(c,c);
     }
+}
+
+template <class M,class T,unsigned int tp_size>
+SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned int& c):
+    column(c)
+{
+    populate_from_(A);
 }
 
 // GETTER METHODS ---------------------------------------

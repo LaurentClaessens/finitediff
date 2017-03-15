@@ -66,6 +66,7 @@ SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
         throw IncompatibleMatrixSizeException(s,t);
     }
     SNmatrix<U,s> ans;
+    const unsigned int c=A.column;
     for (unsigned int i=c;i<c+1;i++)
     {
         for (unsigned int j=0;j<s;j++)
