@@ -38,6 +38,8 @@ class SNlowerTriangularMatrix
     public :
         SNlowerTriangularMatrix();
 
+        unsigned int getSize() const;
+
         T get(unsigned int l, unsigned int c) const;
         T& at(unsigned int l, unsigned int c);
 };
@@ -48,6 +50,12 @@ template <class T,unsigned int tp_size>
 SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(): data() { };
 
 // GETTER METHODS ---------------------------------------
+
+template <class T,unsigned int tp_size>
+unsigned int SNmatrix<T,tp_size>::getSize() const
+{
+    return size;
+};
 
 template <class T,unsigned int tp_size>
 T SNlowerTriangularMatrix<T,tp_size>::get(unsigned int l,unsigned int c) const
