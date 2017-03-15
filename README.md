@@ -4,14 +4,6 @@ I'm trying to implement the finite difference method for solving differential eq
 
 The mathematics is developed [here](http://laurent.claessens-donadello.eu/pdf/lefrido.pdf) as I'm learning it.
 
-## deploy.sh
-
-The script `deploy.sh` is the only working stuff up to now. It does the following things :
-* show `git status`
-* make clean
-* make all 
-* launch the unit tests
-
 ## Purpose
 
 The official aim of this program is to implement the [finite difference method ](https://en.wikipedia.org/wiki/Finite_difference_method)  for solving differential equations.
@@ -21,6 +13,20 @@ Non-official purposes include
 * I (believe to) know that the finite difference method requires solving system of equations with sparse matrices. However I'm implementing the PLU decomposition for solving the system while I (believe to) know that there are more efficient ways to solve for sparse matrices.
 * Learning the [cppunit framework](https://en.wikipedia.org/wiki/Cppunit) for my unit tests.
 * Programming in C++ with no raw pointers.
+
+## Latest news
+
+* The last working commit is : 87068744b9e9d2388cd2475652a341d5e032097a
+* I forgot to create a new branch before to make some major changes (new matrices type, matrix hierarchy, exception throwing ...). So for the moment almost nothing compiles in master. I'm sooooo sorry.
+* I'm currently implementing the PLU decomposition.
+
+## deploy.sh
+
+The script `deploy.sh` is the only working stuff up to now. It does the following things :
+* show `git status`
+* make clean
+* make all 
+* launch the unit tests
 
 ## The classes
 
