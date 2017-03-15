@@ -34,6 +34,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // PRODUCTS ------------------------------------------
 
 
+// SNmatrix*SNmatrix.
+// cannot do better than compute everything.
+
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 {
@@ -50,6 +53,34 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
         }
     }
     return ans;   //relies on RVO.
+}
+
+// SNgaussianMatrix * SNmatrix
+// can copy the first 'c' lines.
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
+{
+    if (s!=t)
+    {
+        throw IncompatibleMatrixSizeException(s,t);
+    }
+    SNmatrix<U,s> ans;
+    for (unsigned int i=c;i<c+1;i++)
+    {
+        for (unsigned int j=0;j<s;j++)
+        {
+            ans.at(i,j)=B.get(i,j);
+        }
+    }
+    for (unsigned int i=c+1;i<s;i++)
+    {
+        for (unsigned int j=0;j<s;j++)
+        {
+            ans.at(i,j)=matrixProductComponent(A,B,i,j,s);
+        }
+    }
+    return ans;  
 }
 
 

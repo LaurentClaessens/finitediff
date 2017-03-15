@@ -31,6 +31,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/RepeatFunction.h"
 #include "../src/SNexceptions.cpp"
 
+#include "../src/DebugPrint.h"
+
+DebugPrint debug_print;
+
 double square(double x)
 // return the square of the given number.
 {

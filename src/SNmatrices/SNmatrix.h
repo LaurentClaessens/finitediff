@@ -124,7 +124,7 @@ class SNmatrix
 
         // return the gaussian matrix for the requested column
         // we return a reference in order to avoid a copy.
-        SNgaussianMatrix<T,tp_size>& getGaussian(unsigned int c) const;
+        SNgaussianMatrix<T,tp_size> getGaussian(unsigned int c) const;
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -206,7 +206,7 @@ T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
 template <class T,unsigned int tp_size>
 SNgaussianMatrix<T,tp_size> SNmatrix<T,tp_size>::getGaussian(unsigned int c) const
 {
-    return SNgaussianMatrix<T,tp_size> K(*this,c);
+    return SNgaussianMatrix<T,tp_size>(*this,c);
 }
 
 template <class T,unsigned int tp_size>
