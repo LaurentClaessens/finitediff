@@ -26,6 +26,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SNgaussianMatrix.h"
 #include "SNlowerTriangularMatrix.h"
+#include "MathUtilities.h"
+#include "../SNexceptions.cpp"
+
+
+
+// PRODUCTS ------------------------------------------
+
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
+{
+    if (s!=t)
+    {
+        throw IncompatibleMatrixSizeException(s,t);
+    }
+    SNmatrix<U,s> ans;
+    for (unsigned int i=0;i<s;i++)
+    {
+        for (unsigned int j=0;j<s;j++)
+        {
+            ans.at(i,j)=matrixProductComponent(A,B,i,j,s);
+        }
+    }
+    return ans;   //relies on RVO.
+}
+
+
+
+// EQUALITIES ---------------------------------------
 
 template <class U,class V,unsigned int s,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
