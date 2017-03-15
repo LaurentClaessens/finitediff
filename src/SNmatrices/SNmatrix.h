@@ -204,10 +204,9 @@ T SNmatrix<T,tp_size>::get(const unsigned int i,const unsigned int j) const
 
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size>& SNmatrix<T,tp_size>::getGaussian(unsigned int c) const
+SNgaussianMatrix<T,tp_size> SNmatrix<T,tp_size>::getGaussian(unsigned int c) const
 {
-    SNgaussianMatrix<T,tp_size> K(*this,c);
-    return K;
+    return SNgaussianMatrix<T,tp_size> K(*this,c);
 }
 
 template <class T,unsigned int tp_size>
