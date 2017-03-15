@@ -49,14 +49,14 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
     private:
         std::array<T,tp_size> data;     // the first 'c' are unused and remain uninitialized
 
-
         // populate the matrix from the elements of the given matrix
-        template <class M>
-        void populate_from_(const M&);
+        template <class U,unsigned int s>
+        void populate_from(const SNgeneric<U,s>&);
     public :
         const unsigned int column;
 
-        SNgaussianMatrix(const SNmatrix<T,tp_size>& , const unsigned int&);
+        template <class U,unsigned int s>
+        SNgaussianMatrix(const SNgeneric<U,s>& , const unsigned int&);
 
         unsigned int getSize() const;
         T get(unsigned int,unsigned int) const;
@@ -65,20 +65,26 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
 
 // CONSTRUCTOR  ---------------------------------------
 
-template <class M,class T,unsigned int tp_size>
-void SNgaussianMatrix<T,tp_size>::populate_from(const M& A)
+template <class T,unsigned int tp_size> 
+template <class U, unsigned int s>
+void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 {
-    for (unsigned int i=c+1;i<tp_size;i++)
+    if (s!=tp_size)
     {
-        data.at(i)=-A.get(i,c)/A.get(c,c);
+        throw IncompatibleMatrixSizeException(tp_size,s);
+    }
+    for (unsigned int i=column+1;i<tp_size;i++)
+    {
+        data.at(i)=-A.get(i,column)/A.get(column,column);
     }
 }
 
-template <class M,class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNmatrix<T,tp_size>& A , const unsigned int& c):
+template <class T,unsigned int tp_size> 
+template<class U,unsigned int s>
+SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const unsigned int& c):
     column(c)
 {
-    populate_from_(A);
+    populate_from(A);
 }
 
 // GETTER METHODS ---------------------------------------

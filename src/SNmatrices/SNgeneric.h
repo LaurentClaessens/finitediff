@@ -74,7 +74,7 @@ T SNgeneric<T,tp_size>::get(const unsigned int& i,const unsigned int& j) const
 {
     if (i>tp_size or j>tp_size)
     {
-        throw SNoutOfRangeException(i,j,tp_size);
+        throw SNoutOfRangeException(i,j,getSize());
     }
     return _get(i,j);
 }
