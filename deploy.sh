@@ -13,4 +13,4 @@ make clean
 make all
 ./build/exceptions_unit_tests
 ./build/repeat_function_unit_tests
-./build/unit_tests
+./build/multiplication_unit_tests
