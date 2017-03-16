@@ -63,6 +63,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgaussianMatrix.h"
 #include "SNline.h"
 
+#include "MathUtilities.h"
+
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
@@ -84,7 +86,15 @@ class SNgeneric
         virtual T& at(unsigned int,unsigned int) final;
         virtual T get(const unsigned int&,const unsigned int&) const final;
 
-        SNline<T,tp_size> getSNline(unsigned int l) const;
+        virtual SNline<T,tp_size> getSNline(unsigned int l) const;
+
+        // subtract the given matrix from this matrix.
+        // This is in-place replacement. Thus the least const in the 
+        // world.
+        template <class V,unsigned int s>
+        void subtract(const SNgeneric<V,s>&);
+        template <class V,unsigned int s>
+        void subtract(const SNgaussianMatrix<V,s>&);
 
         // return the gaussian matrix for the requested column
         SNgaussianMatrix<T,tp_size> getGaussian(const unsigned int c) const;
@@ -170,5 +180,40 @@ SNgaussianMatrix<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const unsigned int
 {
     return SNgaussianMatrix<T,tp_size>(*this,c);
 }
+
+
+template <class T,unsigned int tp_size>
+template <class V,unsigned int s>
+void SNgeneric<T,tp_size>::subtract(const SNgeneric<V,s>& S)
+{
+    checkSizeCompatibility(*this,S);
+    for (unsigned int i=0;i<tp_size;i++)
+    {
+        for (unsigned int j=0;j<tp_size;j++)
+        {
+            this->at(i,j)-=S.get(i,j);
+        }
+    }
+}
+
+template <class T,unsigned int tp_size>
+template <class V,unsigned int s>
+void SNgeneric<T,tp_size>::subtract(const SNgaussianMatrix<V,s>& G)
+{
+    checkSizeCompatibility(*this,G);
+    unsigned int c=G.column;
+
+    // subtract the non trivial "half column"
+    for (unsigned int i=c+1;i<tp_size;i++)
+    {
+        this->at(i,c)-=G.get(i,c);
+    }
+    // subtract the diagonal
+    for (unsigned int i=0;i<tp_size;i++)
+    {
+        this->at(i,i)-=1;
+    }
+}
+
 
 #endif
