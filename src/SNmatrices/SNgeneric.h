@@ -67,7 +67,7 @@ class SNgeneric
 {
     private :
         virtual T _get(const unsigned int,const unsigned int) const=0;
-        virtual T _at(const unsigned int,const unsigned int)=0;
+        virtual T& _at(const unsigned int,const unsigned int)=0;
 
         // throws 'SNoutOfRangeException' if the requested element is out of
         // range (larger than 'tp_size').
