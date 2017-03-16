@@ -54,8 +54,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     template <class V,unsigned int s>
     friend std::ostream& operator<<(std::ostream&, SNmatrix<V,s>&);
 
-    template <class U,class V,unsigned int s>
-    friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,s>&);
+    template <class U,unsigned int s,class V,unsigned int t>
+    friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
 
     private:
         std::array<T,tp_size*tp_size> data;
