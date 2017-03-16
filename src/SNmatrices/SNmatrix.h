@@ -167,7 +167,7 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::getSNline(unsigned int l)
     std::array<T,tp_size> al;
     for (unsigned int c=0;c<tp_size;c++)
     {
-        al.at(c)=get(l,c);
+        al.at(c)=this->get(l,c);
     }
     return SNline<T,tp_size>(al);
 }
@@ -220,9 +220,9 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, un
 
     for (unsigned int line=f_line;line<tp_size;line++)
     {
-        if (std::abs(get(line,col))>max_val)
+        if (std::abs(this->get(line,col))>max_val)
         {
-            max_val=std::abs(get(line,col));
+            max_val=std::abs(this->get(line,col));
             max_line=line;
         };
     };
@@ -248,9 +248,9 @@ void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
     {
         for (unsigned int col=0;col<tp_size;col++)
         {
-            T tmp = get(l1,col);
-            at(l1,col)=get(l2,col);
-            at(l2,col)=tmp;
+            T tmp = this->get(l1,col);
+            this->at(l1,col)=this->get(l2,col);
+            this->at(l2,col)=tmp;
         }
     }
 }
@@ -261,7 +261,7 @@ void SNmatrix<T,tp_size>::lineMinusLine(unsigned int line,SNline<T,tp_size> v)
 {
     for (unsigned int c=0;c<tp_size;c++)
     {
-        at(line,c)=get(line,c)-v.get(c);
+        this->at(line,c)=this->get(line,c)-v.get(c);
     }
 }
 
@@ -305,7 +305,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 
             for (unsigned int l=c+1;l<tp_size;l++)
             {
-                T m = get(l,c);  // the value to be eliminated
+                T m = this->get(l,c);  // the value to be eliminated
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.

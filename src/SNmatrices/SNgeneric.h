@@ -71,7 +71,7 @@ class SNgeneric
 
         // throws 'SNoutOfRangeException' if the requested element is out of
         // range (larger than 'tp_size').
-        void checkRangeCorectness(const unsigned int&,const unsigned int&) const final;
+        virtual void checkRangeCorectness(const unsigned int&,const unsigned int&) const final;
     public:
         virtual unsigned int getSize() const final;
 
