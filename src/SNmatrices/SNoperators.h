@@ -43,8 +43,6 @@ DebugPrint debug_printOP;
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 {
-    debug_printOP<<"operator* SNmatrix*SNmatrix";
-    debug_printOP.endl();
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
     for (unsigned int i=0;i<s;i++)
