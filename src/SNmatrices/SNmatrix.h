@@ -48,11 +48,8 @@ class SNplu;
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
 {
-    friend class SNmatrixTest;
-    friend class GaussTest;
-
-    template <class V,unsigned int s>
-    friend std::ostream& operator<<(std::ostream&, SNmatrix<V,s>&);
+    //friend class SNmatrixTest;
+    //friend class GaussTest;
 
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
@@ -98,9 +95,6 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // return the matrix element on given (line,column).
         SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
 
-        // return the requested line
-        SNline<T,tp_size> getSNline(unsigned int l);
-
         // Use the Gauss'elimination to transform the SNmatrix
         // to an upper triangular matrix.
         // In-place transformation !!
@@ -130,16 +124,6 @@ SNmatrix<T,tp_size>::SNmatrix(): data() { };
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
 
-template <class V,unsigned int s>
-std::ostream& operator<<(std::ostream& stream, SNmatrix<V,s>& snm)
-{
-    for (unsigned int l=0;l<s;l++)
-    {
-        stream<<snm.getSNline(l)<<std::endl;
-    }
-    return stream;
-}
-
 template <class T,unsigned int t> template<class V,unsigned int s>
 void SNmatrix<T,t>::subtract(const SNmatrix<V,s>& B)
 {
@@ -156,17 +140,6 @@ template <class T,unsigned int tp_size>
 SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
 {
     return SNelement<T,tp_size>(line,col,*this);
-}
-
-template <class T,unsigned int tp_size>
-SNline<T,tp_size> SNmatrix<T,tp_size>::getSNline(unsigned int l)
-{
-    std::array<T,tp_size> al;
-    for (unsigned int c=0;c<tp_size;c++)
-    {
-        al.at(c)=this->get(l,c);
-    }
-    return SNline<T,tp_size>(al);
 }
 
 
@@ -260,7 +233,7 @@ void SNmatrix<T,tp_size>::lineMinusLine(unsigned int line,SNline<T,tp_size> v)
 template <class T,unsigned int tp_size>
 SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
 {
-    SNline<T,tp_size> l=getSNline(line);
+    SNline<T,tp_size> l=this->getSNline(line);
     l.makeUnit();
     return l;
 }

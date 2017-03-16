@@ -52,6 +52,17 @@ class MultiplicationTest : public CppUnit::TestCase
             ans_G.at(2,0)=0; ans_G.at(2,1)=4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
             ans_G.at(3,0)=0; ans_G.at(3,1)=7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
 
+            debug_printMT<<"G==ansG test";
+            debug_printMT.endl();
+
+            debug_printMT<<"G : ";
+            debug_printMT.endl();
+            debug_printMT<<G;
+            debug_printMT.endl();
+            debug_printMT<<"anf_G";
+            debug_printMT.endl();
+            debug_printMT<<ans_G;
+
             CPPUNIT_ASSERT(G==ans_G);
 
             SNmatrix<double,4> GstarF;

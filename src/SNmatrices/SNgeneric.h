@@ -61,12 +61,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNGENERIC_H__142708_
 
 #include "SNgaussianMatrix.h"
+#include "SNline.h"
 
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
 class SNgeneric
 {
+    template <class V,unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, SNgeneric<V,s>&);
+
     private :
         virtual T _get(const unsigned int,const unsigned int) const=0;
         virtual T& _at(const unsigned int,const unsigned int)=0;
@@ -80,6 +84,7 @@ class SNgeneric
         virtual T& at(unsigned int,unsigned int) final;
         virtual T get(const unsigned int&,const unsigned int&) const final;
 
+        SNline<T,tp_size> getSNline(unsigned int l) const;
 
         // return the gaussian matrix for the requested column
         SNgaussianMatrix<T,tp_size> getGaussian(const unsigned int c) const;
@@ -107,6 +112,29 @@ void SNgeneric<T,tp_size>::checkRangeCorectness(const unsigned int& l,const unsi
     {
         throw SNoutOfRangeException(l,c,getSize());
     }
+}
+
+template <class T,unsigned int tp_size>
+SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(unsigned int l) const
+{
+    std::array<T,tp_size> al;
+    for (unsigned int c=0;c<tp_size;c++)
+    {
+        al.at(c)=this->get(l,c);
+    }
+    return SNline<T,tp_size>(al);
+}
+
+// OPERATORS ------------------------------
+
+template <class V,unsigned int s>
+std::ostream& operator<<(std::ostream& stream, SNgeneric<V,s>& snm)
+{
+    for (unsigned int l=0;l<s;l++)
+    {
+        stream<<snm.getSNline(l)<<std::endl;
+    }
+    return stream;
 }
 
 // GET SIZE ------------------------------
