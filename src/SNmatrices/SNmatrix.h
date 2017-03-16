@@ -104,10 +104,6 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // The matrix is changed.
         void swapLines(unsigned int l1,unsigned int l2);
 
-        // subtract the given matrix to 'this'.
-        // this is a in-place replacement.
-        template <class V,unsigned int s>
-        void subtract(const SNmatrix<V,s>& B);
 
         // return the PLU decomposition.
         // This is a heavily non-const method because 'this' is transformed
@@ -124,14 +120,6 @@ SNmatrix<T,tp_size>::SNmatrix(): data() { };
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
 
-template <class T,unsigned int t> template<class V,unsigned int s>
-void SNmatrix<T,t>::subtract(const SNmatrix<V,s>& B)
-{
-    for (unsigned int i=0;i<data.size();i++)
-    {
-        data.at(i)-=B.data.at(i);
-    }
-}
 
 // GETTER METHODS  -------------------------------------------
 
