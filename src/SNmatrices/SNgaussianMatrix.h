@@ -24,6 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "../SNexceptions.cpp"
 
+
+#include "../DebugPrint.h"
+DebugPrint debug_printGS;
+
 /*
    This represents a gaussian matrix.
 
@@ -55,7 +59,7 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
 {
 
     private:
-        std::array<T,tp_size> data;     // the first 'c' are unused and remain uninitialized
+        std::array<T,tp_size> data;     // see implementation of "_at"
         SpecialValue<T> checkForSpecialElements(const unsigned int& i,const unsigned int& j) const;
 
         // populate the matrix from the elements of the given matrix
@@ -82,9 +86,11 @@ void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
     {
         throw IncompatibleMatrixSizeException(tp_size,s);
     }
+
+    T m = A.get(column,column);
     for (unsigned int i=column+1;i<tp_size;i++)
     {
-        data.at(i)=-A.get(i,column)/A.get(column,column);
+        this->at(i,column)=-A.get(i,column)/m;
     }
 }
 
@@ -142,18 +148,33 @@ T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
     {
         return sv.value;
     }
-    return data.at(j);   
+    return data.at(i-column-1);
 }
 
 template <class T,unsigned int tp_size>
 T& SNgaussianMatrix<T,tp_size>::_at(unsigned int i,unsigned int j) 
+
+    // The elements are stored in 
+    //   std::array<T,tp_size> data
+    // while the matrix only contains non fixed values on one column, under
+    // the diagonal.
+    //
+    // First element of 'data' stores the first non fixed value.
+    // Example for a gaussian matrix on column 1 :
+    //
+    //  1  0   0  0
+    //  0  1   0  0
+    //  0  d0  1  0
+    //  0  d1  0  1
+    //
+
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
     {
         throw SNchangeNotAllowedException(i,j);
     }
-    return data.at(j);   
+    return data.at(i-column-1);
 }
 
 #endif
