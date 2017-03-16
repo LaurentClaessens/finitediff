@@ -26,19 +26,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNexceptions.cpp"
 #include "TestMatrices.cpp"
 
+#include "../src/DebugPrint.h"
+DebugPrint debug_print;
+
 class ExceptionsTests : public CppUnit::TestCase
 {
     private:
         void out_of_range_test()
         {
             SNmatrix<int,4> A;
+            debug_print<<"test numéro 1";
             CPPUNIT_ASSERT_THROW(A.get(5,1),SNoutOfRangeException);
             SNlowerTriangularMatrix<int,4> B;
+            debug_print<<"test numéro 2";
             CPPUNIT_ASSERT_THROW(B.at(1,5),SNoutOfRangeException);
         }
         void change_not_allowed_test()
         {
             SNlowerTriangularMatrix<int,4> A;
+            debug_print<<"test numéro 3";
             CPPUNIT_ASSERT_THROW(A.at(1,2),SNchangeNotAllowedException);
         }
 
@@ -46,10 +52,16 @@ class ExceptionsTests : public CppUnit::TestCase
         {
             SNlowerTriangularMatrix<int,4> A;
             SNmatrix<double,2> B;
+            debug_print<<"test numéro 4";
+            debug_print.endl();
             CPPUNIT_ASSERT_THROW(A==B,IncompatibleMatrixSizeException);
 
+            debug_print<<"test numéro 5";
+            debug_print.endl();
             SNmatrix<double,2> C;
             SNmatrix<double,3> D;
+            debug_print<<"test numéro 6";
+            debug_print.endl();
             CPPUNIT_ASSERT_THROW(auto K=C*D,IncompatibleMatrixSizeException);
         }
 

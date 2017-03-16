@@ -30,6 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNexceptions.cpp"
 
 
+#include "../DebugPrint.h"
+DebugPrint debug_printOP;
+
 
 // PRODUCTS ------------------------------------------
 
@@ -40,10 +43,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 {
-    if (s!=t)
-    {
-        throw IncompatibleMatrixSizeException(s,t);
-    }
+    debug_printOP<<"operator* SNmatrix*SNmatrix";
+    debug_printOP.endl();
+    checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
     for (unsigned int i=0;i<s;i++)
     {
@@ -107,6 +109,7 @@ SNlowerTriangularMatrix<U,s> operator*
 template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
+    checkSizeCompatibility(A,B);
     return A.data==B.data;
 }
 

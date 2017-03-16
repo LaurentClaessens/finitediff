@@ -16,3 +16,4 @@ tests_SNmatrix
 # OTHERS 
 
 .kk.log
+tests/.gitignore

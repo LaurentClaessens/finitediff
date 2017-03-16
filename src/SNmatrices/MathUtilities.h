@@ -26,15 +26,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../SNexceptions.cpp"
 
+template <class U,unsigned int s,class V,unsigned int t>
+void checkSizeCompatibility(const SNgeneric<U,s>&A, const SNgeneric<V,t>&B )
+{
+    // the 'getSize' test is in order to avoid 'unused parameter warning'.
+    if (s!=t or A.getSize()!=B.getSize() )
+    {
+        throw IncompatibleMatrixSizeException(s,t);
+    }
+}
+
+
 template <class T,class U>
 bool componentWiseeEquality(const T& A,const U& B)
     // test the equality componentwise between to matrix objects.
 {
-    unsigned s=A.getSize();
-    if (B.getSize()!=s)
-    {
-        return false;       // maybe an exception would be more appropriate.
-    }
+    checkSizeCompatibility(A,B);
+    unsigned int s=A.getSize();
     for (unsigned int l=0;l<s;l++)
     {
         for (unsigned int c=0;c<s;c++)
