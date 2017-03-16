@@ -148,7 +148,7 @@ T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
     {
         return sv.value;
     }
-    return data.at(i-column-1);
+    return data.at(i-column-1);  //if you change here, you have to change _at
 }
 
 template <class T,unsigned int tp_size>
@@ -174,7 +174,7 @@ T& SNgaussianMatrix<T,tp_size>::_at(unsigned int i,unsigned int j)
     {
         throw SNchangeNotAllowedException(i,j);
     }
-    return data.at(i-column-1);
+    return data.at(i-column-1);  //if you change here, you have to change _get
 }
 
 #endif
