@@ -708,7 +708,6 @@ class GaussTest : public CppUnit::TestCase
         }
 };
 
-
 class pluTest : public CppUnit::TestCase
 {
     private :

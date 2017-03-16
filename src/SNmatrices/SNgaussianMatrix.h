@@ -40,6 +40,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * TODO : giving 'c' as a template argument, one can in average spare half of the memory by allowing 'c' as size in 'data' instead of 'tp_size'.
 */
 
+// forward definition
+
+template <class T,unsigned int tp_size>
+class SNgeneric;
+template <class T>
+class SpecialValue;
+
+
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>

@@ -120,9 +120,6 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // into the U matrix.
         SNplu<T,tp_size> getPLU();
 
-        // return the gaussian matrix for the requested column
-        // we return a reference in order to avoid a copy.
-        SNgaussianMatrix<T,tp_size> getGaussian(unsigned int c) const;
 };
 
 // CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
@@ -191,11 +188,6 @@ T SNmatrix<T,tp_size>::_get(const unsigned int i,const unsigned int j) const
 // GAUSS'S ELIMINATION METHODS
 
 
-template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size> SNmatrix<T,tp_size>::getGaussian(unsigned int c) const
-{
-    return SNgaussianMatrix<T,tp_size>(*this,c);
-}
 
 template <class T,unsigned int tp_size>
 T SNmatrix<T,tp_size>::max_norm() const

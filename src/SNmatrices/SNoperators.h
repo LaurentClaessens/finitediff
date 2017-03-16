@@ -55,11 +55,11 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
     return ans;   //relies on RVO.
 }
 
-// SNgaussianMatrix * SNmatrix
+// SNgaussianMatrix * SNgeneric
 // can copy the first 'c' lines.
 
 template <class U,class V,unsigned int s,unsigned int t>
-SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
+SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>& B)
 {
     if (s!=t)
     {

@@ -60,6 +60,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SNGENERIC_H__142708_
 #define __SNGENERIC_H__142708_
 
+#include "SNgaussianMatrix.h"
+
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
@@ -77,6 +79,10 @@ class SNgeneric
 
         virtual T& at(unsigned int,unsigned int) final;
         virtual T get(const unsigned int&,const unsigned int&) const final;
+
+
+        // return the gaussian matrix for the requested column
+        SNgaussianMatrix<T,tp_size> getGaussian(const unsigned int c) const;
 };
 
 
@@ -125,6 +131,16 @@ T& SNgeneric<T,tp_size>::at(const unsigned int i,const unsigned int j)
 {
     checkRangeCorectness(i,j);
     return _at(i,j);
+}
+
+
+// MATHEMATICAL FUNCTIONALITIES ------------------------
+
+
+template <class T,unsigned int tp_size>
+SNgaussianMatrix<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const unsigned int c) const
+{
+    return SNgaussianMatrix<T,tp_size>(*this,c);
 }
 
 #endif
