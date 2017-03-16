@@ -58,14 +58,15 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 // SNgaussianMatrix * SNgeneric
 // can copy the first 'c' lines.
 
+
 template <class U,class V,unsigned int s,unsigned int t>
-SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>& B)
+void productGaussianTimesGeneric
+(SNgeneric<U,s>& ans,const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>&B )
 {
     if (s!=t)
     {
         throw IncompatibleMatrixSizeException(s,t);
     }
-    SNmatrix<U,s> ans;
     const unsigned int c=A.column;
     for (unsigned int i=c;i<c+1;i++)
     {
@@ -81,20 +82,35 @@ SNmatrix<U,s> operator*(const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>& B)
             ans.at(i,j)=matrixProductComponent(A,B,i,j);
         }
     }
-    return ans;  
 }
 
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*
+(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
+{
+    SNmatrix<U,s> ans;
+    productGaussianTimesGeneric(ans,A,B);
+    return ans;
+}
 
+template <class U,class V,unsigned int s,unsigned int t>
+SNlowerTriangularMatrix<U,s> operator*
+(const SNgaussianMatrix<U,s>& A, const SNlowerTriangularMatrix<V,t>& B)
+{
+    SNlowerTriangularMatrix<U,s> ans;
+    productGaussianTimesGeneric(ans,A,B);
+    return ans;
+}
 
 // EQUALITIES ---------------------------------------
 
-template <class U,class V,unsigned int s,unsigned int t>
+template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
     return A.data==B.data;
 }
 
-template <class U,class V,unsigned int s,unsigned int t>
+template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,t>& A)
 {
     return componentWiseeEquality(G,A);

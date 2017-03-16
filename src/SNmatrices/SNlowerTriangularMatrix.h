@@ -40,12 +40,17 @@ class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
         T& _at(unsigned int,unsigned int);
     public :
         SNlowerTriangularMatrix();
+
+        SNlowerTriangularMatrix(const SNmatrix<T,tp_size>& A);
 };
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
 SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(): data() { };
+
+template <class T,unsigned int tp_size>
+SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(const SNmatrix<T,tp_size>& A): data(A.data) {};
 
 // _GET AND _AT METHODS ---------------------------------------
 
