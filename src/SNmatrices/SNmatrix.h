@@ -84,17 +84,13 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // From the line number "line", return a line normalized
         // in such a way that the first (non zero) element is 1.
         SNline<T,tp_size> gaussEliminationLine(unsigned int line);
+        T& _at(unsigned int,unsigned int);
         T _get(const unsigned int,const unsigned int) const;
 
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
 
-        unsigned int getSize() const;
-
-        // return a reference to the value of the requested matrix entry.
-        T& at(unsigned int,unsigned int);
-        T get(unsigned int,unsigned int) const;
 
         // return the max of the absolute values of all the matrix elements
         T max_norm() const;
@@ -175,6 +171,15 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::getSNline(unsigned int l)
     }
     return SNline<T,tp_size>(al);
 }
+
+
+// _GET AND _AT METHODS ---------------------------
+
+template <class T,unsigned int tp_size>
+T& SNmatrix<T,tp_size>::_at(const unsigned int i,const unsigned int j) 
+{
+    return data.at(j*tp_size+i);
+};
 
 template <class T,unsigned int tp_size>
 T SNmatrix<T,tp_size>::_get(const unsigned int i,const unsigned int j) const

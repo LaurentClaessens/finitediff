@@ -37,9 +37,9 @@ class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
         T _get(const unsigned int,const unsigned int) const;
+        T& _at(unsigned int,unsigned int);
     public :
         SNlowerTriangularMatrix();
-        T& at(unsigned int,unsigned int);
 };
 
 // CONSTRUCTOR  ---------------------------------------
@@ -47,7 +47,7 @@ class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
 template <class T,unsigned int tp_size>
 SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(): data() { };
 
-// GETTER METHODS ---------------------------------------
+// _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
 T SNlowerTriangularMatrix<T,tp_size>::_get(unsigned int l,unsigned int c) const
@@ -60,13 +60,13 @@ T SNlowerTriangularMatrix<T,tp_size>::_get(unsigned int l,unsigned int c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNlowerTriangularMatrix<T,tp_size>::at(unsigned int i,unsigned int j) 
+T& SNlowerTriangularMatrix<T,tp_size>::_at(unsigned int l,unsigned int c) 
 {
-    if (i<j)
+    if (l<c)
     {
-        throw SNchangeNotAllowedException(i,j);
+        throw SNchangeNotAllowedException(l,c);
     }
-    return get(i,j);
+    return data.at(c*tp_size+l);
 }
 
 #endif

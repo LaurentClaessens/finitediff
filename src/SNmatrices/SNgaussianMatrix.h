@@ -52,14 +52,13 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
         // populate the matrix from the elements of the given matrix
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
+        T _get(unsigned int,unsigned int) const;
     public :
         const unsigned int column;
 
         template <class U,unsigned int s>
         SNgaussianMatrix(const SNgeneric<U,s>& , const unsigned int&);
 
-        unsigned int getSize() const;
-        T get(unsigned int,unsigned int) const;
         
 };
 
@@ -90,13 +89,7 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const un
 // GETTER METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-unsigned int SNgaussianMatrix<T,tp_size>::getSize() const
-{
-    return tp_size;
-}
-
-template <class T,unsigned int tp_size>
-T SNgaussianMatrix<T,tp_size>::get(unsigned int i,unsigned int j) const
+T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
 {
     if (i>tp_size or j>tp_size)
     {

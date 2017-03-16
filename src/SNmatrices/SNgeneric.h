@@ -36,9 +36,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    What you need in your subclass :
 
    - override  T  _get   (mandatory)
-   - override  T& at  
-       this one has to finish with 'return get(i,j);'
-       So it will throw the 'SNoutOfRangeException' if needed and call T _get
+       This one has to finish with 
+       return SNgeneric<T,tp_size>::get(i,j);
+   - override  T& _at    (mandatory)
+        This one has to finish with
+       return SNgeneric<T,tp_size>::at(i,j);
+
+    _get(i,j) has to return the value of the element (i,j) of your matrix.
+
+    _at(i,j) has to return a _reference_ to the element (i,j) of your matrix.
+            So 'at' is intended to modify the matrix.
+            In consequence, _at(i,j) should throw 'SNchangeNotAllowedException' if
+            the requested element cannot be modified. 
+            
+            
+    As an example, on a lower diagonal matrix,
+    _get(1,3) returns 0 (by value)
+    _at(1,3) throws SNchangeNotAllowedException
 
 
 */
@@ -53,31 +67,32 @@ class SNgeneric
 {
     private :
         virtual T _get(const unsigned int,const unsigned int) const=0;
+        virtual T _at(const unsigned int,const unsigned int)=0;
+
+        // throws 'SNoutOfRangeException' if the requested element is out of
+        // range (larger than 'tp_size').
+        void checkRangeCorectness(const unsigned int&,const unsigned int&) const final;
     public:
-        unsigned int getSize() const final;
+        virtual unsigned int getSize() const final;
 
-        // 'at' is not final because some derived matrices have to
-        // throw 'SNchangeNotAllowedException' for some elements.
-        // Your implementation of 'at' should finish with 
-        // return get(i,j);
-        T& at(unsigned int,unsigned int);
-
-        // Do not override 'get'.
-        // What you want to override is the private '_get' that has to return the
-        // element. Here 'get' check for the matrix size (throws if needed) and then
-        // return what '_get' provides.
-        T get(const unsigned int&,const unsigned int&) const final;
+        virtual T& at(unsigned int,unsigned int) final;
+        virtual T get(const unsigned int&,const unsigned int&) const final;
 };
 
+
+// UTILITIES --------------------------
+
+
 template <class T,unsigned int tp_size>
-T SNgeneric<T,tp_size>::get(const unsigned int& i,const unsigned int& j) const
+void SNgeneric<T,tp_size>::checkRangeCorectness(const unsigned int& l,const unsigned int& c) const 
 {
-    if (i>tp_size or j>tp_size)
+    if (l>tp_size or c>tp_size)
     {
-        throw SNoutOfRangeException(i,j,getSize());
+        throw SNoutOfRangeException(l,c,getSize());
     }
-    return _get(i,j);
 }
+
+// GET SIZE ------------------------------
 
 template <class T,unsigned int tp_size>
 unsigned int SNgeneric<T,tp_size>::getSize() const
@@ -85,10 +100,20 @@ unsigned int SNgeneric<T,tp_size>::getSize() const
     return tp_size;
 }
 
+// GET AND AT METHODS ------------------------------
+
+template <class T,unsigned int tp_size>
+T SNgeneric<T,tp_size>::get(const unsigned int& i,const unsigned int& j) const
+{
+    checkRangeCorectness(i,j);
+    return _get(i,j);
+}
+
 template <class T,unsigned int tp_size>
 T& SNgeneric<T,tp_size>::at(const unsigned int i,const unsigned int j)
 {
-    return get(i,j);
+    checkRangeCorectness(i,j);
+    return _at(i,j);
 }
 
 #endif
