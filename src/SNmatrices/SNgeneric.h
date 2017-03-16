@@ -82,6 +82,17 @@ class SNgeneric
 
 // UTILITIES --------------------------
 
+template <class T>
+class SpecialValue
+{
+    public :
+        T value;
+        bool special;
+        SpecialValue(T v,bool s) :
+            value(v),
+            special(s)
+        {}
+};
 
 template <class T,unsigned int tp_size>
 void SNgeneric<T,tp_size>::checkRangeCorectness(const unsigned int& l,const unsigned int& c) const 

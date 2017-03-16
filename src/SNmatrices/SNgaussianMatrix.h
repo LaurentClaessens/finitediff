@@ -48,11 +48,13 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size> data;     // the first 'c' are unused and remain uninitialized
+        SpecialValue<T> checkForSpecialElements(const unsigned int& i,const unsigned int& j) const;
 
         // populate the matrix from the elements of the given matrix
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
         T _get(unsigned int,unsigned int) const;
+        T& _at(unsigned int,unsigned int);
     public :
         const unsigned int column;
 
@@ -86,26 +88,62 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const un
     populate_from(A);
 }
 
-// GETTER METHODS ---------------------------------------
+// UTILITIES  ---------------------------------------
+
+template <class T,unsigned int tp_size>
+SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const unsigned int& i,const unsigned int& j) const
+{
+    if (i==j)
+    {
+        return SpecialValue<T>(1,true);
+    }
+    if (j!=column)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    if (i<j)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    return SpecialValue<T>(0,false);
+}
+
+// _AT AND _GET METHODS ---------------------------------------
+
+
+// checkForSpecialElements(i,j)
+// checks for element (i,j). If this is a special element 
+// (a one whose value is fixed by the fact that we are a gaussian matrix)
+// then it returns a 'SpecialValue<T>' with its boolean part set to true,
+// meaning that this is a special value.
+// In that case :
+// - _get returns the corresponding value.
+// - _at throws SNchangeNotAllowedException.
+//
+// If this is not a special value, it returns a 'SpecialValue<T>' with boolean part
+// set to false. 
+// In that case :
+// - both _get and _at have to search in the stored values.
+
 
 template <class T,unsigned int tp_size>
 T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
 {
-    if (i>tp_size or j>tp_size)
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
     {
-        throw SNoutOfRangeException(i,j,tp_size);
+        return sv.value;
     }
-    if (i==j)
+    return data.at(j);   
+}
+
+template <class T,unsigned int tp_size>
+T& SNgaussianMatrix<T,tp_size>::_at(unsigned int i,unsigned int j) 
+{
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
     {
-        return 1;
-    }
-    if (j!=column)
-    {
-        return 0;
-    }
-    if (i<j)
-    {
-        return 0;
+        throw SNchangeNotAllowedException(i,j);
     }
     return data.at(j);   
 }
