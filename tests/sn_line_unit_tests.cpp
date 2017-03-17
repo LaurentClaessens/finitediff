@@ -16,10 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <array>
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
+
+#include "../src/SNmatrices/SNline.h"
+#include "../src/SNmatrices/SNmatrix.h"
 
 class SNlineTest : public CppUnit::TestCase
 {
