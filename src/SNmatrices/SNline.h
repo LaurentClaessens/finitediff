@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SNLINE_H__64621__
 #define __SNLINE_H__64621__
 
+#include<array>
 
 /*
 This class describes a matrix line from a matrix of type 'SNmatrix'.
