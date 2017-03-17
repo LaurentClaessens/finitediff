@@ -33,6 +33,7 @@ class MultiplicationTest : public CppUnit::TestCase
     private :
         void test_gauss_times_matrix()
         {
+            echo_function_test("test_gauss_times_matrix");
             auto F=testMatrixF();
             auto G=F.getGaussian(1);    // the gaussian matrix of F
 
@@ -52,7 +53,10 @@ class MultiplicationTest : public CppUnit::TestCase
             ans_G.at(2,0)=0; ans_G.at(2,1)=4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
             ans_G.at(3,0)=0; ans_G.at(3,1)=7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
 
-            CPPUNIT_ASSERT(G==ans_G);
+            double epsilon(0.000001);
+
+            echo_single_test("G==ans_G");
+            CPPUNIT_ASSERT(G.isNumericallyEqual(ans_G,epsilon));
 
             SNmatrix<double,4> GstarF;
             GstarF.at(0,0)=1; GstarF.at(0,1)=0; GstarF.at(0,2)=3; GstarF.at(0,3)=9;
@@ -60,10 +64,12 @@ class MultiplicationTest : public CppUnit::TestCase
             GstarF.at(2,0)=-17; GstarF.at(2,1)=0; GstarF.at(2,2)=-11; GstarF.at(2,3)=-17;
             GstarF.at(3,0)=-14; GstarF.at(3,1)=0; GstarF.at(3,2)=-13./2; GstarF.at(3,3)=-23./2;
 
-            CPPUNIT_ASSERT(G*F==GstarF);
+            echo_single_test("G*F==ans_G");
+            CPPUNIT_ASSERT(GstarF.isNumericallyEqual(G*F,epsilon));
         }
         void test_gauss_times_lower_trig()
         {
+            echo_function_test("test_gauss_times_lower_trig");
             auto A=testMatrixG();
             auto G=A.getGaussian(0); 
 

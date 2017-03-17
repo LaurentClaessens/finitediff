@@ -51,7 +51,7 @@ gauss_unit_tests: $(TESTS_DIR)gauss_unit_tests.cpp
 plu_unit_tests: $(TESTS_DIR)plu_unit_tests.cpp
 	$(CXX) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
 	
-sn_multiplication_unit_tests: $(TESTS_DIR)sn_,ultiplication_unit_tests.cpp
+sn_multiplication_unit_tests: $(TESTS_DIR)sn_multiplication_unit_tests.cpp
 	$(CXX) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
 	
 unit_tests: repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
