@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../src/SNmatrices/SNline.h"
 #include "../src/SNmatrices/SNmatrix.h"
+#include "TestMatrices.cpp"
 
 
 class SNelementTest : public CppUnit::TestCase
@@ -56,6 +57,7 @@ class SNelementTest : public CppUnit::TestCase
         }
         void test_assignation()
         {
+            echo_function_test("test_assignation");
             SNmatrix<int,2> A;
             A.at(0,0)=1;
             A.at(0,1)=20;
@@ -90,13 +92,15 @@ class SNelementTest : public CppUnit::TestCase
             // The matrix given from SNelement.getSNmatrix is the original one, not a copy.
             // So modifying the matrix returned by one element should change the original matrix.
         {
+            echo_function_test("test_chain_matrix_element");
             SNmatrix<int,2> A;
             A.at(0,0)=1;
             A.at(0,1)=20;
 
             SNelement<int,2> el=A.getElement(0,0);
             el.getSNmatrix().at(0,1)=12;
-            CPPUNIT_ASSERT(A.at(0,1)=13);    //12
+            echo_single_test("A.at(0,1)==12");
+            CPPUNIT_ASSERT(A.at(0,1)==12);    
         }
     public :
         void runTest()

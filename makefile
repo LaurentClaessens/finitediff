@@ -45,5 +45,8 @@ sn_line_unit_tests: $(TESTS_DIR)sn_line_unit_tests.cpp
 sn_element_unit_tests: $(TESTS_DIR)sn_element_unit_tests.cpp
 	$(CXX) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
 
+gauss_unit_tests: $(TESTS_DIR)gauss_unit_tests.cpp
+	$(CXX) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
+
 	
-unit_tests: repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests  sn_matrix_unit_tests sn_line_unit_tests sn_element_unit_tests
+unit_tests: repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests  sn_matrix_unit_tests sn_line_unit_tests sn_element_unit_tests gauss_unit_tests
