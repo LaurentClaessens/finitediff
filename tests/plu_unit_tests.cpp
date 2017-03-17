@@ -55,6 +55,7 @@ class pluTest : public CppUnit::TestCase
         }
         void test_permutation()
         {
+            echo_function_test("test_permutation");
             debug_print<<"MON TEST ACTUEL"<<std::endl;
 
             auto A=testMatrixE();
