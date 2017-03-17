@@ -26,9 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNexceptions.cpp"
 #include "TestMatrices.cpp"
 
-#include "../src/DebugPrint.h"
-DebugPrint debug_print;
-
 class ExceptionsTests : public CppUnit::TestCase
 {
     private:

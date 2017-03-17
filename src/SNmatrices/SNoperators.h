@@ -30,10 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNexceptions.cpp"
 
 
-#include "../DebugPrint.h"
-DebugPrint debug_printOP;
-
-
 // PRODUCTS ------------------------------------------
 
 

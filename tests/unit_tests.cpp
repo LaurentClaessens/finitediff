@@ -29,8 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNoperators.h"
 #include "../src/SNplu.h"
 
-#include "../src/DebugPrint.h"
-DebugPrint debug_print;
+#include <iostream>
+std::ostream& debug_print(std::cout);
 
 class SNelementTest : public CppUnit::TestCase
 {

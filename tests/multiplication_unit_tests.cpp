@@ -25,8 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TestMatrices.cpp"
 
-#include "../src/DebugPrint.h"
-
 #include <iostream>
 std::ostream& debug_print(std::cout);
 
