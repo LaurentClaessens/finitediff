@@ -74,7 +74,6 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 }
 ```
 
-
 ### Product operator `*`
 
 The declaration of the product `SNmatrix*SNmatrix` is as follow : 

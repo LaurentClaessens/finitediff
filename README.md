@@ -16,10 +16,10 @@ Non-official purposes include
 
 ## Latest news
 
-* The last working commit is : 87068744b9e9d2388cd2475652a341d5e032097a
-* For that commit, run  `./deploy` for building the binaries and launch the tests.
-* I forgot to create a new branch before to make some major changes (new matrices type, matrix hierarchy, exception throwing ...). So for the moment almost nothing compiles in master. I'm sooooo sorry.
 * I'm currently implementing the PLU decomposition.
+* So I'm implementing many special matrix type (lower triangular, gaussian) and the operators (product, equality) for each pair of them.
+* Many of these operators are returning the answer by value and are relying on the RVO.
+* Many tests are yet written but not yet activated.
 
 ## deploy.sh
 
