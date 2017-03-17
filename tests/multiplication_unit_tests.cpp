@@ -24,8 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 
 #include "TestMatrices.cpp"
+
 #include "../src/DebugPrint.h"
-DebugPrint debug_printMT;
+
+#include <iostream>
+std::ostream& debug_print(std::cout);
 
 
 class MultiplicationTest : public CppUnit::TestCase
@@ -49,21 +52,15 @@ class MultiplicationTest : public CppUnit::TestCase
             SNmatrix<double,4> ans_G;
             ans_G.at(0,0)=1; ans_G.at(0,1)=0; ans_G.at(0,2)=0; ans_G.at(0,3)=0;
             ans_G.at(1,0)=0; ans_G.at(1,1)=1; ans_G.at(1,2)=0; ans_G.at(1,3)=0;
-            ans_G.at(2,0)=0; ans_G.at(2,1)=4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
-            ans_G.at(3,0)=0; ans_G.at(3,1)=7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
+            ans_G.at(2,0)=0; ans_G.at(2,1)=-4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
+            ans_G.at(3,0)=0; ans_G.at(3,1)=-7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
 
-            debug_printMT<<"G==ansG test";
-            debug_printMT.endl();
 
-            debug_printMT<<"G : ";
-            debug_printMT.endl();
-            debug_printMT<<G;
-            debug_printMT.endl();
-            debug_printMT<<"anf_G";
-            debug_printMT.endl();
-            debug_printMT<<ans_G;
 
-            CPPUNIT_ASSERT(G==ans_G);
+
+            double epsilon(0.01);
+            ans_G.subtract(G); 
+            CPPUNIT_ASSERT(ans_G.max_norm()<epsilon);
 
             SNmatrix<double,4> GstarF;
             GstarF.at(0,0)=1; GstarF.at(0,1)=0; GstarF.at(0,2)=3; GstarF.at(0,3)=9;
@@ -71,7 +68,13 @@ class MultiplicationTest : public CppUnit::TestCase
             GstarF.at(2,0)=-17; GstarF.at(2,1)=0; GstarF.at(2,2)=-11; GstarF.at(2,3)=-17;
             GstarF.at(3,0)=-14; GstarF.at(3,1)=0; GstarF.at(3,2)=-13./2; GstarF.at(3,3)=-23./2;
 
-            CPPUNIT_ASSERT(G*F==GstarF);
+
+            CPPUNIT_ASSERT(GstarF.get(2,1)<epsilon);            // test that the gaussian matrix did the work.
+            CPPUNIT_ASSERT(GstarF.get(3,1)<epsilon);
+
+
+            GstarF.subtract(G*F);
+            CPPUNIT_ASSERT(GstarF.max_norm()<epsilon);
         }
         void test_gauss_times_lower_trig()
         {
