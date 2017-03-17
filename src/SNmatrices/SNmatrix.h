@@ -48,8 +48,8 @@ class SNplu;
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
 {
-    //friend class SNmatrixTest;
-    //friend class GaussTest;
+
+    friend class SNmatrixTest;
 
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);

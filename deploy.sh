@@ -32,3 +32,4 @@ function launch_test
 launch_test "exceptions_unit_tests"
 launch_test "repeat_function_unit_tests"
 launch_test "multiplication_unit_tests"
+launch_test "sn_matrix_unit_tests"

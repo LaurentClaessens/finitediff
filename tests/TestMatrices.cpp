@@ -203,11 +203,11 @@ auto testMatrixG()
 
 void echo_function_test(const std::string& s)
 {
-    std::cout<<"   function :"<<s<<std::endl;
+    std::cout<<"   function : "<<s<<std::endl;
 }
 
 void echo_single_test(const std::string& s)
 {
-    std::cout<<"      single test :"<<s<<std::endl;
+    std::cout<<"      single test : "<<s<<std::endl;
 }
 
