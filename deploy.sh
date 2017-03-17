@@ -8,12 +8,6 @@
 # - compile all
 # - tests
 
-function launch_test 
-{
-    echo "** Launching" $1
-    ./build/$1
-}
-
 mkdir build
 git status
 make clean
@@ -27,6 +21,13 @@ make all
 echo
 echo "TESTS --------------------"
 echo
+
+function launch_test 
+{
+    echo "+++ Launching" $1
+    ./build/$1
+    echo "--- Ended " $1
+}
 
 launch_test "exceptions_unit_tests"
 launch_test "repeat_function_unit_tests"

@@ -29,6 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
+//#include <iostream>
+//std::ostream& debug_print(std::cout);
 
 // PRODUCTS ------------------------------------------
 
@@ -84,6 +86,7 @@ template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
 (const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
 {
+    checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
     productGaussianTimesGeneric(ans,A,B);
     return ans;
@@ -93,8 +96,31 @@ template <class U,class V,unsigned int s,unsigned int t>
 SNlowerTriangularMatrix<U,s> operator*
 (const SNgaussianMatrix<U,s>& A, const SNlowerTriangularMatrix<V,t>& B)
 {
+
+    // gaussian * lower trig -> lower trig
+    //
+    // Copy the first 'c' lines (only under the diagonal)
+    // Then compute the product for the other lines (only under the diagonal)
+
+    checkSizeCompatibility(A,B);
+    unsigned int size=A.getSize();
+    unsigned int c=A.column;
     SNlowerTriangularMatrix<U,s> ans;
-    productGaussianTimesGeneric(ans,A,B);
+
+    for (unsigned int i=0;i<c+1;i++)
+    {
+        for (unsigned int j=0;j<i+1;j++)
+        {
+            ans.at(i,j)=B.get(i,j);
+        }
+    }
+    for (unsigned int i=c+1;i<size;i++)
+    {
+        for (unsigned int j=0;j<i+1;j++)
+        {
+            ans.at(i,j)=matrixProductComponent(A,B,i,j);
+        }
+    }
     return ans;
 }
 

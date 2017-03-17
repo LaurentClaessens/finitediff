@@ -186,6 +186,12 @@ auto testMatrixF()
 
 auto testMatrixG()
 {
+
+    // 3 0 0 0
+    // 1 2 0 0
+    // 3 4 5 0
+    // 6 7 8 1
+
     SNlowerTriangularMatrix<double,4> A;
     A.at(0,0)=3; 
     A.at(1,0)=1; A.at(1,1)=2; 
@@ -193,5 +199,15 @@ auto testMatrixG()
     A.at(3,0)=6; A.at(3,1)=7; A.at(3,2)=8; A.at(3,3)=1;
     
     return A;
+}
+
+void echo_function_test(const std::string& s)
+{
+    std::cout<<"   function :"<<s<<std::endl;
+}
+
+void echo_single_test(const std::string& s)
+{
+    std::cout<<"      single test :"<<s<<std::endl;
 }
 

@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TestMatrices.cpp"
 
-#include <iostream>
-std::ostream& debug_print(std::cout);
+//#include <iostream>
+//std::ostream& debug_print(std::cout);
 
 
 class MultiplicationTest : public CppUnit::TestCase
@@ -33,6 +33,7 @@ class MultiplicationTest : public CppUnit::TestCase
     private :
         void test_gauss_times_matrix()
         {
+            echo_function_test("test_gauss_times_matrix");
             auto F=testMatrixF();
             auto G=F.getGaussian(1);    // the gaussian matrix of F
 
@@ -51,9 +52,6 @@ class MultiplicationTest : public CppUnit::TestCase
             ans_G.at(1,0)=0; ans_G.at(1,1)=1; ans_G.at(1,2)=0; ans_G.at(1,3)=0;
             ans_G.at(2,0)=0; ans_G.at(2,1)=-4; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
             ans_G.at(3,0)=0; ans_G.at(3,1)=-7./2; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
-
-
-
 
             double epsilon(0.00001);
             ans_G.subtract(G); 
@@ -74,8 +72,14 @@ class MultiplicationTest : public CppUnit::TestCase
         }
         void test_gauss_times_lower_trig()
         {
-            std::cout<<"test_gauss_times_lower_trig"<<std::endl;
-            auto A=testMatrixG();
+            echo_function_test("test_gauss_times_lower_trig");
+            auto A=testMatrixG();           // lower triangular
+    // A=
+    // 3 0 0 0
+    // 1 2 0 0
+    // 3 4 5 0
+    // 6 7 8 1
+
             auto G=A.getGaussian(0); 
 
             SNmatrix<double,4> ans_G;
@@ -85,8 +89,8 @@ class MultiplicationTest : public CppUnit::TestCase
             ans_G.at(3,0)=-2; ans_G.at(3,1)=0; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
 
             double epsilon(0.00001);
+            echo_single_test("G numerically equal to ans_G");
             CPPUNIT_ASSERT(  G.isNumericallyEqual(ans_G,epsilon)  );
-            CPPUNIT_ASSERT(G==ans_G);
 
             SNmatrix<double,4> GstarA;
 //[3 0 0 0]
@@ -98,7 +102,9 @@ class MultiplicationTest : public CppUnit::TestCase
             GstarA.at(2,0)=0; GstarA.at(2,1)=4; GstarA.at(2,2)=5; GstarA.at(2,3)=0;
             GstarA.at(3,0)=0; GstarA.at(3,1)=7; GstarA.at(3,2)=8; GstarA.at(3,3)=1;
 
-            CPPUNIT_ASSERT(G*A==GstarA);
+            echo_single_test("GstarA numerically equal to G*A");
+
+            CPPUNIT_ASSERT(  GstarA.isNumericallyEqual(G*A,epsilon)  );
         }
 
 
