@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-
 #include "../src/SNmatrices/SNmatrix.h"
 
 #include "TestMatrices.cpp"
@@ -56,7 +55,7 @@ class MultiplicationTest : public CppUnit::TestCase
 
 
 
-            double epsilon(0.01);
+            double epsilon(0.00001);
             ans_G.subtract(G); 
             CPPUNIT_ASSERT(ans_G.max_norm()<epsilon);
 
@@ -70,12 +69,12 @@ class MultiplicationTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(GstarF.get(2,1)<epsilon);            // test that the gaussian matrix did the work.
             CPPUNIT_ASSERT(GstarF.get(3,1)<epsilon);
 
-
             GstarF.subtract(G*F);
             CPPUNIT_ASSERT(GstarF.max_norm()<epsilon);
         }
         void test_gauss_times_lower_trig()
         {
+            std::cout<<"test_gauss_times_lower_trig"<<std::endl;
             auto A=testMatrixG();
             auto G=A.getGaussian(0); 
 
@@ -85,6 +84,8 @@ class MultiplicationTest : public CppUnit::TestCase
             ans_G.at(2,0)=-1; ans_G.at(2,1)=0; ans_G.at(2,2)=1; ans_G.at(2,3)=0;
             ans_G.at(3,0)=-2; ans_G.at(3,1)=0; ans_G.at(3,2)=0; ans_G.at(3,3)=1;
 
+            double epsilon(0.00001);
+            CPPUNIT_ASSERT(  G.isNumericallyEqual(ans_G,epsilon)  );
             CPPUNIT_ASSERT(G==ans_G);
 
             SNmatrix<double,4> GstarA;
@@ -108,8 +109,6 @@ class MultiplicationTest : public CppUnit::TestCase
             test_gauss_times_lower_trig();
         }
 };
-
-
 
 int main ()
 {

@@ -53,8 +53,6 @@ SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
 
 // SNgaussianMatrix * SNgeneric
 // can copy the first 'c' lines.
-
-
 template <class U,class V,unsigned int s,unsigned int t>
 void productGaussianTimesGeneric
 (SNgeneric<U,s>& ans,const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>&B )
@@ -64,13 +62,15 @@ void productGaussianTimesGeneric
         throw IncompatibleMatrixSizeException(s,t);
     }
     const unsigned int c=A.column;
-    for (unsigned int i=c;i<c+1;i++)
+    // copy the 'c' first lines
+    for (unsigned int l=0;l<c+1;l++)
     {
         for (unsigned int j=0;j<s;j++)
         {
-            ans.at(i,j)=B.get(i,j);
+            ans.at(l,j)=B.get(l,j);
         }
     }
+    // real product for the other lines
     for (unsigned int i=c+1;i<s;i++)
     {
         for (unsigned int j=0;j<s;j++)

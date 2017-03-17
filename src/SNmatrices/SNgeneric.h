@@ -70,8 +70,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNgeneric
 {
-    template <class V,unsigned int s>
-    friend std::ostream& operator<<(std::ostream&, SNgeneric<V,s>&);
+    //template <class V,unsigned int s>
+    //friend std::ostream& operator<<(std::ostream&,const SNgeneric<V,s>&);
 
     private :
         virtual T _get(const unsigned int,const unsigned int) const=0;
@@ -98,6 +98,13 @@ class SNgeneric
 
         // return the gaussian matrix for the requested column
         SNgaussianMatrix<T,tp_size> getGaussian(const unsigned int c) const;
+
+        // numerical equality test 'up to epsilon'
+        // If if max norm of "this-A" is strictly larger than epsilon,
+        // return false.
+        // Else return true.
+        template <class V,unsigned int s>
+        bool isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const;
 };
 
 
@@ -138,7 +145,7 @@ SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(unsigned int l) const
 // OPERATORS ------------------------------
 
 template <class V,unsigned int s>
-std::ostream& operator<<(std::ostream& stream, SNgeneric<V,s>& snm)
+std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
 {
     for (unsigned int l=0;l<s;l++)
     {
@@ -215,5 +222,24 @@ void SNgeneric<T,tp_size>::subtract(const SNgaussianMatrix<V,s>& G)
     }
 }
 
+template <class T,unsigned int tp_size>
+template <class V,unsigned int s>
+bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
+{
+    checkSizeCompatibility(*this,A);
+    T diff;
+    for (unsigned int i=0;i<tp_size;i++)
+    {
+        for (unsigned int j=0;j<tp_size;j++)
+        {
+            diff=std::abs(  this->get(i,j)-A.get(i,j)  );
+            if (diff>epsilon)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 #endif

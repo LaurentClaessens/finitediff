@@ -36,7 +36,6 @@ void checkSizeCompatibility(const SNgeneric<U,s>&A, const SNgeneric<V,t>&B )
     }
 }
 
-
 template <class T,class U>
 bool componentWiseeEquality(const T& A,const U& B)
     // test the equality componentwise between to matrix objects.
