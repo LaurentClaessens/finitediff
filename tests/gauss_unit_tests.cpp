@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestAssert.h>
 
 #include "../src/SNmatrices/SNline.h"
+#include "../src/SNplu.h"
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
@@ -101,6 +102,7 @@ class GaussTest : public CppUnit::TestCase
         }
         void test_upper_triangular()
         {
+            echo_function_test("test_upper_triangular");
             double epsilon(0.0000001);
             auto A=testMatrixB();
             /*
@@ -112,9 +114,11 @@ class GaussTest : public CppUnit::TestCase
             auto plu_A= A.getPLU();
 
             // check that 'A' is turned into its 'U'
+            echo_single_test("plu_A.getU()");
             CPPUNIT_ASSERT(plu_A.getU()==A);
-            A.subtract(A_U); 
-            CPPUNIT_ASSERT(A.max_norm()<epsilon);
+
+            echo_single_test("A==A_U");
+            CPPUNIT_ASSERT(A.isNumericallyEqual(A_U,epsilon));
 
             auto B=testMatrixA();
                 /*
