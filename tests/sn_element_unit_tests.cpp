@@ -67,7 +67,7 @@ class SNelementTest : public CppUnit::TestCase
 
             SNmatrix<int,2> B;
             B.at(0,0)=2;
-            B.at(1,1)=5.3;              // notice the implicit rounding to 5
+            B.at(1,1)=5;
 
             SNelement<int,2> el=A.getElement(0,0);
             CPPUNIT_ASSERT(el.getValue()==1);

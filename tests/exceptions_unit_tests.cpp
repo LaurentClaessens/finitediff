@@ -46,11 +46,14 @@ class ExceptionsTests : public CppUnit::TestCase
         {
             SNlowerTriangularMatrix<int,4> A;
             SNmatrix<double,2> B;
-            CPPUNIT_ASSERT_THROW(A==B,IncompatibleMatrixSizeException);
+
+            // std::cout<<  is in order to avoid the warning about "equality comparison result unused"
+            // I do no know how to do better ...
+            CPPUNIT_ASSERT_THROW(std::cout<<(A==B),IncompatibleMatrixSizeException);
 
             SNmatrix<double,2> C;
             SNmatrix<double,3> D;
-            CPPUNIT_ASSERT_THROW(auto K=C*D,IncompatibleMatrixSizeException);
+            CPPUNIT_ASSERT_THROW(C*D,IncompatibleMatrixSizeException);
         }
 
     public:
