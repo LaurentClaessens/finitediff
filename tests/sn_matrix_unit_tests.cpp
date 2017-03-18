@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TestMatrices.cpp"
 
-//#include <iostream>
-//std::ostream& debug_print(std::cout);
+#include <iostream>
+std::ostream& debug_print(std::cout);
 
 
 class SNmatrixTest : public CppUnit::TestCase
@@ -56,15 +56,6 @@ class SNmatrixTest : public CppUnit::TestCase
 
             auto el2=A.getElement(0,1);
             CPPUNIT_ASSERT(el2.getValue()==3/5);
-
-            auto back1=el2.getSNmatrix().at(2,1);
-            CPPUNIT_ASSERT(back1==8);
-
-            // test if the matrix is a reference 
-            // (thus 'automatically' updates itself)
-            A.at(2,2)=12;
-            auto back2=el2.getSNmatrix().at(2,2);
-            CPPUNIT_ASSERT(back2==12);           
         }
         void test_populate()
         {
@@ -92,6 +83,7 @@ class SNmatrixTest : public CppUnit::TestCase
      1  2   6.1
     */
 
+            echo_single_test("test the max value on a column");
             auto max0=A.getLargerOnColumn(0);
             auto max1=A.getLargerOnColumn(1);
             auto max2=A.getLargerOnColumn(2);
@@ -101,12 +93,14 @@ class SNmatrixTest : public CppUnit::TestCase
 
 
             A.at(2,2)=-2; 
-            max0=A.getLargerUnderDiagonal(0);           // By the way, test the assignation operator.
-            max1=A.getLargerUnderDiagonal(1);
-            max2=A.getLargerUnderDiagonal(2);
-            CPPUNIT_ASSERT(max0.getValue()==2);
-            CPPUNIT_ASSERT(max1.getValue()==2);
-            CPPUNIT_ASSERT(max2.getValue()==-2);
+            auto bmax0=A.getLargerUnderDiagonal(0);           // By the way, test the assignation operator.
+            auto bmax1=A.getLargerUnderDiagonal(1);
+            auto bmax2=A.getLargerUnderDiagonal(2);
+
+            echo_single_test("test the max value under the diagonal");
+            CPPUNIT_ASSERT(bmax0.getValue()==2);
+            CPPUNIT_ASSERT(bmax1.getValue()==2);
+            CPPUNIT_ASSERT(bmax2.getValue()==-2);
         }
         void test_copy_constructor()
             // test the copy constructor and the equality operator.
@@ -120,6 +114,7 @@ class SNmatrixTest : public CppUnit::TestCase
             A.at(1,1)=4;
 
             auto B(A);
+            echo_single_test("equality between the matrix and the copied one");
             CPPUNIT_ASSERT(A==B);
         }
         void test_swap_line()

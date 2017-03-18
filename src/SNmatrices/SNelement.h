@@ -26,8 +26,7 @@ This class describes a matrix element from a matrix of type 'SNmatrix'.
 
 An element contains
 - line and column
-- a pointer to the matrix which it belongs to.
-  The latter it only accessible to the user trough the method 'getSNmatrix' that returns a reference
+- its value
 */
 
 
@@ -41,62 +40,35 @@ class SNmatrix;
 template <class T,unsigned int tp_size>
 class SNelement
 {
-    private :
-        unsigned int p_line;
-        unsigned int p_column;
-        // Safe to use a raw pointer because I do not request any ownership.
-        // The matrix is owned by someone else and will be released by that guy.
-        SNmatrix<T,tp_size>* snmatrix;
+    private:
+        const T value;
     public :
-        SNelement(unsigned int line,unsigned int column,SNmatrix<T,tp_size>& snmatrix);
+        SNelement(const unsigned int line,const unsigned int column,const T v);
 
         SNelement<T,tp_size> operator=(const SNelement<T,tp_size>& other);
 
-        unsigned int line;
-        unsigned int column;
+        const unsigned int line;
+        const unsigned int column;
 
         // return the value of the matrix element
-        T& getValue() const;
-
-        // return the matrix from which the element is extracted
-        SNmatrix<T,tp_size>& getSNmatrix() const;
+        T getValue() const;
 };
 
 // CONSTRUCTOR, ASSIGNATION, ...  -------------------------------------------
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size>::SNelement(unsigned int l,unsigned int c,SNmatrix<T,tp_size>& snm) : 
-    p_line(l),
-    p_column(c),
-    snmatrix(&snm),
-    line(p_line),
-    column(p_column)
+SNelement<T,tp_size>::SNelement(const unsigned int l,const unsigned int c, const T v) : 
+    value(v),
+    line(l),
+    column(c)
 {}
-
-template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNelement<T,tp_size>::operator=(const SNelement<T,tp_size>& other) 
-{
-    if (this!=&other)
-    {
-        line=other.line;
-        column=other.column;
-        snmatrix=other.snmatrix;
-    }
-    return *this;
-}
 
 // OTHER FUNCTIONALITIES -------------------------------------------
 
 template <class T,unsigned int tp_size>
-T& SNelement<T,tp_size>::getValue() const
+T SNelement<T,tp_size>::getValue() const
 {
-   return getSNmatrix().at(line,column);
-}
-
-template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>& SNelement<T,tp_size>::getSNmatrix() const
-{
-    return *snmatrix;
+   return value;
 }
 
 #endif
