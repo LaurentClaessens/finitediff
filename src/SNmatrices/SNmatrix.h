@@ -59,7 +59,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
         // the larger element on column 'col' under (or on) the line 'f_line'. 
-        SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col);
+        SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col) const;
 
         // Substrat the given vector (line) from the line 'line'
         // Using the Gauss's elimination one need to do many differences like
@@ -74,10 +74,10 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // In case of equality, return the last one (the larger line).
         //   The template type T has to accept arithmetic manipulations
         //   like abs, comparison.
-        SNelement<T,tp_size> getLargerOnColumn(unsigned int col);
+        SNelement<T,tp_size> getLargerOnColumn(unsigned int col) const;
         // return the largest (absolute value) element under the diagonal
         // on the given column.
-        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col);
+        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col) const;
 
         // From the line number "line", return a line normalized
         // in such a way that the first (non zero) element is 1.
@@ -94,7 +94,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         T max_norm() const;
 
         // return the matrix element on given (line,column).
-        SNelement<T,tp_size> getElement(unsigned int line, unsigned int col);
+        SNelement<T,tp_size> getElement(unsigned int line, unsigned int col) const;
 
         // Use the Gauss'elimination to transform the SNmatrix
         // to an upper triangular matrix.
@@ -126,9 +126,9 @@ SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  
 
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col)
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col) const
 {
-    return SNelement<T,tp_size>(line,col,*this);
+    return SNelement<T,tp_size>(line,col,this->get(line,col));
 }
 
 
@@ -167,7 +167,7 @@ T SNmatrix<T,tp_size>::max_norm() const
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col) 
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col) const
 {
     T max_val=0;
     unsigned int max_line=0;
@@ -184,13 +184,13 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, un
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) 
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) const
 {
     return getLargerUnder(0,col);
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int col) 
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int col)  const
 {
     return getLargerUnder(col,col);
 }

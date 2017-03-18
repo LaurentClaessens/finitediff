@@ -69,45 +69,14 @@ class SNelementTest : public CppUnit::TestCase
             B.at(0,0)=2;
             B.at(1,1)=5.3;              // notice the implicit rounding to 5
 
-            SNelement<int,2> el=A.getElement(0,0);
+            SNelement<int,2> el(A.getElement(0,0));
             CPPUNIT_ASSERT(el.getValue()==1);
-
-            el=B.getElement(0,0);                   // re-assignation. Now the matrix of 'el' should be B, no A anymore.
-
-            // New value is ok
-            CPPUNIT_ASSERT(el.getValue()==2);
-            // No more the values of the old matrix
-            CPPUNIT_ASSERT(!(el.getSNmatrix().at(1,1)==4));
-
-            // Correct values of the new matrix
-            CPPUNIT_ASSERT(el.getSNmatrix().at(1,1)==5);
-            CPPUNIT_ASSERT(el.getSNmatrix().getElement(1,1).getValue()==5);
-
-            // check that A itself is not modified.
-            CPPUNIT_ASSERT(!(A.at(1,1)==5));
-            CPPUNIT_ASSERT(A.at(1,1)==4);
-            CPPUNIT_ASSERT(A.at(0,0)==1);
         };
-        void test_chain_matrix_element()
-            // The matrix given from SNelement.getSNmatrix is the original one, not a copy.
-            // So modifying the matrix returned by one element should change the original matrix.
-        {
-            echo_function_test("test_chain_matrix_element");
-            SNmatrix<int,2> A;
-            A.at(0,0)=1;
-            A.at(0,1)=20;
-
-            SNelement<int,2> el=A.getElement(0,0);
-            el.getSNmatrix().at(0,1)=12;
-            echo_single_test("A.at(0,1)==12");
-            CPPUNIT_ASSERT(A.at(0,1)==12);    
-        }
     public :
         void runTest()
         {
             test_delete();
             test_assignation();
-            test_chain_matrix_element();
         }
 };
 

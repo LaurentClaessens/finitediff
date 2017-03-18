@@ -27,8 +27,6 @@ This class describes a matrix line from a matrix of type 'SNmatrix'.
 
 An element contains
 - its line number
-- a pointer to the matrix which it belongs to.
-  The latter it only accessible to the user trough the method 'getSNmatrix' that returns a reference
 */
 
 
@@ -69,9 +67,6 @@ class SNline
         //  - get returns a value.
         T& at(const unsigned int i);
         T get(const unsigned int i) const;
-
-        // return the matrix from which the element is extracted
-        SNmatrix<T,tp_size>& getSNmatrix() const;
 
         // return the number of the first non-zero element in the line.
         unsigned int firstNonZeroColumn() const;
@@ -149,12 +144,6 @@ T SNline<T,tp_size>::get(const unsigned int i) const
     }
     return data.at(i);
 };
-
-template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>& SNline<T,tp_size>::getSNmatrix() const
-{
-    return *snmatrix;
-}
 
 // OTHER FUNCTIONALITIES -------------------------------------------
 
