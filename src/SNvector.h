@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SNVECTOR_H__170345
+#ifndef __SNVECTOR_H__170345_
 #define __SNVECTOR_H__170345_
 
 #include <array>
