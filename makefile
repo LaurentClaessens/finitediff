@@ -57,7 +57,10 @@ plu_unit_tests: $(TESTS_DIR)plu_unit_tests.cpp
 	
 sn_multiplication_unit_tests: $(TESTS_DIR)sn_multiplication_unit_tests.cpp
 	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
+
+sn_permutation_unit_tests: $(TESTS_DIR)sn_permutation_unit_tests.cpp
+	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp    -lcppunit -o $(BUILD_DIR)$@
 	
 unit_tests: repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
-	sn_line_unit_tests sn_element_unit_tests gauss_unit_tests plu_unit_tests sn_multiplication_unit_tests
+	sn_line_unit_tests sn_element_unit_tests gauss_unit_tests sn_permutation_unit_tests plu_unit_tests sn_multiplication_unit_tests
 
