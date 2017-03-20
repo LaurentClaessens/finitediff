@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 
 #include "SNgeneric.h"
+#include "m_num.h"
 #include "../SNexceptions.cpp"
 
 
@@ -43,6 +44,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // forward definition
 
+
+
 template <class T,unsigned int tp_size>
 class SNgeneric;
 template <class T>
@@ -57,18 +60,18 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
-        SpecialValue<T> checkForSpecialElements(const unsigned int& i,const unsigned int& j) const;
+        SpecialValue<T> checkForSpecialElements(const m_num& i,const m_num& j) const;
 
         // populate the matrix from the elements of the given matrix
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
-        T _get(unsigned int,unsigned int) const override;
-        T& _at(unsigned int,unsigned int) override;
+        T _get(m_num,m_num) const override;
+        T& _at(m_num,m_num) override;
     public :
-        const unsigned int column;
+        const m_num column;
 
         template <class U,unsigned int s>
-        SNgaussianMatrix(const SNgeneric<U,s>& , const unsigned int&);
+        SNgaussianMatrix(const SNgeneric<U,s>& , const m_num&);
 
         
 };
@@ -85,7 +88,7 @@ void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
     }
 
     T m = A.get(column,column);
-    for (unsigned int i=column+1;i<tp_size;i++)
+    for (m_num i=column+1;i<tp_size;i++)
     {
         this->at(i,column)=-A.get(i,column)/m;
     }
@@ -93,7 +96,7 @@ void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 
 template <class T,unsigned int tp_size> 
 template<class U,unsigned int s>
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const unsigned int& c):
+SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const m_num& c):
     column(c)
 {
     populate_from(A);
@@ -102,7 +105,7 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const un
 // UTILITIES  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const unsigned int& i,const unsigned int& j) const
+SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
 {
     if (i==j)
     {
@@ -138,7 +141,7 @@ SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const unsig
 
 
 template <class T,unsigned int tp_size>
-T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
+T SNgaussianMatrix<T,tp_size>::_get(m_num i,m_num j) const
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
@@ -149,7 +152,7 @@ T SNgaussianMatrix<T,tp_size>::_get(unsigned int i,unsigned int j) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNgaussianMatrix<T,tp_size>::_at(unsigned int i,unsigned int j) 
+T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j) 
 
     // The elements are stored in 
     //   std::array<T,tp_size> data

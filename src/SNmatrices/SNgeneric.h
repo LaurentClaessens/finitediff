@@ -62,6 +62,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SNgaussianMatrix.h"
 #include "SNline.h"
+#include "m_num.h"
 
 #include "MathUtilities.h"
 
@@ -70,23 +71,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNgeneric
 {
-    //template <class V,unsigned int s>
-    //friend std::ostream& operator<<(std::ostream&,const SNgeneric<V,s>&);
-
     private :
-        virtual T& _at(const unsigned int,const unsigned int)=0;
-        virtual T _get(const unsigned int,const unsigned int) const=0;
+        virtual T _get(const m_num,const m_num) const=0;
+        virtual T& _at(const m_num,const m_num)=0;
 
         // throws 'SNoutOfRangeException' if the requested element is out of
         // range (larger than 'tp_size').
-        virtual void checkRangeCorectness(const unsigned int&,const unsigned int&) const final;
+        virtual void checkRangeCorectness(const m_num&,const m_num&) const final;
     public:
         virtual unsigned int getSize() const final;
 
-        virtual T& at(unsigned int,unsigned int) final;
-        virtual T get(const unsigned int&,const unsigned int&) const final;
+        virtual T& at(const m_num,const m_num) final;
+        virtual T get(const m_num&,const m_num&) const final;
 
-        virtual SNline<T,tp_size> getSNline(unsigned int l) const;
+        virtual SNline<T,tp_size> getSNline(m_num l) const;
 
         // subtract the given matrix from this matrix.
         // This is in-place replacement. Thus the least const in the 
@@ -97,7 +95,7 @@ class SNgeneric
         void subtract(const SNgaussianMatrix<V,s>&);
 
         // return the gaussian matrix for the requested column
-        SNgaussianMatrix<T,tp_size> getGaussian(const unsigned int c) const;
+        SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
 
         // numerical equality test 'up to epsilon'
         // If if max norm of "this-A" is strictly larger than epsilon,
@@ -123,7 +121,7 @@ class SpecialValue
 };
 
 template <class T,unsigned int tp_size>
-void SNgeneric<T,tp_size>::checkRangeCorectness(const unsigned int& l,const unsigned int& c) const 
+void SNgeneric<T,tp_size>::checkRangeCorectness(const m_num& l,const m_num& c) const 
 {
     if (l>tp_size or c>tp_size)
     {
@@ -132,10 +130,10 @@ void SNgeneric<T,tp_size>::checkRangeCorectness(const unsigned int& l,const unsi
 }
 
 template <class T,unsigned int tp_size>
-SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(unsigned int l) const
+SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(m_num l) const
 {
     std::array<T,tp_size> al;
-    for (unsigned int c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;c++)
     {
         al.at(c)=this->get(l,c);
     }
@@ -147,7 +145,7 @@ SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(unsigned int l) const
 template <class V,unsigned int s>
 std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
 {
-    for (unsigned int l=0;l<s;l++)
+    for (m_num l=0;l<s;l++)
     {
         stream<<snm.getSNline(l)<<std::endl;
     }
@@ -165,14 +163,14 @@ unsigned int SNgeneric<T,tp_size>::getSize() const
 // GET AND AT METHODS ------------------------------
 
 template <class T,unsigned int tp_size>
-T SNgeneric<T,tp_size>::get(const unsigned int& i,const unsigned int& j) const
+T SNgeneric<T,tp_size>::get(const m_num& i,const m_num& j) const
 {
     checkRangeCorectness(i,j);
     return _get(i,j);
 }
 
 template <class T,unsigned int tp_size>
-T& SNgeneric<T,tp_size>::at(const unsigned int i,const unsigned int j)
+T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
 {
     checkRangeCorectness(i,j);
     return _at(i,j);
@@ -183,7 +181,7 @@ T& SNgeneric<T,tp_size>::at(const unsigned int i,const unsigned int j)
 
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const unsigned int c) const
+SNgaussianMatrix<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
 {
     return SNgaussianMatrix<T,tp_size>(*this,c);
 }
@@ -194,9 +192,9 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgeneric<V,s>& S)
 {
     checkSizeCompatibility(*this,S);
-    for (unsigned int i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;i++)
     {
-        for (unsigned int j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;j++)
         {
             this->at(i,j)-=S.get(i,j);
         }
@@ -208,15 +206,15 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgaussianMatrix<V,s>& G)
 {
     checkSizeCompatibility(*this,G);
-    unsigned int c=G.column;
+    m_num c=G.column;
 
     // subtract the non trivial "half column"
-    for (unsigned int i=c+1;i<tp_size;i++)
+    for (m_num i=c+1;i<tp_size;i++)
     {
         this->at(i,c)-=G.get(i,c);
     }
     // subtract the diagonal
-    for (unsigned int i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;i++)
     {
         this->at(i,i)-=1;
     }
@@ -228,9 +226,9 @@ bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const doub
 {
     checkSizeCompatibility(*this,A);
     T diff;
-    for (unsigned int i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;i++)
     {
-        for (unsigned int j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;j++)
         {
             diff=std::abs(  this->get(i,j)-A.get(i,j)  );
             if (diff>epsilon)
