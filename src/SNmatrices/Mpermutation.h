@@ -57,19 +57,38 @@ class Mpermutation
 {
     //template <unsigned int s>
     //friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
+
+    template <unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, Mpermutation<s>);
     
     private:
         std::array<unsigned int,tp_size> data;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
+        Mpermutation(); 
 
-        // return the image of 'k' by the permutation.
-        unsigned int operator()(const unsigned int k) const;
 
         // the multiplication "permutation1 * permutation2" 
         // is the composition.
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
+        
+        // return by value the image of 'k' by the permutation.
+        unsigned int operator()(const unsigned int k) const;
+
+        // return by reference the image of 'k' by the permutation
+        // allows to populate.
+        unsigned int& at(const unsigned int k);
 };
+
+
+// GETTER METHODS ----------------------------
+
+
+template <unsigned int tp_size>
+unsigned int& Mpermutation<tp_size>::at(const unsigned int k)
+{
+    return data.at(k);
+}
 
 // CONSTRUCTOR ----------------------------
 
@@ -77,6 +96,9 @@ template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
     data(d)
 {}
+
+template <unsigned int tp_size>
+Mpermutation<tp_size>::Mpermutation() {}
 
 // OPERATORS -------------------------------
 

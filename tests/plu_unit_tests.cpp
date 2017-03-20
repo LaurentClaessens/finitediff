@@ -61,7 +61,7 @@ class pluTest : public CppUnit::TestCase
             auto A=testMatrixE();
             auto plu=A.getPLU();
             std::cout<<"La permutation :"<<std::endl;
-            std::cout<<plu.getPermutation()<<std::endl;
+            std::cout<<plu.getMpermutation()<<std::endl;
         }
     public:
         void runTest()

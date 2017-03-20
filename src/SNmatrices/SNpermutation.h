@@ -40,11 +40,28 @@ class SNpermutation : public SNgeneric<T,tp_size>
     
     private:
         Mpermutation<tp_size> data;
+
+        std::array<T,tp_size> d_foo;
+
         T& _at(const m_num i,const m_num j) override;
         T _get(const m_num i,const m_num j) const override;
     public :
-        SNpermutation(Mpermutation<tp_size> d); 
+        SNpermutation(const Mpermutation<tp_size>& d); 
+        SNpermutation(); 
+
+        Mpermutation<tp_size> getMpermutation() const;
 };
+
+// CONSTRUCTORS -------------------------------
+
+
+template <class T,unsigned int tp_size>
+SNpermutation<T,tp_size>::SNpermutation(const Mpermutation<tp_size>& d) :
+    data(d)
+{}
+
+template <class T,unsigned int tp_size>
+SNpermutation<T,tp_size>::SNpermutation() {}
 
 
 // OPERATORS -------------------------------
@@ -65,7 +82,23 @@ template <class T,unsigned int tp_size>
 T& SNpermutation<T,tp_size>::_at(const m_num i,const m_num j)
 {
     std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
-    return data.at(0);
+    std::cout<<"This should return the template parameter T"<<std::endl;
+    return d_foo.at(0);
 };
+
+template <class T,unsigned int tp_size>
+T SNpermutation<T,tp_size>::_get(const m_num i,const m_num j) const 
+{
+    std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
+    std::cout<<"This should return the template parameter T"<<std::endl;
+    return d_foo.at(0);
+};
+
+template <class T,unsigned int tp_size>
+Mpermutation<tp_size> SNpermutation<T,tp_size>::getMpermutation() const
+{
+    std::cout<<"Not yet implemented : getMpermutation"<<std::endl;
+    return Mpermutation<tp_size>();
+}
 
 #endif
