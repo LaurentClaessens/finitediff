@@ -44,11 +44,6 @@ class SNpermutationsTest : public CppUnit::TestCase
     public:
         void runTest()
         {
-            test_reference();
-            test_A(testMatrixA(),testMatrixA_U());
-            test_A(testMatrixB(),testMatrixB_U());
-            test_A(testMatrixD(),testMatrixD_U());
-            test_A(testMatrixE(),testMatrixE_U());
             test_permutation();
         }
 };
