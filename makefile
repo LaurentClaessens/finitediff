@@ -31,7 +31,7 @@ RepeatFunction : $(SRC_DIR)RepeatFunction.cpp $(SRC_DIR)RepeatFunction.h
 finitediff: RepeatFunction $(SRC_DIR)RepeatFunction.cpp $(SRC_DIR)RepeatFunction.h
 	$(COMPILATOR) $(CXXFLAGS)   $(SRC_DIR)finitediff.cpp $(BUILD_DIR)RepeatFunction.o  -o $(BUILD_DIR)finitediff
 repeat_function_unit_tests: RepeatFunction  $(TESTS_DIR)repeat_function_unit_tests.cpp
-	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp $(BUILD_DIR)RepeatFunction.o  -lcppunit -o $(BUILD_DIR)$@.o
+	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp $(BUILD_DIR)RepeatFunction.o  -lcppunit -o $(BUILD_DIR)$@
 
 m_num: $(SNMATRICES_DIR)m_num.cpp  $(SNMATRICES_DIR)m_num.h
 	$(COMPILATOR) $(CXXFLAGS)  -c   $(SNMATRICES_DIR)$@.cpp   -o $(BUILD_DIR)$@.o
