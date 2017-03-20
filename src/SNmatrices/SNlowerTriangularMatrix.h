@@ -36,8 +36,8 @@ class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
-        T _get(const unsigned int,const unsigned int) const;
-        T& _at(unsigned int,unsigned int);
+        T _get(const unsigned int,const unsigned int) const override;
+        T& _at(unsigned int,unsigned int) override;
     public :
         SNlowerTriangularMatrix();
 

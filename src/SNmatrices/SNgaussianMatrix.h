@@ -62,8 +62,8 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
         // populate the matrix from the elements of the given matrix
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
-        T _get(unsigned int,unsigned int) const;
-        T& _at(unsigned int,unsigned int);
+        T _get(unsigned int,unsigned int) const override;
+        T& _at(unsigned int,unsigned int) override;
     public :
         const unsigned int column;
 
