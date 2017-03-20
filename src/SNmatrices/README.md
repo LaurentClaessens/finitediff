@@ -46,10 +46,11 @@ The template arguments `T` and `tp_size` have the same meaning.
 
 A `SNelement` contains a reference to its matrix. 
 
-### `SNpermutation`
+### Permutations
 
-The PLU decomposition contains _a priori_ a permutation matrix `P`. This is a large matrix full of zeroes, so I choose to not implement it as a matrix. Instead we have a class `SNpermutation` which will act on vectors in the same way as a matrix, but which will be implemented as only a list of permutations instead as the full matrix.
-
+* `Mpermutation` has one template parameter : `tp_size` which is the size of the set on which it acts.
+* `SNpermutation` is the associated matrix. It is obviously composed of many zero's and some ones. But these are `0` and `1` of the template type `T`.
+ 
 ### `SNlowerTriangularMatrix`
 
 There is a subtlety with the `at` method.

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SNmatrices/SNmatrix.h"
 #include "SNmatrices/SNpermutation.h"
+#include "SNmatrices/Mpermutation.h"
 
 
 // THE CLASS HEADER -----------------------------------------
@@ -33,14 +34,14 @@ class SNplu
     friend SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU();
 
     private :
-        SNpermutation<tp_size> permutations;
+        SNpermutation<T,tp_size> permutations;
         SNmatrix<T,tp_size> m_L;
         SNmatrix<T,tp_size>& m_U;
     public:
         SNplu(SNmatrix<T,tp_size>& original);
 
         SNmatrix<T,tp_size>& getU();
-        SNpermutation<tp_size> getPermutation() const;
+        Mpermutation<tp_size> getPermutation() const;
 };
 
 // CONSTRUCTORS ---------------------------------------------- 
@@ -61,7 +62,7 @@ SNmatrix<T,tp_size>& SNplu<T,tp_size>::getU()
 }
 
 template <class T,unsigned int tp_size>
-SNpermutation<tp_size> SNplu<T,tp_size>::getPermutation() const
+Mpermutation<tp_size> SNplu<T,tp_size>::getPermutation() const
 {
     return  permutations;
 }

@@ -21,39 +21,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
+#include "Mpermutation.h"
+
 /*
- This class represents a permutation matrix. It could be a 'SNmatrix', but since it is
- for sure a sparse matrix, we use a simpler implementation.
+ This class represents a permutation matrix. 
 
+ The permutation is recorded in a `Mpermutation` object.
 
- The permutation is recorded in the array
-        std::array<unsigned int,tp_size> permutations;
- The array
- (1,4,4,5)
- represents the permutation
- (1,1)(2,4)(3,4)(4,5).
 */
 
 // THE CLASS HEADER -----------------------------------------
 
-template <unsigned int tp_size>
-class SNpermutation
+template <class T,unsigned int tp_size>
+class SNpermutation : public SNgeneric<T,tp_size>
 {
-    template <unsigned int s>
-    friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
+    template <class V,unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, SNpermutation<V,s>);
     
     private:
-        std::array<unsigned int,tp_size> data;
-
-    public:
-        unsigned int& at(const unsigned int i);
+        Mpermutation<tp_size> data;
+        T& _at(const unsigned int i,const unsigned int j);
+        T _get(const unsigned int i,const unsigned int j) const;
+    public :
+        SNpermutation(Mpermutation<tp_size> d); 
 };
 
 
 // OPERATORS -------------------------------
 
-template <unsigned int s>
-std::ostream& operator<<(std::ostream& stream, SNpermutation<s> perm)
+template <class T,unsigned int s>
+std::ostream& operator<<(std::ostream& stream, SNpermutation<T,s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
@@ -62,14 +59,13 @@ std::ostream& operator<<(std::ostream& stream, SNpermutation<s> perm)
     return stream;
 }
 
-template <unsigned int tp_size>
-unsigned int& SNpermutation<tp_size>::at(const unsigned int i)
+// _AT AND _GET -------------------------------
+
+template <class T,unsigned int tp_size>
+T& SNpermutation<T,tp_size>::_at(const unsigned int i,const unsigned int j)
 {
-    if (i>tp_size)
-    {
-        std::cout<<"This SNpermutation has size "<<tp_size<<". Attempt to access element "<<i<<std::endl;
-    }
-    return data.at(i);
+    std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
+    return data.at(0);
 };
 
 #endif

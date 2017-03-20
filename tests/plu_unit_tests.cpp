@@ -53,10 +53,10 @@ class pluTest : public CppUnit::TestCase
             double epsilon(0.0000001);
             CPPUNIT_ASSERT(mU.max_norm()<epsilon);
         }
-        void test_permutation()
+        void test_plu_permutation()
         {
-            echo_function_test("test_permutation");
-            debug_print<<"MON TEST ACTUEL"<<std::endl;
+            echo_function_test("test_plu_permutation");
+            debug_print<<"THE PLU TEST TO BE STILLE IMPLEMENTED"<<std::endl;
 
             auto A=testMatrixE();
             auto plu=A.getPLU();
@@ -71,7 +71,7 @@ class pluTest : public CppUnit::TestCase
             test_A(testMatrixB(),testMatrixB_U());
             test_A(testMatrixD(),testMatrixD_U());
             test_A(testMatrixE(),testMatrixE_U());
-            test_permutation();
+            test_plu_permutation();
         }
 };
 
