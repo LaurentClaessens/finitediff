@@ -65,6 +65,10 @@ class Mpermutation
 
         // return the image of 'k' by the permutation.
         unsigned int operator()(const unsigned int k) const;
+
+        // the multiplication "permutation1 * permutation2" 
+        // is the composition.
+        Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
 };
 
 // CONSTRUCTOR ----------------------------
@@ -75,6 +79,17 @@ Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
 {}
 
 // OPERATORS -------------------------------
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b)
+{
+    Mpermutation<tp_size> new_perm();
+    for (unsigned int i=0;i<tp_size;++i)
+    {
+        new_perm.at(i)=b(*this(i));
+    }
+    return new_perm;
+}
 
 template <unsigned int tp_size>
 unsigned int Mpermutation<tp_size>::operator()(const unsigned int k) const
@@ -91,5 +106,7 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
     }
     return stream;
 }
+
+        Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
 
 #endif
