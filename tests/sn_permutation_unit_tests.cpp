@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <array>
+
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
@@ -34,17 +36,82 @@ class SNpermutationsTest : public CppUnit::TestCase
         void test_permutation()
         {
             echo_function_test("test_permutation");
-            debug_print<<"MON TEST ACTUEL"<<std::endl;
 
-            auto A=testMatrixE();
-            auto plu=A.getPLU();
-            std::cout<<"La permutation :"<<std::endl;
-            std::cout<<plu.getPermutation()<<std::endl;
+            std::array<int, 4> a1{ {1, 2, 3,4} };
+            Mepermutation<4> perm1(a1);         // there should be some errors here
+
+
+            std::array<int, 4> a2{ {0,1, 2, 3} };
+            Mepermutation<4> permID(a2);
+            CPPUNIT_ASSERT(permID(0)==0);
+            CPPUNIT_ASSERT(permID(1)==1);
+            CPPUNIT_ASSERT(permID(2)==2);
+            CPPUNIT_ASSERT(permID(3)==3);
+
+            CPPUNIT_ASSERT(permID(12)==3);      // should do something about that
+            CPPUNIT_ASSERT(permID(6.1)==3);
+
+            std::array<int, 4> a3{ {1,2, 0, 3} };
+            Mepermutation<4> perm2(a3);
+            CPPUNIT_ASSERT(perm2(0)==1);
+            CPPUNIT_ASSERT(perm2(1)==2);
+            CPPUNIT_ASSERT(perm2(2)==0);
+            CPPUNIT_ASSERT(perm2(3)==3);
+         }
+        void test_identiry()
+        {
+            echo_function_test("test_identiry");
+
+            std::array<int, 4> aID{ {0,1, 2, 3} };
+            Mepermutation<4> permID(a2);
+
+            std::array<int, 4> a3{ {1,2, 0, 3} };
+            Mepermutation<4> perm3(a3);
+
+            std::array<int, 4> a4{ {1,2, 0, 3} };
+            Mepermutation<4> perm4(a4);
+
+            std::array<int, 4> aa{ {1,2, 0, 3} };
+            Mepermutation<4> ans_p1(aa);
+
+            std::array<int, 4> a5{ {3,2, 1, 0} };
+            Mepermutation<4> perm5(a5);
+
+            std::array<int, 4> ab{ {3,0, 2, 1} };
+            Mepermutation<4> ans_p2(ab);
+
+            CPPUNIT_ASSERT(perm3==permID*perm3);
+            CPPUNIT_ASSERT(perm4==permID*perm4);
+            CPPUNIT_ASSERT(perm5==permID*perm5);
+            CPPUNIT_ASSERT(ans_p1==ans_p1*permID);
+            CPPUNIT_ASSERT(ans_p2==ans_p2*permID);
+        }
+        void test_product()
+        {
+            echo_function_test("test_product");
+            std::array<int, 4> a3{ {1,2, 0, 3} };
+            Mepermutation<4> perm3(a3);
+
+            std::array<int, 4> a4{ {1,2, 0, 3} };
+            Mepermutation<4> perm4(a4);
+
+            std::array<int, 4> aa{ {1,2, 0, 3} };
+            Mepermutation<4> ans_p1(aa);
+            CPPUNIT_ASSERT(ans_p1==perm3*perm4);
+
+            std::array<int, 4> a5{ {3,2, 1, 0} };
+            Mepermutation<4> perm5(a5);
+
+            std::array<int, 4> ab{ {3,0, 2, 1} };
+            Mepermutation<4> ans_p2(ab);
+            CPPUNIT_ASSERT(ans_p2==perm3*perm5);
         }
     public:
         void runTest()
         {
             test_permutation();
+            test_identity();
+            test_product();
         }
 };
 

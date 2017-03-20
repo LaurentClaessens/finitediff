@@ -37,6 +37,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  The numbers a,b,c,d must be different and in [0,tp_size].
 
+!! THIS IS NOT THE USUAL CONVENTION IN MATH !!
+
+In math, the usual convention when writing
+(a,b,c,d)
+is
+a->b
+b->c
+c->d
+d->a
+
+
 */
 
 // THE CLASS HEADER -----------------------------------------
@@ -49,8 +60,6 @@ class Mpermutation
     
     private:
         std::array<unsigned int,tp_size> data;
-        unsigned int& _at(const unsigned int i,const unsigned int j);
-        unsigned int _get(const unsigned int i,const unsigned int j) const;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
 

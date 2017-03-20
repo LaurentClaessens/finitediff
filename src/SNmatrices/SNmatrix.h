@@ -243,6 +243,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 {
     SNplu<T,tp_size> plu(*this);
     SNmatrix<T,tp_size> L;
+
+    return plu;     // for the moment.
     
     for (m_num c=0;c<tp_size;c++)
     {
@@ -251,7 +253,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
 
-            plu.permutations.at(c)=max_el.line;
+            //plu.permutations.at(c)=max_el.line;               // for the moment
             swapLines(c,max_el.line);
             auto killing_line=gaussEliminationLine(c);
 
@@ -269,9 +271,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
         else
         {
             // if no permutations is done we record the trivial one.
-            plu.permutations.at(c)=c;  
+
+            //plu.permutations.at(c)=c;             // for the moment
         }
     }
+
     return plu;
 }
 
