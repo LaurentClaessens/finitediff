@@ -103,9 +103,9 @@ Mpermutation<tp_size>::Mpermutation() {}
 // OPERATORS -------------------------------
 
 template <unsigned int tp_size>
-Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b)
+Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_size> b)
 {
-    Mpermutation<tp_size> new_perm();
+    Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
         new_perm.at(i)=b(*this(i));
@@ -128,7 +128,5 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
     }
     return stream;
 }
-
-        Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
 
 #endif
