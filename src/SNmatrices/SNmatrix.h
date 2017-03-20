@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNelement.h"
 #include "SNline.h"
 #include "SNgaussianMatrix.h"
+#include "SNupperTriangularMatrix.h"
+#include "Mpermutation.h"
 #include "MathUtilities.h"
 #include "SNoperators.h"
 #include "../SNvector.h"
@@ -107,9 +109,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
 
         // return the PLU decomposition.
-        // This is a heavily non-const method because 'this' is transformed
-        // into the U matrix.
-        SNplu<T,tp_size> getPLU();
+        SNplu<T,tp_size> getPLU() const;
 
 };
 
@@ -228,7 +228,7 @@ SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(m_num line)
 }
 
 template <class T,unsigned int tp_size>
-SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
+SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
     // for each column :
     // - get the larger entry under the diagonal
@@ -241,37 +241,37 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
     // http://laurent.claessens-donadello.eu/pdf/lefrido.pdf
 
 {
-    SNplu<T,tp_size> plu(*this);
-    SNmatrix<T,tp_size> L;
+    SNlowerTriangularMatrix<T,tp_size> L;
+    SNmatrix<T,tp_size> mU(*this);       // this will progressively become U
+    Mpermutation<tp_size> permutation;
     
     for (m_num c=0;c<tp_size;c++)
     {
-        auto max_el = getLargerUnderDiagonal(c);
+        auto max_el = mU.getLargerUnderDiagonal(c);
 
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
 
-            plu.permutations.at(c)=max_el.line;
-            swapLines(c,max_el.line);
-            auto killing_line=gaussEliminationLine(c);
-
-
+            permutation.at(c)=max_el.line;
+            mU.swapLines(c,max_el.line);
+            auto killing_line=mU.gaussEliminationLine(c);
 
             for (m_num l=c+1;l<tp_size;l++)
             {
-                T m = this->get(l,c);  // the value to be eliminated
+                T m = mU.get(l,c);  // the value to be eliminated
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
-                lineMinusLine(l,m*killing_line);
+                mU.lineMinusLine(l,m*killing_line);
             }
         }
         else
         {
             // if no permutations is done we record the trivial one.
-            plu.permutations.at(c)=c;  
+            permutation.at(c)=c;  
         }
     }
+    SNplu<T,tp_size> plu;
     return plu;
 }
 

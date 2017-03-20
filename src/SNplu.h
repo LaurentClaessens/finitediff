@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SNmatrices/SNmatrix.h"
+#include "SNmatrices/SNupperTriangularMatrix.h"
 #include "SNmatrices/SNpermutation.h"
 #include "SNmatrices/Mpermutation.h"
 
@@ -34,37 +35,28 @@ class SNplu
     friend SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU();
 
     private :
-        SNpermutation<T,tp_size> permutations;
-        SNmatrix<T,tp_size> m_L;
-        SNmatrix<T,tp_size>& m_U;
+        SNpermutation<T,tp_size> m_P;
+        SNlowerTriangularMatrix<T,tp_size> m_L;
+        SNupperTriangularMatrix<T,tp_size> m_U;
     public:
-        SNplu(SNmatrix<T,tp_size>& original);
+        SNupperTriangularMatrix<T,tp_size> getU() const;
 
-        SNmatrix<T,tp_size>& getU();
-        Mpermutation<tp_size> getPermutation() const;
+        Mpermutation<tp_size> getMpermutation() const;
+        SNpermutation<T,tp_size> getSNpermutation() const;
 };
-
-// CONSTRUCTORS ---------------------------------------------- 
-
-template <class T,unsigned int tp_size>
-SNplu<T,tp_size>::SNplu(SNmatrix<T,tp_size>& original) : 
-    permutations(),
-    m_L(),
-    m_U(original)
-{}
 
 // GETTER METHODS -----------------------
 
 template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>& SNplu<T,tp_size>::getU()
+SNupperTriangularMatrix<T,tp_size> SNplu<T,tp_size>::getU() const
 {
     return m_U;
 }
 
 template <class T,unsigned int tp_size>
-Mpermutation<tp_size> SNplu<T,tp_size>::getPermutation() const
+Mpermutation<tp_size> SNplu<T,tp_size>::getMpermutation() const
 {
-    return  permutations;
+    return  m_P.getMpermutation();
 }
 
 #endif
