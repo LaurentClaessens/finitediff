@@ -56,7 +56,10 @@ gauss_unit_tests: $(TESTS_DIR)gauss_unit_tests.cpp
 
 plu_unit_tests: $(TESTS_DIR)plu_unit_tests.cpp
 	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp   $(BUILD_DIR)m_num.o     -lcppunit -o $(BUILD_DIR)$@
+
 sn_permutation_unit_tests: $(TESTS_DIR)sn_permutation_unit_tests.cpp
+	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp  $(BUILD_DIR)m_num.o  -lcppunit -o $(BUILD_DIR)$@
+sn_multiplication_unit_tests: $(TESTS_DIR)sn_permutation_unit_tests.cpp
 	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp  $(BUILD_DIR)m_num.o  -lcppunit -o $(BUILD_DIR)$@
 	
 unit_tests: m_num repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
