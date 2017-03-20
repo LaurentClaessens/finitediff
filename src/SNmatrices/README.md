@@ -44,7 +44,6 @@ class SNelement
 
 The template arguments `T` and `tp_size` have the same meaning. 
 
-A `SNelement` contains a reference to its matrix. 
 
 ### Permutations
 
