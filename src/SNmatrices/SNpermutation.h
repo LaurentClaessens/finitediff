@@ -40,8 +40,8 @@ class SNpermutation : public SNgeneric<T,tp_size>
     
     private:
         Mpermutation<tp_size> data;
-        T& _at(const unsigned int i,const unsigned int j);
-        T _get(const unsigned int i,const unsigned int j) const;
+        T& _at(const m_num i,const m_num j) override;
+        T _get(const m_num i,const m_num j) const override;
     public :
         SNpermutation(Mpermutation<tp_size> d); 
 };
@@ -62,7 +62,7 @@ std::ostream& operator<<(std::ostream& stream, SNpermutation<T,s> perm)
 // _AT AND _GET -------------------------------
 
 template <class T,unsigned int tp_size>
-T& SNpermutation<T,tp_size>::_at(const unsigned int i,const unsigned int j)
+T& SNpermutation<T,tp_size>::_at(const m_num i,const m_num j)
 {
     std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
     return data.at(0);
