@@ -59,7 +59,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
         // the larger element on column 'col' under (or on) the line 'f_line'. 
-        SNelement<T,tp_size> getLargerUnder(unsigned int f_line, unsigned int col) const;
+        SNelement<T,tp_size> getLargerUnder(m_num f_line, m_num col) const;
 
         // Substrat the given vector (line) from the line 'line'
         // Using the Gauss's elimination one need to do many differences like
@@ -67,23 +67,23 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         //  where 'k' is the first element of L_i and 'm' is the pivot.
         //  The function 'lineMinusLine' serves to not compute L_1/m
         //  as many times as the number of substitutions to do.
-        void lineMinusLine(unsigned int line,SNline<T,tp_size> v);
+        void lineMinusLine(m_num line,SNline<T,tp_size> v);
 
 
         // return the larger element (in absolute value) on the given column
         // In case of equality, return the last one (the larger line).
         //   The template type T has to accept arithmetic manipulations
         //   like abs, comparison.
-        SNelement<T,tp_size> getLargerOnColumn(unsigned int col) const;
+        SNelement<T,tp_size> getLargerOnColumn(m_num col) const;
         // return the largest (absolute value) element under the diagonal
         // on the given column.
-        SNelement<T,tp_size> getLargerUnderDiagonal(unsigned int col) const;
+        SNelement<T,tp_size> getLargerUnderDiagonal(m_num col) const;
 
         // From the line number "line", return a line normalized
         // in such a way that the first (non zero) element is 1.
-        SNline<T,tp_size> gaussEliminationLine(unsigned int line);
-        T& _at(unsigned int,unsigned int) override;
-        T _get(const unsigned int,const unsigned int) const override;
+        SNline<T,tp_size> gaussEliminationLine(m_num line);
+        T& _at(const m_num,const m_num) override;
+        T _get(const m_num,const m_num) const override;
 
     public:
         SNmatrix();
@@ -94,7 +94,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         T max_norm() const;
 
         // return the matrix element on given (line,column).
-        SNelement<T,tp_size> getElement(unsigned int line, unsigned int col) const;
+        SNelement<T,tp_size> getElement(m_num line, m_num col) const;
 
         // Use the Gauss'elimination to transform the SNmatrix
         // to an upper triangular matrix.
@@ -103,7 +103,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
         // swap the lines l1 and l2. This is in-place replacement.
         // The matrix is changed.
-        void swapLines(unsigned int l1,unsigned int l2);
+        void swapLines(m_num l1,m_num l2);
 
 
         // return the PLU decomposition.
@@ -126,7 +126,7 @@ SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  
 
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned int col) const
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(m_num line, m_num col) const
 {
     return SNelement<T,tp_size>(line,col,this->get(line,col));
 }
@@ -135,13 +135,13 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(unsigned int line, unsigned
 // _GET AND _AT METHODS ---------------------------
 
 template <class T,unsigned int tp_size>
-T& SNmatrix<T,tp_size>::_at(const unsigned int i,const unsigned int j) 
+T& SNmatrix<T,tp_size>::_at(const m_num i,const m_num j) 
 {
     return data.at(j*tp_size+i);
 };
 
 template <class T,unsigned int tp_size>
-T SNmatrix<T,tp_size>::_get(const unsigned int i,const unsigned int j) const
+T SNmatrix<T,tp_size>::_get(const m_num i,const m_num j) const
 {
     return data.at(j*tp_size+i);
 };
@@ -167,12 +167,12 @@ T SNmatrix<T,tp_size>::max_norm() const
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, unsigned int col) const
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(m_num f_line, m_num col) const
 {
     T max_val=0;
-    unsigned int max_line=0;
+    m_num max_line=0;
 
-    for (unsigned int line=f_line;line<tp_size;line++)
+    for (m_num line=f_line;line<tp_size;line++)
     {
         if (std::abs(this->get(line,col))>max_val)
         {
@@ -184,23 +184,23 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(unsigned int f_line, un
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(unsigned int col) const
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerOnColumn(m_num col) const
 {
     return getLargerUnder(0,col);
 }
 
 template <class T,unsigned int tp_size>
-SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(unsigned int col)  const
+SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnderDiagonal(m_num col)  const
 {
     return getLargerUnder(col,col);
 }
 
 template <class T,unsigned int tp_size>
-void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
+void SNmatrix<T,tp_size>::swapLines(m_num l1, m_num l2)
 {
     if (l1!=l2)
     {
-        for (unsigned int col=0;col<tp_size;col++)
+        for (m_num col=0;col<tp_size;col++)
         {
             T tmp = this->get(l1,col);
             this->at(l1,col)=this->get(l2,col);
@@ -211,16 +211,16 @@ void SNmatrix<T,tp_size>::swapLines(unsigned int l1, unsigned int l2)
 
 
 template <class T,unsigned int tp_size>
-void SNmatrix<T,tp_size>::lineMinusLine(unsigned int line,SNline<T,tp_size> v)
+void SNmatrix<T,tp_size>::lineMinusLine(m_num line,SNline<T,tp_size> v)
 {
-    for (unsigned int c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;c++)
     {
         this->at(line,c)=this->get(line,c)-v.get(c);
     }
 }
 
 template <class T,unsigned int tp_size>
-SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(unsigned int line)
+SNline<T,tp_size> SNmatrix<T,tp_size>::gaussEliminationLine(m_num line)
 {
     SNline<T,tp_size> l=this->getSNline(line);
     l.makeUnit();
@@ -244,7 +244,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
     SNplu<T,tp_size> plu(*this);
     SNmatrix<T,tp_size> L;
     
-    for (unsigned int c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;c++)
     {
         auto max_el = getLargerUnderDiagonal(c);
 
@@ -257,7 +257,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU()
 
 
 
-            for (unsigned int l=c+1;l<tp_size;l++)
+            for (m_num l=c+1;l<tp_size;l++)
             {
                 T m = this->get(l,c);  // the value to be eliminated
 

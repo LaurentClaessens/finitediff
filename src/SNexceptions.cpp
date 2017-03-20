@@ -90,4 +90,23 @@ class SNoutOfRangeException : public std::exception
         }
 };
 
+class NegativeMatrixElementNumberException : public std::exception
+{
+    private :
+        int num;
+
+    public: 
+        NegativeMatrixElementNumberException(const int n): 
+            num(n)
+    {}
+        virtual const char* what() const throw()
+        {
+            std::string s_num=std::to_string(num);
+
+            std::string text= "Trying to access line or column with negative number : "+s_num;
+            return text.c_str();
+        }
+};
+
+
 #endif
