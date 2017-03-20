@@ -36,8 +36,8 @@ class SNlowerTriangularMatrix : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
-        T _get(const unsigned int,const unsigned int) const override;
-        T& _at(unsigned int,unsigned int) override;
+        T _get(const m_num,const m_num) const override;
+        T& _at(m_num,m_num) override;
     public :
         SNlowerTriangularMatrix();
 
@@ -55,7 +55,7 @@ SNlowerTriangularMatrix<T,tp_size>::SNlowerTriangularMatrix(const SNmatrix<T,tp_
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNlowerTriangularMatrix<T,tp_size>::_get(unsigned int l,unsigned int c) const
+T SNlowerTriangularMatrix<T,tp_size>::_get(m_num l,m_num c) const
 {
     if (l<c)
     {
@@ -65,7 +65,7 @@ T SNlowerTriangularMatrix<T,tp_size>::_get(unsigned int l,unsigned int c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNlowerTriangularMatrix<T,tp_size>::_at(unsigned int l,unsigned int c) 
+T& SNlowerTriangularMatrix<T,tp_size>::_at(m_num l,m_num c) 
 {
     if (l<c)
     {
