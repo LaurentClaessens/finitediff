@@ -35,7 +35,7 @@ There are many different matrices types because there are many special cases : p
 
 The base type is `SNgeneric` (pure virtual) and the most general matrix type is `SNmatrix`.
 
-The code for these matrices are in [./src/SNmatrices](src/SNmatrices/README.md).
+The code for these matrices are in `src/SNmatrices/README.md`.
 
 ### Template
 
