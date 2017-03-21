@@ -78,6 +78,8 @@ class Mpermutation
         // return by reference the image of 'k' by the permutation
         // allows to populate.
         unsigned int& at(const unsigned int k);
+
+        Mpermutation<tp_size> operator==(const Mpermutation<tp_size>& other) const;
 };
 
 
@@ -101,6 +103,13 @@ template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation() {}
 
 // OPERATORS -------------------------------
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> Mpermutation<tp_size>::operator==(const Mpermutation<tp_size>& other) const
+{
+    return data==other.data;
+}
+
 
 template <unsigned int tp_size>
 Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_size> b)
