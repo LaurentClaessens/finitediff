@@ -38,11 +38,11 @@ class SNpermutationsTest : public CppUnit::TestCase
             echo_function_test("test_permutation");
 
             std::array<int, 4> a1{ {1, 2, 3,4} };
-            Mepermutation<4> perm1(a1);         // there should be some errors here
+            Mpermutation<4> perm1(a1);         // there should be some errors here
 
 
             std::array<int, 4> a2{ {0,1, 2, 3} };
-            Mepermutation<4> permID(a2);
+            Mpermutation<4> permID(a2);
             CPPUNIT_ASSERT(permID(0)==0);
             CPPUNIT_ASSERT(permID(1)==1);
             CPPUNIT_ASSERT(permID(2)==2);
@@ -52,7 +52,7 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(permID(6.1)==3);
 
             std::array<int, 4> a3{ {1,2, 0, 3} };
-            Mepermutation<4> perm2(a3);
+            Mpermutation<4> perm2(a3);
             CPPUNIT_ASSERT(perm2(0)==1);
             CPPUNIT_ASSERT(perm2(1)==2);
             CPPUNIT_ASSERT(perm2(2)==0);
@@ -63,22 +63,22 @@ class SNpermutationsTest : public CppUnit::TestCase
             echo_function_test("test_identiry");
 
             std::array<int, 4> aID{ {0,1, 2, 3} };
-            Mepermutation<4> permID(a2);
+            Mpermutation<4> permID(a2);
 
             std::array<int, 4> a3{ {1,2, 0, 3} };
-            Mepermutation<4> perm3(a3);
+            Mpermutation<4> perm3(a3);
 
             std::array<int, 4> a4{ {1,2, 0, 3} };
-            Mepermutation<4> perm4(a4);
+            Mpermutation<4> perm4(a4);
 
             std::array<int, 4> aa{ {1,2, 0, 3} };
-            Mepermutation<4> ans_p1(aa);
+            Mpermutation<4> ans_p1(aa);
 
             std::array<int, 4> a5{ {3,2, 1, 0} };
-            Mepermutation<4> perm5(a5);
+            Mpermutation<4> perm5(a5);
 
             std::array<int, 4> ab{ {3,0, 2, 1} };
-            Mepermutation<4> ans_p2(ab);
+            Mpermutation<4> ans_p2(ab);
 
             CPPUNIT_ASSERT(perm3==permID*perm3);
             CPPUNIT_ASSERT(perm4==permID*perm4);
@@ -90,20 +90,20 @@ class SNpermutationsTest : public CppUnit::TestCase
         {
             echo_function_test("test_product");
             std::array<int, 4> a3{ {1,2, 0, 3} };
-            Mepermutation<4> perm3(a3);
+            Mpermutation<4> perm3(a3);
 
             std::array<int, 4> a4{ {1,2, 0, 3} };
-            Mepermutation<4> perm4(a4);
+            Mpermutation<4> perm4(a4);
 
             std::array<int, 4> aa{ {1,2, 0, 3} };
-            Mepermutation<4> ans_p1(aa);
+            Mpermutation<4> ans_p1(aa);
             CPPUNIT_ASSERT(ans_p1==perm3*perm4);
 
             std::array<int, 4> a5{ {3,2, 1, 0} };
-            Mepermutation<4> perm5(a5);
+            Mpermutation<4> perm5(a5);
 
             std::array<int, 4> ab{ {3,0, 2, 1} };
-            Mepermutation<4> ans_p2(ab);
+            Mpermutation<4> ans_p2(ab);
             CPPUNIT_ASSERT(ans_p2==perm3*perm5);
         }
     public:
