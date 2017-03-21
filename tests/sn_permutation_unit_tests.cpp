@@ -57,7 +57,7 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(perm2(2)==0);
             CPPUNIT_ASSERT(perm2(3)==3);
          }
-        void test_identiry()
+        void test_identity()
         {
             echo_function_test("test_identiry");
 
