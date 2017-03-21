@@ -55,8 +55,6 @@ d->a
 template <unsigned int tp_size>
 class Mpermutation
 {
-    //template <unsigned int s>
-    //friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
 
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, Mpermutation<s>);
@@ -145,7 +143,7 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
-        stream<<perm.data.at(l);
+        stream<<l<<"->"<<perm.data.at(l)<<std::endl;
     }
     return stream;
 }
