@@ -1,9 +1,12 @@
 # VIM FILES
 
 *.swp
+*.swo
 *~
 finite.vim
 tests.vim
+src/.gitignore
+src/SNmatrices/.gitignore
 
 # BINARY FILES
 
@@ -13,6 +16,9 @@ finitediff
 tests_RepeatFunction
 tests_SNmatrix
 
+# DOCUMENTATION by DOXYGEN
+
+doc/*
 
 # OTHERS 
 
