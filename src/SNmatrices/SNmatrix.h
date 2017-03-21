@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgaussianMatrix.h"
 #include "SNupperTriangularMatrix.h"
 #include "Mpermutation.h"
+#include "MelementaryPermutation.h"
 #include "MathUtilities.h"
 #include "SNoperators.h"
 #include "../SNvector.h"
@@ -56,6 +57,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
+    
+    friend SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
 
     private:
         std::array<T,tp_size*tp_size> data;
@@ -241,9 +244,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     // http://laurent.claessens-donadello.eu/pdf/lefrido.pdf
 
 {
-    SNlowerTriangularMatrix<T,tp_size> L;
-    SNmatrix<T,tp_size> mU(*this);       // this will progressively become U
-    Mpermutation<tp_size> permutation;
+    SNplu<T,tp_size> plu;
+
+    Mpermutation<tp_size>& permutation=plu.m_P;
+    SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
+    SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
     
     for (m_num c=0;c<tp_size;c++)
     {
@@ -252,8 +257,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
 
-            permutation.at(c)=max_el.line;
+            // We swap the line 'c' with max_el.line
+            MelementaryPermutation<tp_size> el_perm(c,max_el.line);
+            permutation=el_perm*permutation; 
             mU.swapLines(c,max_el.line);
+
             auto killing_line=mU.gaussEliminationLine(c);
 
             for (m_num l=c+1;l<tp_size;l++)
@@ -265,13 +273,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
                 mU.lineMinusLine(l,m*killing_line);
             }
         }
-        else
-        {
-            // if no permutations is done we record the trivial one.
-            permutation.at(c)=c;  
-        }
     }
-    SNplu<T,tp_size> plu;
     return plu;
 }
 

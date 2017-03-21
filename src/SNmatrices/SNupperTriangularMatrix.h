@@ -47,10 +47,14 @@ class SNupperTriangularMatrix : public SNgeneric<T,tp_size>
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(): data() { };
+SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(): 
+    data() 
+{ };
 
 template <class T,unsigned int tp_size>
-SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A): data(A.data) {};
+SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A): 
+    data(A.data) 
+{};
 
 // _GET AND _AT METHODS ---------------------------------------
 
