@@ -65,7 +65,6 @@ class SNchangeNotAllowedException : public std::exception
         }
 };
 
-
 class SNoutOfRangeException : public std::exception
 {
     private :
@@ -86,6 +85,27 @@ class SNoutOfRangeException : public std::exception
             std::string s_size=std::to_string(tp_size);
 
             std::string text= "Attempt to access element ("+s_line+" , "+s_col+" ) while the matrix has size "+s_size;
+            return text.c_str();
+        }
+};
+
+class PermutationIdexoutOfRangeException : public std::exception
+{
+    private :
+        unsigned int index;
+        unsigned int tp_size;
+
+    public: 
+        PermutationIdexoutOfRangeException(const unsigned int i, const unsigned int t): 
+            index(i),
+            tp_size(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            std::string s_index=std::to_string(index);
+            std::string s_size=std::to_string(tp_size);
+
+            std::string text= "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
             return text.c_str();
         }
 };

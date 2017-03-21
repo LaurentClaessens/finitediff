@@ -73,13 +73,15 @@ class Mpermutation
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
         
         // return by value the image of 'k' by the permutation.
+        // There are two ways to do that.
         unsigned int operator()(const unsigned int k) const;
+        unsigned int get(const unsigned int k) const;
 
         // return by reference the image of 'k' by the permutation
         // allows to populate.
         unsigned int& at(const unsigned int k);
 
-        Mpermutation<tp_size> operator==(const Mpermutation<tp_size>& other) const;
+        bool operator==(const Mpermutation<tp_size>& other) const;
 };
 
 
@@ -105,7 +107,7 @@ Mpermutation<tp_size>::Mpermutation() {}
 // OPERATORS -------------------------------
 
 template <unsigned int tp_size>
-Mpermutation<tp_size> Mpermutation<tp_size>::operator==(const Mpermutation<tp_size>& other) const
+bool Mpermutation<tp_size>::operator==(const Mpermutation<tp_size>& other) const
 {
     return data==other.data;
 }
@@ -117,15 +119,25 @@ Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_siz
     Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
-        new_perm.at(i)=b(*this(i));
+        new_perm.at(i)=b.get(get(i));
     }
     return new_perm;
 }
 
 template <unsigned int tp_size>
+unsigned int Mpermutation<tp_size>::get(const unsigned int k) const
+{
+    if (k>tp_size)
+    {
+        throw PermutationIdexoutOfRangeException(k,tp_size);
+    }
+    return data.at(k);
+}
+
+template <unsigned int tp_size>
 unsigned int Mpermutation<tp_size>::operator()(const unsigned int k) const
 {
-    return data.at(k);
+    return get(k);
 }
 
 template <unsigned int s>
