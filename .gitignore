@@ -18,3 +18,5 @@ tests_SNmatrix
 
 .kk.log
 tests/.gitignore
+src/.gitignore
+src/SNmatrices/.gitignore
