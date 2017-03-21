@@ -1,6 +1,7 @@
 # VIM FILES
 
 *.swp
+*.swo
 *~
 finite.vim
 tests.vim
