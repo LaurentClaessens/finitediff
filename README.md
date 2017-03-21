@@ -17,25 +17,38 @@ Non-official purposes include
 ## Latest news
 
 * I'm currently implementing the PLU decomposition.
-* So I'm implementing many special matrix type (lower triangular, gaussian) and the operators (product, equality) for each pair of them.
-* Many of these operators are returning the answer by value and are relying on the RVO.
-* Many tests are yet written but not yet activated.
+* U is done. P is almost done (I have the list of line swap, but not yet a matrix). L is still to be done.
 
 ## deploy.sh
 
-The script `deploy.sh` is the only working stuff up to now. It does the following things :
+The script `deploy.sh` does the following things :
 * show `git status`
 * make clean
 * make all 
 * launch the unit tests
 
-## The classes
+## The matrices
 
-There are many different matrices types because there are many special cases : permutation, gaussian transformation, upper/lower triangular.
+There are many different matrices types because there are many special cases : permutation, gaussian transformation, upper/lower triangular, etc.
 
-On the long run, I'm going to create a class for each and give them all the matrix semantics. In particular, define the multiplication operator for each (ordered) pair of matrix types.
+### Hierarchy
+
+The base type is `SNgeneric` (pure virtual) and the most general matrix type is `SNmatrix`.
 
 The code for these matrices are in [./src/SNmatrices](src/SNmatrices/README.md).
+
+### Template
+
+The matrices have two template arguments :
+
+* `class T` is supposed to be a numeric class like `double`. It is the type of the matrix elements. 
+* `unsigned int tp_size` is the size of the matrix (well, the size is the square of that you know).
+
+### Operators
+
+* Operators like equality and multiplication are defined for each (ordered) pair of these special cases.
+* Many of these operators are returning the answer by value and are relying on the RVO.
+
 
 ## Exceptions
 
