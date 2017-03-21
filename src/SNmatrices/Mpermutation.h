@@ -63,6 +63,8 @@ class Mpermutation
         std::array<unsigned int,tp_size> data;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
+
+        /** The no-argument constructors initializes to identity */
         Mpermutation(); 
 
 
@@ -100,7 +102,13 @@ Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
 {}
 
 template <unsigned int tp_size>
-Mpermutation<tp_size>::Mpermutation() {}
+Mpermutation<tp_size>::Mpermutation() 
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        at(k)=k;
+    }
+}
 
 // OPERATORS -------------------------------
 

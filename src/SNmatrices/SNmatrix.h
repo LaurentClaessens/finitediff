@@ -33,8 +33,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "MathUtilities.h"
 #include "SNoperators.h"
 #include "../SNvector.h"
-
 #include "../SNexceptions.cpp"
+
+#include "../DebugPrint.h"
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 

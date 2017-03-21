@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __MELEMENTARYPERMUTATION_H_095019_
 #define __MELEMENTARYPERMUTATION_H_095019_
 
-std::ostream& debug_print(std::cout);
+#include "../DebugPrint.h"
 
 /*
 
@@ -31,6 +31,9 @@ std::ostream& debug_print(std::cout);
 template <unsigned int tp_size>
 class MelementaryPermutation
 {
+    template <unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
+
     private:
         unsigned int elA;
         unsigned int elB;
@@ -55,23 +58,23 @@ Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutat
     debug_print<<"Le this est : "<<std::endl;
     debug_print<<*this<<std::endl;
 
+    debug_print<<"À composer avec "<<std::endl;
+    debug_print<<perm<<std::endl;
+
     debug_print<<"Le tmp généré est : "<<std::endl<<tmp<<std::endl;
     for (unsigned int k=0;k<tp_size;++k)
     {
         debug_print<<"k est : "<<k<<std::endl;
-        debug_print<<"get(k) est : "<<perm.get(k)<<std::endl;
+        debug_print<<"perm.get(k) est : "<<perm.get(k)<<std::endl;
         tmp.at(k)=this->get( perm.get(k)  );
     }
     return tmp;
 }
 
 template <unsigned int s>
-std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
+std::ostream& operator<<(std::ostream& stream, MelementaryPermutation<s> perm)
 {
-    for (unsigned int l=0;l<s;l++)
-    {
-        stream<<l<<"->"<<perm.data.at(l)<<std::endl;
-    }
+    stream<<perm.elA<<" <--> "<<perm.elB;
     return stream;
 }
 
@@ -84,7 +87,7 @@ MelementaryPermutation<tp_size>::MelementaryPermutation(unsigned int A,unsigned 
 {
     if (elA > tp_size or elB>tp_size)
     {
-        throw PermutationIdexoutOfRangeException(k,tp_size);
+        throw OutOfRangeConstructionElementaryPermutationException(A,B,tp_size);
     }
 }
     

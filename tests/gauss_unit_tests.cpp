@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
+#include "../src/DebugPrint.h"
 
 class GaussTest : public CppUnit::TestCase
 {
@@ -103,6 +104,10 @@ class GaussTest : public CppUnit::TestCase
         void test_upper_triangular()
         {
             echo_function_test("test_upper_triangular");
+
+            debug_print<<"  ----------- LE TETST "<<std::endl;
+            debug_print<<""<<std::endl;
+
             double epsilon(0.0000001);
             auto A=testMatrixB();
             /*

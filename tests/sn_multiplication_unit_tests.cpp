@@ -25,8 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include <iostream>
-std::ostream& debug_print(std::cout);
+#include "../src/DebugPrint.h"
 
 class MultiplicationTest : public CppUnit::TestCase
 {
