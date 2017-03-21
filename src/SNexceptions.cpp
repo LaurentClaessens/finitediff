@@ -121,7 +121,7 @@ class OutOfRangeConstructionElementaryPermutationException : public std::excepti
         OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
             elA(A),
             elB(B),
-            tp_size(t)
+            tp_size(s)
     {}
         virtual const char* what() const throw()
         {
