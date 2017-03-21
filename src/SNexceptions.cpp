@@ -110,6 +110,30 @@ class PermutationIdexoutOfRangeException : public std::exception
         }
 };
 
+class OutOfRangeConstructionElementaryPermutationException : public std::exception
+{
+    private :
+        unsigned int elA;
+        unsigned int elB;
+        unsigned int tp_size;
+
+    public: 
+        OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
+            elA(A),
+            elB(B),
+            tp_size(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            std::string s_elA=std::to_string(elA);
+            std::string s_elB=std::to_string(elB);
+            std::string s_size=std::to_string(tp_size);
+
+            std::string text= "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
+            return text.c_str();
+        }
+};
+
 class NegativeMatrixElementNumberException : public std::exception
 {
     private :
