@@ -3,6 +3,7 @@
 *.swp
 *~
 finite.vim
+tests.vim
 
 # BINARY FILES
 
