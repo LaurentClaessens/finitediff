@@ -138,7 +138,11 @@ bool operator==(const SNupperTriangularMatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
     return componentWiseeEquality(A,B);
 }
-
+template <class U,unsigned int s,class V,unsigned int t>
+bool operator==(const SNmatrix<U,s>& A,const SNupperTriangularMatrix<V,t>& B)
+{
+    return B==A;
+}
 
 template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,t>& A)
