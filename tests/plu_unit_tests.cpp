@@ -31,27 +31,14 @@ std::ostream& debug_print(std::cout);
 class pluTest : public CppUnit::TestCase
 {
     private :
-        void test_reference()
-        {
-            auto A=testMatrixA();
-            auto plu=A.getPLU();
-            CPPUNIT_ASSERT(A==plu.getU());
-
-            // check that the 'U' matrix in PLU is a reference.
-            // this us however bad practice to modify A after having
-            // the PLU done.
-            A.at(1,1)=0.132;
-            CPPUNIT_ASSERT(plu.getU().get(1,1)==0.132);
-        };
         template <unsigned int s>
         void test_A(  SNmatrix<double,s> A,SNmatrix<double,s> A_U  )
         {
             auto plu=A.getPLU();
-
             auto mU(plu.getU());
-            mU.subtract(A_U);
+
             double epsilon(0.0000001);
-            CPPUNIT_ASSERT(mU.max_norm()<epsilon);
+            CPPUNIT_ASSERT(mU.isNumericallyEqual(A_U,epsilon));
         }
         void test_plu_permutation()
         {
@@ -66,7 +53,6 @@ class pluTest : public CppUnit::TestCase
     public:
         void runTest()
         {
-            test_reference();
             test_A(testMatrixA(),testMatrixA_U());
             test_A(testMatrixB(),testMatrixB_U());
             test_A(testMatrixD(),testMatrixD_U());
