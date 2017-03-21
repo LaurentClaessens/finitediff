@@ -55,17 +55,8 @@ template <unsigned int tp_size>
 Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutation<tp_size>& perm) const
 {
     Mpermutation<tp_size> tmp;
-    debug_print<<"Le this est : "<<std::endl;
-    debug_print<<*this<<std::endl;
-
-    debug_print<<"À composer avec "<<std::endl;
-    debug_print<<perm<<std::endl;
-
-    debug_print<<"Le tmp généré est : "<<std::endl<<tmp<<std::endl;
     for (unsigned int k=0;k<tp_size;++k)
     {
-        debug_print<<"k est : "<<k<<std::endl;
-        debug_print<<"perm.get(k) est : "<<perm.get(k)<<std::endl;
         tmp.at(k)=this->get( perm.get(k)  );
     }
     return tmp;
