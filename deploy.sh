@@ -8,6 +8,11 @@
 # - compile all
 # - tests
 
+# from http://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+RED='\033[0;31m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 mkdir build
 git status
 make clean
@@ -25,7 +30,7 @@ function launch_test
             echo "OK"
     else
             echo "----" 
-            echo "---- The test " $1 " got a problem"
+            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}"
             echo "----"
     fi
     echo "--- Ended " $1
