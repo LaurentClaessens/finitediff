@@ -118,12 +118,8 @@ class GaussTest : public CppUnit::TestCase
             auto A_U=testMatrixB_U();
             auto plu_A= A.getPLU();
 
-            // check that 'A' is turned into its 'U'
-            echo_single_test("plu_A.getU()");
-            CPPUNIT_ASSERT(plu_A.getU()==A);
-
-            echo_single_test("A==A_U");
-            CPPUNIT_ASSERT(A.isNumericallyEqual(A_U,epsilon));
+            echo_single_test("plu.getU==A_U");
+            CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
             auto B=testMatrixA();
                 /*
