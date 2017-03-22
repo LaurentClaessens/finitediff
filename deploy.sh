@@ -21,6 +21,13 @@ function launch_test
     echo "+++ Compilation : " $1
     make $1
     ./build/$1
+    if [ $? -eq 0 ]; then
+            echo "OK"
+    else
+            echo "----" 
+            echo "---- The test " $1 " got a problem"
+            echo "----"
+    fi
     echo "--- Ended " $1
 }
 
