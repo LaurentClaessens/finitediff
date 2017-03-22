@@ -91,6 +91,18 @@ class SNoutOfRangeException : public std::exception
 
 class PermutationIdexoutOfRangeException : public std::exception
 {
+
+    /** This exception is raised when one try to access to an element out of range of a permutation
+     *  ```
+     *  Mpermutation<4> perm;
+     *  // populate 'perm'
+     *  unsigned int k=perm(5)   // throws
+     *  ```
+     *
+     *  The constructor of `Mpermutation` from   `std::array<unsigned int,tp_size>`
+     *  also throws when one element of the array is large than tp_size.
+     * */
+
     private :
         unsigned int index;
         unsigned int tp_size;
@@ -106,6 +118,30 @@ class PermutationIdexoutOfRangeException : public std::exception
             std::string s_size=std::to_string(tp_size);
 
             std::string text= "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
+            return text.c_str();
+        }
+};
+
+class OutOfRangeConstructionElementaryPermutationException : public std::exception
+{
+    private :
+        unsigned int elA;
+        unsigned int elB;
+        unsigned int tp_size;
+
+    public: 
+        OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
+            elA(A),
+            elB(B),
+            tp_size(s)
+    {}
+        virtual const char* what() const throw()
+        {
+            std::string s_elA=std::to_string(elA);
+            std::string s_elB=std::to_string(elB);
+            std::string s_size=std::to_string(tp_size);
+
+            std::string text= "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
             return text.c_str();
         }
 };
