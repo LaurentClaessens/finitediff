@@ -99,7 +99,15 @@ unsigned int& Mpermutation<tp_size>::at(const unsigned int k)
 template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
     data(d)
-{}
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        if (d.at(k)>tp_size-1) // Mpermutation<4> permutes the set {0,1,2,3}.
+        {
+            throw PermutationIdexoutOfRangeException(k,tp_size);
+        }
+    }
+}
 
 template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation() 

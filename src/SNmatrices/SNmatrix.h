@@ -250,6 +250,9 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     Mpermutation<tp_size>& permutation=plu.m_P;
     SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
+
+    debug_print<<"La matrice L, juste pour dire"<<std::endl;
+    debug_print<<L<<std::endl;
     
     for (m_num c=0;c<tp_size;c++)
     {
