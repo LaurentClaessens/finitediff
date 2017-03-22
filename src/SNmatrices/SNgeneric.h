@@ -42,9 +42,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             
     - `_at` is intended to populate the matrix.
             
-    As an example, on a lower diagonal matrix,
-    - `_get(1,3)` returns 0 (by value)
-    - `_at(1,3)` throws SNchangeNotAllowedException
+    
+As an example, on a lower diagonal matrix,
+- `_get(1,3)` returns 0 (by value)
+- `_at(1,3)` throws SNchangeNotAllowedException
 
 
 */
@@ -64,11 +65,18 @@ template <class T,unsigned int tp_size>
 class SNgeneric
 {
     private :
+
+        /** Return by value the requested element of the matrix */
         virtual T _get(const m_num,const m_num) const=0;
+
+        /** Return by reference the requested element of the matrix */
         virtual T& _at(const m_num,const m_num)=0;
 
-        // throws 'SNoutOfRangeException' if the requested element is out of
-        // range (larger than 'tp_size').
+
+        /**
+         throws `SNoutOfRangeException` if the requested element is out of
+         range (larger than 'tp_size').
+         */
         virtual void checkRangeCorectness(const m_num&,const m_num&) const final;
     public:
         virtual unsigned int getSize() const final;
