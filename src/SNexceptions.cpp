@@ -91,6 +91,18 @@ class SNoutOfRangeException : public std::exception
 
 class PermutationIdexoutOfRangeException : public std::exception
 {
+
+    /** This exception is raised when one try to access to an element out of range of a permutation
+     *  ```
+     *  Mpermutation<4> perm;
+     *  // populate 'perm'
+     *  unsigned int k=perm(5)   // throws
+     *  ```
+     *
+     *  The constructor of `Mpermutation` from   `std::array<unsigned int,tp_size>`
+     *  also throws when one element of the array is large than tp_size.
+     * */
+
     private :
         unsigned int index;
         unsigned int tp_size;
