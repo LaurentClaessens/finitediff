@@ -129,9 +129,55 @@ class GaussTest : public CppUnit::TestCase
             auto plu_A= A.getPLU();
             CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
+        }
+        void test_finitediff_U()
+        {
+            echo_function_test("test_finitediff_U");
             echo_single_test("A more realistic test");
             // to be implemented : a 10x10 matrix of the form "finite differences"
-            CPPUNIT_ASSERT(false);
+            //
+            // The tests is done against Sage which furnished the answer by the script
+            // test_finitediff.sage
+            
+            const unsigned int size=100;
+            SNmatrix<double,size> A;
+            double h=3;
+            double cof=-1/(h*h);
+            double cofP=2/(h*h);
+            std::array<double,size> c;
+
+            for (unsigned int k=0;k<size;++k)
+            {
+                c.at(k)=k;
+            }
+            for (unsigned int col=1;col<size-1;++col)
+            {
+                A.at(col-1,col)=cof;
+                A.at(col+1,col)=cof;
+                A.at(col,col)=cofP+c.at(col);
+            }
+            A.at(0,0)=cofP+c.at(0);
+            A.at(1,0)=cof;
+
+            A.at(size-2,size-1)=cof;
+            A.at(size-1,size-1)=cofP+c.at(size-1);
+
+            debug_print<<"La matrice créée :"<<std::endl;
+            debug_print<<A<<std::endl;
+
+            for (unsigned int k=0;k<size;++k)
+            {
+                debug_print<<" k "<<k<<"  -> "<<A.get(k,k);
+            }
+
+            auto plu=A.getPLU();
+            debug_print<<"La U calculée :"<<std::endl;
+            debug_print<<plu.getU()<<std::endl;
+
+            double epsilon=0.000001;
+            auto ans_U=testMatrixFD();
+            
+            CPPUNIT_ASSERT( ans_U.isNumericallyEqual(plu.getU(),epsilon)  );
         }
     public :
         void runTest()
@@ -139,6 +185,7 @@ class GaussTest : public CppUnit::TestCase
             test_upper_triangular();
             test_elimination_line();
             test_LminusL();
+            test_finitediff_U();
         }
 };
 
