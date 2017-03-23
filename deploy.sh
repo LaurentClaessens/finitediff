@@ -47,9 +47,3 @@ launch_test "sn_line_unit_tests"
 launch_test "sn_element_unit_tests"
 launch_test "plu_unit_tests"
 
-echo
-echo "COMPILATION --------------------"
-echo
-
-make all
-
