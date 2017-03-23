@@ -119,6 +119,12 @@ class GaussTest : public CppUnit::TestCase
             auto plu_A= A.getPLU();
 
             echo_single_test("plu.getU==A_U");
+
+            debug_print<<"Calculée :"<<std::endl;
+            debug_print<<plu_A.getU()<<std::endl;
+            debug_print<<"réponse :"<<std::endl;
+            debug_print<<A_U<<std::endl;
+
             CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
             auto B=testMatrixA();

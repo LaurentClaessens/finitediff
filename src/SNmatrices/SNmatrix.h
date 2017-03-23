@@ -59,7 +59,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
     
-    friend SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
+    template <class U,unsigned int s>
+    friend SNupperTriangularMatrix<U,s>::SNupperTriangularMatrix(const SNmatrix<U,s>&);
 
     private:
         std::array<T,tp_size*tp_size> data;
@@ -253,9 +254,13 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
     debug_print<<"La matrice L, juste pour dire"<<std::endl;
     debug_print<<L<<std::endl;
+
+    debug_print<<"Au départ, mU est :"<<std::endl;
+    debug_print<<mU<<std::endl;
     
     for (m_num c=0;c<tp_size;c++)
     {
+        debug_print<<"Travail sur la colonne "<<c<<std::endl;
         auto max_el = mU.getLargerUnderDiagonal(c);
 
         if (max_el.getValue()!=0)   // not a column full of zero's
@@ -264,7 +269,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
             permutation=el_perm*permutation; 
+            debug_print<<"Swap les lignes"<<c<<max_el.line<<std::endl;
             mU.swapLines(c,max_el.line);
+
+            debug_print<<"mU est maintenant :"<<std::endl;
+            debug_print<<mU<<std::endl;
 
             auto killing_line=mU.gaussEliminationLine(c);
 
@@ -274,10 +283,15 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
+                //
+                //
+                debug_print<<"Je tue la ligne "<<l<<std::endl;
                 mU.lineMinusLine(l,m*killing_line);
             }
         }
     }
+    // at this point, the matrix mU should be the correct one.
+    plu._setU(mU);
     return plu;
 }
 
