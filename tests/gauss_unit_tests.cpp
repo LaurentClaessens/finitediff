@@ -105,10 +105,20 @@ class GaussTest : public CppUnit::TestCase
         {
             echo_function_test("test_upper_triangular");
 
-            debug_print<<"  ----------- LE TETST "<<std::endl;
-            debug_print<<""<<std::endl;
-
             double epsilon(0.0000001);
+
+            echo_single_test("The U of plu_B");
+            auto B=testMatrixA();
+                /*
+                 0  3  6
+                 0  0  2
+                 0  3  6
+                */
+            auto B_U=testMatrixA_U();
+            auto plu_B=B.getPLU();  
+            CPPUNIT_ASSERT(B_U.isNumericallyEqual(plu_B.getU(),epsilon));
+
+            echo_single_test("plu.getU==A_U");
             auto A=testMatrixB();
             /*
              1  2  3
@@ -117,34 +127,18 @@ class GaussTest : public CppUnit::TestCase
             */
             auto A_U=testMatrixB_U();
             auto plu_A= A.getPLU();
-
-            echo_single_test("plu.getU==A_U");
-
-            debug_print<<"Calculée :"<<std::endl;
-            debug_print<<plu_A.getU()<<std::endl;
-            debug_print<<"réponse :"<<std::endl;
-            debug_print<<A_U<<std::endl;
-
             CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
-            auto B=testMatrixA();
-                /*
-                 0  3  6
-                 0  0  2
-                 0  3  6
-                */
-            auto B_U=testMatrixA_U();
-
-            auto plu_B=B.getPLU();  
-            plu_B.getU().subtract(B_U);
-            CPPUNIT_ASSERT(B.max_norm()<epsilon);
+            echo_single_test("A more realistic test");
+            // to be implemented : a 10x10 matrix of the form "finite differences"
+            CPPUNIT_ASSERT(false);
         }
     public :
         void runTest()
         {
+            test_upper_triangular();
             test_elimination_line();
             test_LminusL();
-            test_upper_triangular();
         }
 };
 

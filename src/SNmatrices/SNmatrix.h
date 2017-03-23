@@ -251,15 +251,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
-    debug_print<<"La matrice L, juste pour dire"<<std::endl;
-    debug_print<<L<<std::endl;
-
-    debug_print<<"Au départ, mU est :"<<std::endl;
-    debug_print<<mU<<std::endl;
-    
     for (m_num c=0;c<tp_size;c++)
     {
-        debug_print<<"Travail sur la colonne "<<c<<std::endl;
         auto max_el = mU.getLargerUnderDiagonal(c);
 
         if (max_el.getValue()!=0)   // not a column full of zero's
@@ -268,14 +261,9 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
             permutation=el_perm*permutation; 
-            debug_print<<"Swap les lignes"<<c<<max_el.line<<std::endl;
             mU.swapLines(c,max_el.line);
 
-            debug_print<<"mU est maintenant :"<<std::endl;
-            debug_print<<mU<<std::endl;
-
             auto killing_line=mU.gaussEliminationLine(c);
-
             for (m_num l=c+1;l<tp_size;l++)
             {
                 T m = mU.get(l,c);  // the value to be eliminated
@@ -284,7 +272,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
                 // we already know the first 'c' differences are 0.
                 //
                 //
-                debug_print<<"Je tue la ligne "<<l<<std::endl;
                 mU.lineMinusLine(l,m*killing_line);
             }
         }
