@@ -33,14 +33,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNupperTriangularMatrix : public SNgeneric<T,tp_size>
 {
-
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
+
         T _get(const m_num,const m_num) const override;
         T& _at(m_num,m_num) override;
     public :
-        SNupperTriangularMatrix();
+        /**
+         * return `data` of the requested matrix. 
+         * Since I cannot declare the constructor of SNupperTriangularMatrix
+         * being a friend of SNmatrix (templated constructor ...), 
+         * the constructor
+         *  SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
+         * will use `_get_other_data` to get the `data` member of `A`.
+         * */
+        std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
 
+        SNupperTriangularMatrix();
         SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
 };
 
@@ -51,9 +60,16 @@ SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix():
     data() 
 { };
 
+
+template <class T,unsigned int tp_size>
+std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const
+{
+    return A.data;
+}
+
 template <class T,unsigned int tp_size>
 SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A): 
-    data(A.data) 
+    data(_get_other_data(A)) 
 {};
 
 // _GET AND _AT METHODS ---------------------------------------
