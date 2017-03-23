@@ -133,7 +133,7 @@ Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_siz
     Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
-        new_perm.at(i)=b.get(get(i));
+        new_perm.at(i)=get(  b.get(i)  );
     }
     return new_perm;
 }
