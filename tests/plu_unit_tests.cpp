@@ -42,7 +42,7 @@ class pluTest : public CppUnit::TestCase
         void test_plu_permutation()
         {
             echo_function_test("test_plu_permutation");
-            debug_print<<"THE PLU TEST TO BE STILLE IMPLEMENTED"<<std::endl;
+            debug_print<<"THE PLU TEST STILL TO BE IMPLEMENTED"<<std::endl;
 
             auto A=testMatrixE();
             auto plu=A.getPLU();
