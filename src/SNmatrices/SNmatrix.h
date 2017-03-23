@@ -59,8 +59,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
     
-    template <class U,unsigned int s>
-    friend SNupperTriangularMatrix<U,s>::SNupperTriangularMatrix(const SNmatrix<U,s>&);
+    friend std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
 
     private:
         std::array<T,tp_size*tp_size> data;
