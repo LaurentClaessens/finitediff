@@ -58,6 +58,7 @@ As an example, on a lower diagonal matrix,
 #include "m_num.h"
 
 #include "MathUtilities.h"
+#include "../DebugPrint.h"
 
 // THE CLASS HEADER -----------------------------------------
 

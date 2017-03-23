@@ -23,5 +23,10 @@ doc/*
 # OTHERS 
 
 .kk.log
-tests/.gitignore
 TODO.txt
+
+# SUBDIRECTORIES's .GITIGNORE
+
+tests/.gitignore
+src/.gitignore
+src/SNmatrices/.gitignore

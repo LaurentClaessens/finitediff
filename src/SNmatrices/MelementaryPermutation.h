@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __MELEMENTARYPERMUTATION_H_095019_
 #define __MELEMENTARYPERMUTATION_H_095019_
 
+#include "../DebugPrint.h"
 
 /*
 
@@ -30,6 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <unsigned int tp_size>
 class MelementaryPermutation
 {
+    template <unsigned int s>
+    friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
+
     private:
         unsigned int elA;
         unsigned int elB;
@@ -44,10 +48,13 @@ class MelementaryPermutation
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
 };
 
+
+// OPERATORS ---------------------------------
+
 template <unsigned int tp_size>
 Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutation<tp_size>& perm) const
 {
-    Mpermutation<tp_size> tmp(perm);
+    Mpermutation<tp_size> tmp;
     for (unsigned int k=0;k<tp_size;++k)
     {
         tmp.at(k)=this->get( perm.get(k)  );
@@ -55,11 +62,25 @@ Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutat
     return tmp;
 }
 
+template <unsigned int s>
+std::ostream& operator<<(std::ostream& stream, MelementaryPermutation<s> perm)
+{
+    stream<<perm.elA<<" <--> "<<perm.elB;
+    return stream;
+}
+
+// ACTION ON THE INTEGERS ---------------------------------
+
 template <unsigned int tp_size>
 MelementaryPermutation<tp_size>::MelementaryPermutation(unsigned int A,unsigned int B) :
     elA(A),
     elB(B)
-{}
+{
+    if (elA > tp_size or elB>tp_size)
+    {
+        throw OutOfRangeConstructionElementaryPermutationException(A,B,tp_size);
+    }
+}
     
 template <unsigned int tp_size>
 unsigned int MelementaryPermutation<tp_size>::get(const unsigned int k) const

@@ -27,8 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include <iostream>
-std::ostream& debug_print(std::cout);
+#include "../src/DebugPrint.h"
 
 class SNpermutationsTest : public CppUnit::TestCase
 {
@@ -37,10 +36,9 @@ class SNpermutationsTest : public CppUnit::TestCase
         {
             echo_function_test("test_permutation");
 
-            std::array<unsigned int, 4> a1{ {1, 2, 3,4} };
-            Mpermutation<4> perm1(a1);         // there should be some errors here
 
 
+            echo_single_test("Test the identity permutation");
             std::array<unsigned int, 4> a2{ {0,1, 2, 3} };
             Mpermutation<4> permID(a2);
             CPPUNIT_ASSERT(permID(0)==0);
@@ -48,8 +46,14 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(permID(2)==2);
             CPPUNIT_ASSERT(permID(3)==3);
 
-            CPPUNIT_ASSERT(permID(12)==3);      // should do something about that
+            echo_single_test("Test a constructor with out of range arguments");
+            std::array<unsigned int, 4> a1{ {1, 2, 3,4} };
+            CPPUNIT_ASSERT_THROW(Mpermutation<4> perm1(a1),PermutationIdexoutOfRangeException);
 
+            echo_single_test("Test throwing when asking a too large number (>tp_size)");
+            CPPUNIT_ASSERT_THROW(std::cout<<permID(12),PermutationIdexoutOfRangeException);
+
+            echo_single_test("Test an arbitrary permutation");
             std::array<unsigned int, 4> a3{ {1,2, 0, 3} };
             Mpermutation<4> perm2(a3);
             CPPUNIT_ASSERT(perm2(0)==1);

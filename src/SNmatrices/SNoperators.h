@@ -29,8 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
-//#include <iostream>
-//std::ostream& debug_print(std::cout);
 
 // PRODUCTS ------------------------------------------
 

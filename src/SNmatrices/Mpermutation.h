@@ -55,8 +55,6 @@ d->a
 template <unsigned int tp_size>
 class Mpermutation
 {
-    //template <unsigned int s>
-    //friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
 
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, Mpermutation<s>);
@@ -65,6 +63,8 @@ class Mpermutation
         std::array<unsigned int,tp_size> data;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
+
+        /** The no-argument constructors initializes to identity */
         Mpermutation(); 
 
 
@@ -99,10 +99,24 @@ unsigned int& Mpermutation<tp_size>::at(const unsigned int k)
 template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
     data(d)
-{}
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        if (d.at(k)>tp_size-1) // Mpermutation<4> permutes the set {0,1,2,3}.
+        {
+            throw PermutationIdexoutOfRangeException(k,tp_size);
+        }
+    }
+}
 
 template <unsigned int tp_size>
-Mpermutation<tp_size>::Mpermutation() {}
+Mpermutation<tp_size>::Mpermutation() 
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        at(k)=k;
+    }
+}
 
 // OPERATORS -------------------------------
 
@@ -145,7 +159,7 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
-        stream<<perm.data.at(l);
+        stream<<l<<"->"<<perm.data.at(l)<<std::endl;
     }
     return stream;
 }
