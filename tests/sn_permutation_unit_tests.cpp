@@ -98,15 +98,20 @@ class SNpermutationsTest : public CppUnit::TestCase
             std::array<unsigned int, 4> a4{ {1,2, 0, 3} };
             Mpermutation<4> perm4(a4);
 
-            std::array<unsigned int, 4> aa{ {1,2, 0, 3} };
+            echo_single_test("perm3 * perm4");
+            std::array<unsigned int, 4> aa{ {2,0, 1, 3} };
             Mpermutation<4> ans_p1(aa);
             CPPUNIT_ASSERT(ans_p1==perm3*perm4);
+            echo_single_test("This one is commutative");
+            CPPUNIT_ASSERT(perm4*perm3==perm3*perm4);
 
             std::array<unsigned int, 4> a5{ {3,2, 1, 0} };
             Mpermutation<4> perm5(a5);
 
+            echo_single_test("perm3 * perm5");
             std::array<unsigned int, 4> ab{ {3,0, 2, 1} };
             Mpermutation<4> ans_p2(ab);
+
             CPPUNIT_ASSERT(ans_p2==perm3*perm5);
         }
     public:
