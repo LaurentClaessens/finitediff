@@ -111,8 +111,12 @@ class SNpermutationsTest : public CppUnit::TestCase
             echo_single_test("perm3 * perm5");
             std::array<unsigned int, 4> ab{ {3,0, 2, 1} };
             Mpermutation<4> ans_p2(ab);
-
             CPPUNIT_ASSERT(ans_p2==perm3*perm5);
+
+            echo_single_test("This one is not commutative : perm5 * perm3");
+            std::array<unsigned int, 4> ac{ {2,1,3,0} };
+            Mpermutation<4> ans_p3(ac);
+            CPPUNIT_ASSERT(ans_p3==perm5*perm3);
         }
     public:
         void runTest()
