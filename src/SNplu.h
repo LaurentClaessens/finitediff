@@ -33,20 +33,19 @@ class SNplu
 {
 
     friend SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const;
-    //template <class V,unsigned int s>
-    //friend SNplu<V,s> SNmatrix<V,s>::getPLU() const;
 
     private :
         Mpermutation<tp_size> m_P;              // we store the "mathematical" permutation, not the matrix.
         SNlowerTriangularMatrix<T,tp_size> m_L;
         SNupperTriangularMatrix<T,tp_size> m_U;
 
-        // '_setU' takes a matrix and says that this is the 'U' one.
-        // - do not check that A is actually upper diagonale
-        // - erase the old U matrix.
-        // - only to be used at the end of the building process of the PLU
-        //   decomposition, when the initial matrix is transformed into
-        //   an upper diagonal one.
+        /**  '_setU' takes a matrix and says that this is the 'U' one.
+           - do not check that A is actually upper diagonale
+           - erase the old U matrix.
+           - only to be used at the end of the building process of the PLU
+             decomposition, when the initial matrix is transformed into
+             an upper diagonal one.
+           */
         void _setU(const SNmatrix<T,tp_size>& A);
     public:
 
@@ -63,7 +62,7 @@ template <class T,unsigned int tp_size>
 void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A) 
 {
     // non optimal because one could try to copy only the useful part.
-    m_U.data=A.data;
+    m_U=A;
 }
 
 // GETTER METHODS -----------------------
