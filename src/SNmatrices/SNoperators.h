@@ -125,6 +125,12 @@ SNlowerTriangularMatrix<U,s> operator*
 // EQUALITIES ---------------------------------------
 
 template <class U,unsigned int s,class V,unsigned int t>
+bool operator==(const SNgeneric<U,s>& A,const SNgeneric<V,t>& B)
+{
+    return componentWiseeEquality(A,B);
+}
+
+template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
     checkSizeCompatibility(A,B);
@@ -132,27 +138,9 @@ bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 }
 
 template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNupperTriangularMatrix<U,s>& A,const SNmatrix<V,t>& B)
-{
-    return componentWiseeEquality(A,B);
-}
-template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNupperTriangularMatrix<V,t>& B)
 {
     return B==A;
 }
-
-template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,t>& A)
-{
-    return componentWiseeEquality(G,A);
-}
-
-template <class U,class V,unsigned int s,unsigned int t>
-bool operator==(const SNlowerTriangularMatrix<U,s>& G,const SNmatrix<V,t>& A)
-{
-    return componentWiseeEquality(G,A);
-}
-
 
 #endif
