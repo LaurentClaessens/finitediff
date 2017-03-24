@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
+#include "ooTQFOooJrAfLb.h"     // automatically generated, see 
+
 #include "../src/DebugPrint.h"
 
 class GaussTest : public CppUnit::TestCase
@@ -129,9 +131,27 @@ class GaussTest : public CppUnit::TestCase
             auto plu_A= A.getPLU();
             CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
+        }
+        void test_finitediff_U()
+        {
+            echo_function_test("test_finitediff_U");
+            //
+            // The test matrix and the answer to be tested against are
+            // created by the Sage script 'test_fd_ooTQFOooJrAfLb.sage'
+            //
+            //
+            // 
+            
+            auto A=testsMatrix_ooTQFOooJrAfLb_A();
+            auto ans_U=testsMatrix_ooTQFOooJrAfLb_U();
+            unsigned int size=A.getSize();
+
+            auto plu=A.getPLU();
+
+
+            double epsilon=0.000001;
             echo_single_test("A more realistic test");
-            // to be implemented : a 10x10 matrix of the form "finite differences"
-            CPPUNIT_ASSERT(false);
+            CPPUNIT_ASSERT( ans_U.isNumericallyEqual(plu.getU(),epsilon)  );
         }
     public :
         void runTest()
@@ -139,6 +159,7 @@ class GaussTest : public CppUnit::TestCase
             test_upper_triangular();
             test_elimination_line();
             test_LminusL();
+            test_finitediff_U();
         }
 };
 
