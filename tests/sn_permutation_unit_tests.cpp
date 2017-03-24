@@ -148,9 +148,26 @@ class SNpermutationsTest : public CppUnit::TestCase
             Mpermutation<4> ans_p3(ac);
             CPPUNIT_ASSERT(ans_p3==perm5*perm3);
         }
+        void test_matrix_permutation()
+        {
+            echo_function_test("test_matrix_permutation");
+
+            std::array<unsigned int, 4> a1{ {2,1,3,0} };
+            Mpermutation<4> perm1(a1);
+            SNpermutation<int,4> P1(perm1);
+
+            SNmatrix<int,4> ans_P1(0);
+            ans_P1.at(2,0)=1;
+            ans_P1.at(1,1)=1;
+            ans_P1.at(3,2)=1;
+            ans_P1.at(0,3)=1;
+
+            CPPUNIT_ASSERT(ans_P1==P1);
+        }
     public:
         void runTest()
         {
+            test_matrix_permutation();
             test_inverse();
             test_permutation();
             test_identity();
