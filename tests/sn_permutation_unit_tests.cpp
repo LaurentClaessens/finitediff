@@ -162,7 +162,26 @@ class SNpermutationsTest : public CppUnit::TestCase
             ans_P1.at(3,2)=1;
             ans_P1.at(0,3)=1;
 
+            echo_single_test("matrix of a permutation");
             CPPUNIT_ASSERT(ans_P1==P1);
+
+            SNpermutation<int,4> iP1=P1.inverse();
+            SNmatrix<int,4> ans_iP1(0);
+
+// the inverse of P1 is :  
+//[0 0 1 0]
+//[0 1 0 0]
+//[0 0 0 1]
+//[1 0 0 0]
+
+        ans_iP1.at(0,2)=1;
+        ans_iP1.at(1,1)=1;
+        ans_iP1.at(2,3)=1;
+        ans_iP1.at(3,0)=1;
+
+        echo_single_test("inverse matrix of a permutation");
+        CPPUNIT_ASSERT(ans_iP1==iP1);
+
         }
     public:
         void runTest()
