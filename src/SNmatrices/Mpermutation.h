@@ -72,9 +72,9 @@ class Mpermutation
         // is the composition.
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
         
-        // return by value the image of 'k' by the permutation.
-        // There are two ways to do that.
+        /** return by value the image of `k` */
         unsigned int operator()(const unsigned int k) const;
+        /** return by value the image of `k` */
         unsigned int get(const unsigned int k) const;
 
         // return by reference the image of 'k' by the permutation
