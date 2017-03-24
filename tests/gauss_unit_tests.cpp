@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
+#include "ooTQFOooJrAfLb.h"     // automatically generated, see 
+
 #include "../src/DebugPrint.h"
 
 class GaussTest : public CppUnit::TestCase
@@ -133,50 +135,22 @@ class GaussTest : public CppUnit::TestCase
         void test_finitediff_U()
         {
             echo_function_test("test_finitediff_U");
-            echo_single_test("A more realistic test");
-            // to be implemented : a 10x10 matrix of the form "finite differences"
             //
-            // The tests is done against Sage which furnished the answer by the script
-            // test_finitediff.sage
+            // The test matrix and the answer to be tested against are
+            // created by the Sage script 'test_fd_ooTQFOooJrAfLb.sage'
+            //
+            //
+            // 
             
-            const unsigned int size=100;
-            SNmatrix<double,size> A;
-            double h=3;
-            double cof=-1/(h*h);
-            double cofP=2/(h*h);
-            std::array<double,size> c;
-
-            for (unsigned int k=0;k<size;++k)
-            {
-                c.at(k)=k;
-            }
-            for (unsigned int col=1;col<size-1;++col)
-            {
-                A.at(col-1,col)=cof;
-                A.at(col+1,col)=cof;
-                A.at(col,col)=cofP+c.at(col);
-            }
-            A.at(0,0)=cofP+c.at(0);
-            A.at(1,0)=cof;
-
-            A.at(size-2,size-1)=cof;
-            A.at(size-1,size-1)=cofP+c.at(size-1);
-
-            debug_print<<"La matrice créée :"<<std::endl;
-            debug_print<<A<<std::endl;
-
-            for (unsigned int k=0;k<size;++k)
-            {
-                debug_print<<" k "<<k<<"  -> "<<A.get(k,k);
-            }
+            auto A=testsMatrix_ooTQFOooJrAfLb_A();
+            auto ans_U=testsMatrix_ooTQFOooJrAfLb_U();
+            unsigned int size=A.getSize();
 
             auto plu=A.getPLU();
-            debug_print<<"La U calculée :"<<std::endl;
-            debug_print<<plu.getU()<<std::endl;
+
 
             double epsilon=0.000001;
-            auto ans_U=testMatrixFD();
-            
+            echo_single_test("A more realistic test");
             CPPUNIT_ASSERT( ans_U.isNumericallyEqual(plu.getU(),epsilon)  );
         }
     public :
