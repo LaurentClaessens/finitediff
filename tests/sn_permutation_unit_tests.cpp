@@ -89,6 +89,36 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(ans_p1==ans_p1*permID);
             CPPUNIT_ASSERT(ans_p2==ans_p2*permID);
         }
+        void test_inverse()
+        {
+            echo_function_test("test_inverse");
+            std::array<unsigned int, 4> a3{ {1,2, 0, 3} };
+            Mpermutation<4> perm3(a3);
+
+            std::array<unsigned int, 4> a4{ {1,2, 0, 3} };
+            Mpermutation<4> perm4(a4);
+
+            std::array<unsigned int, 4> a5{ {3,2, 1, 0} };
+            Mpermutation<4> perm5(a5);
+
+            std::array<unsigned int, 4> a6{ {2,1,3,0} };
+            Mpermutation<4> perm6(a6);
+
+            std::array<unsigned int, 4> aID{ {0,1, 2, 3} };
+            Mpermutation<4> permID(aID);
+            
+            CPPUNIT_ASSERT(perm3*perm3.inverse()==permID);
+            CPPUNIT_ASSERT(perm3.inverse()*perm3==permID);
+        
+            CPPUNIT_ASSERT(perm4*perm4.inverse()==permID);
+            CPPUNIT_ASSERT(perm4.inverse()*perm4==permID);
+
+            CPPUNIT_ASSERT(perm5*perm5.inverse()==permID);
+            CPPUNIT_ASSERT(perm5.inverse()*perm5==permID);
+
+            CPPUNIT_ASSERT(perm6*perm6.inverse()==permID);
+            CPPUNIT_ASSERT(perm6.inverse()*perm6==permID);
+        }
         void test_product()
         {
             echo_function_test("test_product");
@@ -121,6 +151,7 @@ class SNpermutationsTest : public CppUnit::TestCase
     public:
         void runTest()
         {
+            test_inverse();
             test_permutation();
             test_identity();
             test_product();
