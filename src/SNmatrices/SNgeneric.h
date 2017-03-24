@@ -16,9 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef __SNGENERIC_H__142708_
+#define __SNGENERIC_H__142708_
+
+#include "SNgaussianMatrix.h"
+#include "SNline.h"
+#include "m_num.h"
+
+#include "MathUtilities.h"
+#include "../DebugPrint.h"
+
+// THE CLASS HEADER -----------------------------------------
+
 /**
  
-   This is the base class for the other matrices types.
+   This is the base class for the other matrices types. 
    A matrix can be
    - diagonal
    - upper/lower triangular
@@ -49,18 +61,6 @@ As an example, on a lower diagonal matrix,
 
 
 */
-
-#ifndef __SNGENERIC_H__142708_
-#define __SNGENERIC_H__142708_
-
-#include "SNgaussianMatrix.h"
-#include "SNline.h"
-#include "m_num.h"
-
-#include "MathUtilities.h"
-#include "../DebugPrint.h"
-
-// THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
 class SNgeneric
