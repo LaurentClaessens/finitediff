@@ -108,7 +108,7 @@ Mpermutation<tp_size> SNpermutation<T,tp_size>::getMpermutation() const
 template <class T,unsigned int tp_size>
 SNpermutation<T,tp_size> SNpermutation<T,tp_size>::inverse() const
 {
-    SNpermutation<T,tp_size> inv(this->getMpermutation.inverse());
+    SNpermutation<T,tp_size> inv(this->getMpermutation().inverse());
     return inv;
 }
 
