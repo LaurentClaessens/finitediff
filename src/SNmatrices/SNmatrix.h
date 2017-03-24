@@ -94,6 +94,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
+        /** Creates a matrix full of x */
+        SNmatrix(const T& x);
 
 
         // return the max of the absolute values of all the matrix elements
@@ -125,6 +127,15 @@ SNmatrix<T,tp_size>::SNmatrix(): data() { };
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
 
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(const T& v): 
+    data()
+{
+    for (unsigned int k=0;k<tp_size*tp_size;++k)
+    {
+            data.at(k)=v;
+    }
+};
 
 // GETTER METHODS  -------------------------------------------
 
