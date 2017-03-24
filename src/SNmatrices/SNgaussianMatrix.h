@@ -26,7 +26,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNexceptions.cpp"
 
 
-/*
+// forward definition
+template <class T,unsigned int tp_size>
+class SNgeneric;
+template <class T>
+class SpecialValue;
+
+
+// THE CLASS HEADER -----------------------------------------
+
+/**
    This represents a gaussian matrix.
 
    A gaussian matrix is the multiplicative matrix which serves to eliminate
@@ -37,32 +46,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    - A_{i,c}/m on position (i,c) when i>c. 
 
    That is there is something non trivial only on the column 'c', under the diagonal.
- *
- *
- * TODO : giving 'c' as a template argument, one can in average spare half of the memory by allowing 'c' as size in 'data' instead of 'tp_size'.
+ 
+
+ TODO : giving 'c' as a template argument, one can in average spare half of the memory by allowing 'c' as size in 'data' instead of 'tp_size'.
+
 */
-
-// forward definition
-
-
-
-template <class T,unsigned int tp_size>
-class SNgeneric;
-template <class T>
-class SpecialValue;
-
-
-// THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
 class SNgaussianMatrix : public SNgeneric<T,tp_size>
 {
 
+
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
         SpecialValue<T> checkForSpecialElements(const m_num& i,const m_num& j) const;
 
-        // populate the matrix from the elements of the given matrix
+        //** populate the matrix from the elements of the given matrix */
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
         T _get(m_num,m_num) const override;
