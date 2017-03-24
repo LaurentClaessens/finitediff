@@ -72,9 +72,9 @@ class Mpermutation
         // is the composition.
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
         
-        // return by value the image of 'k' by the permutation.
-        // There are two ways to do that.
+        /** return by value the image of `k` */
         unsigned int operator()(const unsigned int k) const;
+        /** return by value the image of `k` */
         unsigned int get(const unsigned int k) const;
 
         // return by reference the image of 'k' by the permutation
@@ -82,6 +82,9 @@ class Mpermutation
         unsigned int& at(const unsigned int k);
 
         bool operator==(const Mpermutation<tp_size>& other) const;
+
+        /** Return the inverse permutation */
+        Mpermutation<tp_size> inverse() const;
 };
 
 
@@ -162,6 +165,21 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
         stream<<l<<"->"<<perm.data.at(l)<<std::endl;
     }
     return stream;
+}
+
+
+// MATHEMATICS -------------------------------
+
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> Mpermutation<tp_size>::inverse () const
+{
+    Mpermutation<tp_size> inv;
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        inv.at(  this->get(k)  )=k;
+    }
+    return inv;
 }
 
 #endif
