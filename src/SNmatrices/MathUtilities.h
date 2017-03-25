@@ -26,6 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../SNexceptions.cpp"
 
+
+// forward
+template <class T,unsigned int tp_size>
+class SNgeneric;
+
 template <class U,unsigned int s,class V,unsigned int t>
 void checkSizeCompatibility(const SNgeneric<U,s>&A, const SNgeneric<V,t>&B )
 {

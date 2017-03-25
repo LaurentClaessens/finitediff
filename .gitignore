@@ -24,6 +24,7 @@ doc/*
 
 .kk.log
 TODO.txt
+deploy.log
 
 # SUBDIRECTORIES's .GITIGNORE
 

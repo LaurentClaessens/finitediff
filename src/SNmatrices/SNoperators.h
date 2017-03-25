@@ -33,11 +33,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // PRODUCTS ------------------------------------------
 
 
-// SNmatrix*SNmatrix.
-// cannot do better than compute everything.
+/**
+ SNgeneric * SNgeneric.
+ In general, I cannot do better than compute everything. The very point of making
+ many different classes is NOT to use this 'default' implementation for the product.
+*/
 
 template <class U,class V,unsigned int s,unsigned int t>
-SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
+SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
 {
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;

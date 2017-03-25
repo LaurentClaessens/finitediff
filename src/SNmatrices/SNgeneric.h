@@ -16,9 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef __SNGENERIC_H__142708_
+#define __SNGENERIC_H__142708_
+
+#include <cmath>
+
+#include "SNgaussianMatrix.h"
+#include "SNline.h"
+#include "m_num.h"
+
+#include "MathUtilities.h"
+#include "../DebugPrint.h"
+
+
+// forward
+template <class T,unsigned int tp_size>
+class SNgaussianMatrix;
+
+// THE CLASS HEADER -----------------------------------------
+
 /**
  
-   This is the base class for the other matrices types.
+   This is the base class for the other matrices types. 
    A matrix can be
    - diagonal
    - upper/lower triangular
@@ -49,18 +68,6 @@ As an example, on a lower diagonal matrix,
 
 
 */
-
-#ifndef __SNGENERIC_H__142708_
-#define __SNGENERIC_H__142708_
-
-#include "SNgaussianMatrix.h"
-#include "SNline.h"
-#include "m_num.h"
-
-#include "MathUtilities.h"
-#include "../DebugPrint.h"
-
-// THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
 class SNgeneric
@@ -95,13 +102,19 @@ class SNgeneric
         template <class V,unsigned int s>
         void subtract(const SNgaussianMatrix<V,s>&);
 
-        // return the gaussian matrix for the requested column
+        /** 
+         * return the gaussian matrix for the requested column 'c'
+         * */
         SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
 
-        // numerical equality test 'up to epsilon'
-        // If if max norm of "this-A" is strictly larger than epsilon,
-        // return false.
-        // Else return true.
+        /** 
+        numerical equality test 'up to epsilon'.
+        If the max norm of "this-A" is strictly larger than epsilon,
+        return false.
+        Else return true.
+
+        For this reason, the template parameter `T` has to support `std::abs`
+         */
         template <class V,unsigned int s>
         bool isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const;
 };
@@ -226,13 +239,13 @@ template <class V,unsigned int s>
 bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
 {
     checkSizeCompatibility(*this,A);
-    T diff;
+    T abs_diff;
     for (m_num i=0;i<tp_size;i++)
     {
         for (m_num j=0;j<tp_size;j++)
         {
-            diff=std::abs(  this->get(i,j)-A.get(i,j)  );
-            if (diff>epsilon)
+            abs_diff=std::abs(  this->get(i,j)-A.get(i,j)  );
+            if (abs_diff>epsilon)
             {
                 return false;
             }
