@@ -37,18 +37,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../DebugPrint.h"
 
-/*
-This is my matrix type, designed for numerical computation. It represents a 
-square matrix.
-*/
 
 // forward definition
-
 template <class T,unsigned int tp_size>
 class SNplu;
 
 // THE CLASS HEADER -----------------------------------------
 
+/*
+This is my matrix type, designed for numerical computation. It represents a 
+square matrix.
+
+NOTE : if you want the identity matrix, you should can create a permutation
+       with no arguments.
+*/
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
 {
@@ -59,7 +61,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
     
-    friend SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
+    friend std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
 
     private:
         std::array<T,tp_size*tp_size> data;
@@ -94,6 +96,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
+        /** Creates a matrix full of x */
+        SNmatrix(const T& x);
 
 
         // return the max of the absolute values of all the matrix elements
@@ -125,6 +129,15 @@ SNmatrix<T,tp_size>::SNmatrix(): data() { };
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
 
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(const T& v): 
+    data()
+{
+    for (unsigned int k=0;k<tp_size*tp_size;++k)
+    {
+            data.at(k)=v;
+    }
+};
 
 // GETTER METHODS  -------------------------------------------
 
@@ -251,9 +264,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
-    debug_print<<"La matrice L, juste pour dire"<<std::endl;
-    debug_print<<L<<std::endl;
-    
     for (m_num c=0;c<tp_size;c++)
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
@@ -267,17 +277,20 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             mU.swapLines(c,max_el.line);
 
             auto killing_line=mU.gaussEliminationLine(c);
-
             for (m_num l=c+1;l<tp_size;l++)
             {
                 T m = mU.get(l,c);  // the value to be eliminated
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
+                //
+                //
                 mU.lineMinusLine(l,m*killing_line);
             }
         }
     }
+    // at this point, the matrix mU should be the correct one.
+    plu._setU(mU);
     return plu;
 }
 
