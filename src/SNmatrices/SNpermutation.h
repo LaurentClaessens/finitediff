@@ -90,7 +90,7 @@ T& SNpermutation<T,tp_size>::_at(const m_num i,const m_num j)
 template <class T,unsigned int tp_size>
 T SNpermutation<T,tp_size>::_get(const m_num i,const m_num j) const 
 {
-    if (getMpermutation().get(j)==i)
+    if (getMpermutation().image(j)==i)
     {
         return 1;
     }
