@@ -41,12 +41,12 @@ class SNpermutation : public SNgeneric<T,tp_size>
     private:
         Mpermutation<tp_size> data;
 
-        std::array<T,tp_size> d_foo;
-
         T& _at(const m_num i,const m_num j) override;
         T _get(const m_num i,const m_num j) const override;
     public :
         SNpermutation(const Mpermutation<tp_size>& d); 
+
+        /** The constructor with zero arguments initializes to the identity. */
         SNpermutation(); 
 
         Mpermutation<tp_size> getMpermutation() const;
