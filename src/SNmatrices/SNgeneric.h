@@ -98,7 +98,9 @@ class SNgeneric
         template <class V,unsigned int s>
         void subtract(const SNgaussianMatrix<V,s>&);
 
-        // return the gaussian matrix for the requested column
+        /** 
+         * return the gaussian matrix for the requested column 'c'
+         * */
         SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
 
         /** 
