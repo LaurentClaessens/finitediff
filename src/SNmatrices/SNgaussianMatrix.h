@@ -64,14 +64,24 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
         //** populate the matrix from the elements of the given matrix */
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
+
+        /** Construct a matrix from its data. See the implementation of '_at' */
+        SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c);
+
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public :
         const m_num column;
 
+        /** Construct a gaussian matrix from a generic one by 
+         * - setting 1 on the diagonal (whatever there is in 'A'),
+         * - keeping what is below the diagonal on column 'c' 
+         * - setting 0 everywhere else  
+         *   */
         template <class U,unsigned int s>
-        SNgaussianMatrix(const SNgeneric<U,s>& , const m_num&);
+        SNgaussianMatrix(const SNgeneric<U,s>& A, const m_num& c);
 
+        SNgaussianMatrix<T,tp_size> inverse() const;
         
 };
 
@@ -100,6 +110,12 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const m_
 {
     populate_from(A);
 }
+
+template <class T,unsigned int tp_size> 
+SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c):
+    data(d),
+    column(c)
+{}
 
 // UTILITIES  ---------------------------------------
 
@@ -166,6 +182,8 @@ T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j)
     //  0  d0  1  0
     //  0  d1  0  1
     //
+    //
+    // Only the first (tp_size-c-1) elements of 'data' are used.
 
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
@@ -174,6 +192,20 @@ T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j)
         throw SNchangeNotAllowedException(i,j);
     }
     return data.at(i-column-1);  //if you change here, you have to change _get
+}
+
+// MATHEMATICS  ---------------------------------------
+
+
+template <class T,unsigned int tp_size>
+SNgaussianMatrix<T,tp_size> SNgaussianMatrix<T,tp_size>::inverse() const
+{
+    std::array<T,tp_size> new_data(data);
+    for (unsigned int k=0;k<tp_size-column-1;++k)
+    {
+        new_data.at(k)=-new_data.at(k);
+    }
+    return SNgaussianMatrix(new_data,column);
 }
 
 #endif

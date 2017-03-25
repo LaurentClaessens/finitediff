@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SNGENERIC_H__142708_
 #define __SNGENERIC_H__142708_
 
+#include <cmath>
+
 #include "SNgaussianMatrix.h"
 #include "SNline.h"
 #include "m_num.h"
@@ -27,7 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../DebugPrint.h"
 
 
-
+// forward
+template <class T,unsigned int tp_size>
+class SNgaussianMatrix;
 
 // THE CLASS HEADER -----------------------------------------
 
@@ -235,13 +239,13 @@ template <class V,unsigned int s>
 bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
 {
     checkSizeCompatibility(*this,A);
-    T diff;
+    T abs_diff;
     for (m_num i=0;i<tp_size;i++)
     {
         for (m_num j=0;j<tp_size;j++)
         {
-            diff=std::abs(  this->get(i,j)-A.get(i,j)  );
-            if (diff>epsilon)
+            abs_diff=std::abs(  this->get(i,j)-A.get(i,j)  );
+            if (abs_diff>epsilon)
             {
                 return false;
             }
