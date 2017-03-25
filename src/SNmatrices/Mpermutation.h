@@ -21,12 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
-/*
+// THE CLASS HEADER -----------------------------------------
+
+/**
  This class represents a permutation. (not a matrix)
 
 
  The permutation is recorded in the array
-        std::array<unsigned int,tp_size> permutations;
+        `std::array<unsigned int,tp_size> permutations;`
  The array
  (a,b,c,d)
  represents the permutation that maps
@@ -47,16 +49,11 @@ b->c
 c->d
 d->a
 
-
 */
-
-// THE CLASS HEADER -----------------------------------------
 
 template <unsigned int tp_size>
 class Mpermutation
 {
-    //template <unsigned int s>
-    //friend std::ostream& operator<<(std::ostream&, SNpermutation<s>);
 
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, Mpermutation<s>);
@@ -65,23 +62,28 @@ class Mpermutation
         std::array<unsigned int,tp_size> data;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
+
+        /** The no-argument constructors initializes to identity */
         Mpermutation(); 
 
 
-        // the multiplication "permutation1 * permutation2" 
-        // is the composition.
+        /**  the multiplication "permutation1 * permutation2" 
+         is the composition. */
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
         
-        // return by value the image of 'k' by the permutation.
-        // There are two ways to do that.
+        /** return by value the image of `k` */
         unsigned int operator()(const unsigned int k) const;
-        unsigned int get(const unsigned int k) const;
+        /** return by value the image of `k` */
+        unsigned int image(const unsigned int k) const;
 
         // return by reference the image of 'k' by the permutation
         // allows to populate.
         unsigned int& at(const unsigned int k);
 
         bool operator==(const Mpermutation<tp_size>& other) const;
+
+        /** Return the inverse permutation */
+        Mpermutation<tp_size> inverse() const;
 };
 
 
@@ -99,10 +101,24 @@ unsigned int& Mpermutation<tp_size>::at(const unsigned int k)
 template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
     data(d)
-{}
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        if (d.at(k)>tp_size-1) // Mpermutation<4> permutes the set {0,1,2,3}.
+        {
+            throw PermutationIdexoutOfRangeException(k,tp_size);
+        }
+    }
+}
 
 template <unsigned int tp_size>
-Mpermutation<tp_size>::Mpermutation() {}
+Mpermutation<tp_size>::Mpermutation() 
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        at(k)=k;
+    }
+}
 
 // OPERATORS -------------------------------
 
@@ -119,13 +135,13 @@ Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_siz
     Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
-        new_perm.at(i)=b.get(get(i));
+        new_perm.at(i)=image(  b.image(i)  );
     }
     return new_perm;
 }
 
 template <unsigned int tp_size>
-unsigned int Mpermutation<tp_size>::get(const unsigned int k) const
+unsigned int Mpermutation<tp_size>::image(const unsigned int k) const
 {
     if (k>tp_size)
     {
@@ -137,7 +153,7 @@ unsigned int Mpermutation<tp_size>::get(const unsigned int k) const
 template <unsigned int tp_size>
 unsigned int Mpermutation<tp_size>::operator()(const unsigned int k) const
 {
-    return get(k);
+    return image(k);
 }
 
 template <unsigned int s>
@@ -145,9 +161,24 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
 {
     for (unsigned int l=0;l<s;l++)
     {
-        stream<<perm.data.at(l);
+        stream<<l<<"->"<<perm.data.at(l)<<std::endl;
     }
     return stream;
+}
+
+
+// MATHEMATICS -------------------------------
+
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> Mpermutation<tp_size>::inverse () const
+{
+    Mpermutation<tp_size> inv;
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        inv.at(  this->image(k)  )=k;
+    }
+    return inv;
 }
 
 #endif

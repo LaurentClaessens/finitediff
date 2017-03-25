@@ -201,6 +201,19 @@ auto testMatrixG()
     return A;
 }
 
+auto testMatrixH()
+{
+
+    SNmatrix<double,4> F;
+    F.at(0,0)=0.1; F.at(0,1)=-4; F.at(0,2)=10; F.at(0,3)=3;
+    F.at(1,0)=-1.1; F.at(1,1)=-6; F.at(1,2)=1./3; F.at(1,3)=4./9;
+    F.at(2,0)=10./7; F.at(2,1)=2; F.at(2,2)=3; F.at(2,3)=5;
+    F.at(3,0)=4; F.at(3,1)=7; F.at(3,2)=12.34; F.at(3,3)=50;
+    
+    return F;
+}
+
+
 void echo_function_test(const std::string& s)
 {
     std::cout<<"   function : "<<s<<std::endl;

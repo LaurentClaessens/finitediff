@@ -2,7 +2,8 @@
 
 I'm trying to implement the finite difference method for solving differential equations.
 
-The mathematics is developed [here](http://laurent.claessens-donadello.eu/pdf/lefrido.pdf) as I'm learning it.
+* You can read the [documentation](http://laurent.claessens-donadello.eu/finitediff/html/index.html) by Doxygen (work in progress).
+* The mathematics is developed [here](http://laurent.claessens-donadello.eu/pdf/lefrido.pdf) as I'm learning it.
 
 ## Purpose
 
@@ -18,6 +19,7 @@ Non-official purposes include
 
 * I'm currently implementing the PLU decomposition.
 * U is done. P is almost done (I have the list of line swap, but not yet a matrix). L is still to be done.
+* Working on the documentation with Doxygen ...
 
 ## deploy.sh
 

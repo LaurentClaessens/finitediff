@@ -16,9 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
+#ifndef __SNGENERIC_H__142708_
+#define __SNGENERIC_H__142708_
+
+#include <cmath>
+
+#include "SNgaussianMatrix.h"
+#include "SNline.h"
+#include "m_num.h"
+
+#include "MathUtilities.h"
+#include "../DebugPrint.h"
+
+
+// forward
+template <class T,unsigned int tp_size>
+class SNgaussianMatrix;
+
+// THE CLASS HEADER -----------------------------------------
+
+/**
  
-   This is the base class for the other matrices types.
+   This is the base class for the other matrices types. 
    A matrix can be
    - diagonal
    - upper/lower triangular
@@ -27,56 +46,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    - etc.
 
    Each of these types have different implementations for storing the elements, 
-   perform equality tests (opertor==), multiplication (operator*) and so on.
+   perform equality tests (`opertor==`), multiplication (`operator*`) and so on.
 
-   Much of these operation, on the least ressort, depend only on the 'get' method
-   that returns an element of the matrix.
- 
  
    What you need in your subclass :
 
-   - override  T  _get   (mandatory)
-       This one has to finish with 
-       return SNgeneric<T,tp_size>::get(i,j);
-   - override  T& _at    (mandatory)
-        This one has to finish with
-       return SNgeneric<T,tp_size>::at(i,j);
+   - override  `T  _get`
+     - `_get(i,j)` has to return the value of the element (i,j) of your matrix.
 
-    _get(i,j) has to return the value of the element (i,j) of your matrix.
+   - override  `T& _at`
+    - `_at(i,j)` has to return a _reference_ to the element (i,j) of your matrix.
 
-    _at(i,j) has to return a _reference_ to the element (i,j) of your matrix.
-            So 'at' is intended to modify the matrix.
-            In consequence, _at(i,j) should throw 'SNchangeNotAllowedException' if
-            the requested element cannot be modified. 
+    - In consequence, `_at(i,j)` should throw 'SNchangeNotAllowedException' if the requested element cannot be modified. For example requesting the element (1,4) of a lower triangular matrix.
             
+    - `_at` is intended to populate the matrix.
             
-    As an example, on a lower diagonal matrix,
-    _get(1,3) returns 0 (by value)
-    _at(1,3) throws SNchangeNotAllowedException
+    
+As an example, on a lower diagonal matrix,
+- `_get(1,3)` returns 0 (by value)
+- `_at(1,3)` throws SNchangeNotAllowedException
 
 
 */
-
-#ifndef __SNGENERIC_H__142708_
-#define __SNGENERIC_H__142708_
-
-#include "SNgaussianMatrix.h"
-#include "SNline.h"
-#include "m_num.h"
-
-#include "MathUtilities.h"
-
-// THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
 class SNgeneric
 {
     private :
+
+        /** Return by value the requested element of the matrix */
         virtual T _get(const m_num,const m_num) const=0;
+
+        /** Return by reference the requested element of the matrix */
         virtual T& _at(const m_num,const m_num)=0;
 
-        // throws 'SNoutOfRangeException' if the requested element is out of
-        // range (larger than 'tp_size').
+
+        /**
+         throws `SNoutOfRangeException` if the requested element is out of
+         range (larger than 'tp_size').
+         */
         virtual void checkRangeCorectness(const m_num&,const m_num&) const final;
     public:
         virtual unsigned int getSize() const final;
@@ -94,13 +102,19 @@ class SNgeneric
         template <class V,unsigned int s>
         void subtract(const SNgaussianMatrix<V,s>&);
 
-        // return the gaussian matrix for the requested column
+        /** 
+         * return the gaussian matrix for the requested column 'c'
+         * */
         SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
 
-        // numerical equality test 'up to epsilon'
-        // If if max norm of "this-A" is strictly larger than epsilon,
-        // return false.
-        // Else return true.
+        /** 
+        numerical equality test 'up to epsilon'.
+        If the max norm of "this-A" is strictly larger than epsilon,
+        return false.
+        Else return true.
+
+        For this reason, the template parameter `T` has to support `std::abs`
+         */
         template <class V,unsigned int s>
         bool isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const;
 };
@@ -225,13 +239,13 @@ template <class V,unsigned int s>
 bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
 {
     checkSizeCompatibility(*this,A);
-    T diff;
+    T abs_diff;
     for (m_num i=0;i<tp_size;i++)
     {
         for (m_num j=0;j<tp_size;j++)
         {
-            diff=std::abs(  this->get(i,j)-A.get(i,j)  );
-            if (diff>epsilon)
+            abs_diff=std::abs(  this->get(i,j)-A.get(i,j)  );
+            if (abs_diff>epsilon)
             {
                 return false;
             }

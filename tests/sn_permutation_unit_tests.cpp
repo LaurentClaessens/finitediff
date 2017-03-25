@@ -27,8 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include <iostream>
-std::ostream& debug_print(std::cout);
+#include "../src/DebugPrint.h"
 
 class SNpermutationsTest : public CppUnit::TestCase
 {
@@ -37,10 +36,9 @@ class SNpermutationsTest : public CppUnit::TestCase
         {
             echo_function_test("test_permutation");
 
-            std::array<unsigned int, 4> a1{ {1, 2, 3,4} };
-            Mpermutation<4> perm1(a1);         // there should be some errors here
 
 
+            echo_single_test("Test the identity permutation");
             std::array<unsigned int, 4> a2{ {0,1, 2, 3} };
             Mpermutation<4> permID(a2);
             CPPUNIT_ASSERT(permID(0)==0);
@@ -48,8 +46,14 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(permID(2)==2);
             CPPUNIT_ASSERT(permID(3)==3);
 
-            CPPUNIT_ASSERT(permID(12)==3);      // should do something about that
+            echo_single_test("Test a constructor with out of range arguments");
+            std::array<unsigned int, 4> a1{ {1, 2, 3,4} };
+            CPPUNIT_ASSERT_THROW(Mpermutation<4> perm1(a1),PermutationIdexoutOfRangeException);
 
+            echo_single_test("Test throwing when asking a too large number (>tp_size)");
+            CPPUNIT_ASSERT_THROW(std::cout<<permID(12),PermutationIdexoutOfRangeException);
+
+            echo_single_test("Test an arbitrary permutation");
             std::array<unsigned int, 4> a3{ {1,2, 0, 3} };
             Mpermutation<4> perm2(a3);
             CPPUNIT_ASSERT(perm2(0)==1);
@@ -85,6 +89,36 @@ class SNpermutationsTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(ans_p1==ans_p1*permID);
             CPPUNIT_ASSERT(ans_p2==ans_p2*permID);
         }
+        void test_inverse()
+        {
+            echo_function_test("test_inverse");
+            std::array<unsigned int, 4> a3{ {1,2, 0, 3} };
+            Mpermutation<4> perm3(a3);
+
+            std::array<unsigned int, 4> a4{ {1,2, 0, 3} };
+            Mpermutation<4> perm4(a4);
+
+            std::array<unsigned int, 4> a5{ {3,2, 1, 0} };
+            Mpermutation<4> perm5(a5);
+
+            std::array<unsigned int, 4> a6{ {2,1,3,0} };
+            Mpermutation<4> perm6(a6);
+
+            std::array<unsigned int, 4> aID{ {0,1, 2, 3} };
+            Mpermutation<4> permID(aID);
+            
+            CPPUNIT_ASSERT(perm3*perm3.inverse()==permID);
+            CPPUNIT_ASSERT(perm3.inverse()*perm3==permID);
+        
+            CPPUNIT_ASSERT(perm4*perm4.inverse()==permID);
+            CPPUNIT_ASSERT(perm4.inverse()*perm4==permID);
+
+            CPPUNIT_ASSERT(perm5*perm5.inverse()==permID);
+            CPPUNIT_ASSERT(perm5.inverse()*perm5==permID);
+
+            CPPUNIT_ASSERT(perm6*perm6.inverse()==permID);
+            CPPUNIT_ASSERT(perm6.inverse()*perm6==permID);
+        }
         void test_product()
         {
             echo_function_test("test_product");
@@ -94,20 +128,66 @@ class SNpermutationsTest : public CppUnit::TestCase
             std::array<unsigned int, 4> a4{ {1,2, 0, 3} };
             Mpermutation<4> perm4(a4);
 
-            std::array<unsigned int, 4> aa{ {1,2, 0, 3} };
+            echo_single_test("perm3 * perm4");
+            std::array<unsigned int, 4> aa{ {2,0, 1, 3} };
             Mpermutation<4> ans_p1(aa);
             CPPUNIT_ASSERT(ans_p1==perm3*perm4);
+            echo_single_test("This one is commutative");
+            CPPUNIT_ASSERT(perm4*perm3==perm3*perm4);
 
             std::array<unsigned int, 4> a5{ {3,2, 1, 0} };
             Mpermutation<4> perm5(a5);
 
+            echo_single_test("perm3 * perm5");
             std::array<unsigned int, 4> ab{ {3,0, 2, 1} };
             Mpermutation<4> ans_p2(ab);
             CPPUNIT_ASSERT(ans_p2==perm3*perm5);
+
+            echo_single_test("This one is not commutative : perm5 * perm3");
+            std::array<unsigned int, 4> ac{ {2,1,3,0} };
+            Mpermutation<4> ans_p3(ac);
+            CPPUNIT_ASSERT(ans_p3==perm5*perm3);
+        }
+        void test_matrix_permutation()
+        {
+            echo_function_test("test_matrix_permutation");
+
+            std::array<unsigned int, 4> a1{ {2,1,3,0} };
+            Mpermutation<4> perm1(a1);
+            SNpermutation<int,4> P1(perm1);
+
+            SNmatrix<int,4> ans_P1(0);
+            ans_P1.at(2,0)=1;
+            ans_P1.at(1,1)=1;
+            ans_P1.at(3,2)=1;
+            ans_P1.at(0,3)=1;
+
+            echo_single_test("matrix of a permutation");
+            CPPUNIT_ASSERT(ans_P1==P1);
+
+            SNpermutation<int,4> iP1=P1.inverse();
+            SNmatrix<int,4> ans_iP1(0);
+
+// the inverse of P1 is :  
+//[0 0 1 0]
+//[0 1 0 0]
+//[0 0 0 1]
+//[1 0 0 0]
+
+        ans_iP1.at(0,2)=1;
+        ans_iP1.at(1,1)=1;
+        ans_iP1.at(2,3)=1;
+        ans_iP1.at(3,0)=1;
+
+        echo_single_test("inverse matrix of a permutation");
+        CPPUNIT_ASSERT(ans_iP1==iP1);
+
         }
     public:
         void runTest()
         {
+            test_matrix_permutation();
+            test_inverse();
             test_permutation();
             test_identity();
             test_product();

@@ -25,6 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
+#include "ooTQFOooJrAfLb.h"     // automatically generated, see 
+
+#include "../src/DebugPrint.h"
 
 class GaussTest : public CppUnit::TestCase
 {
@@ -103,7 +106,21 @@ class GaussTest : public CppUnit::TestCase
         void test_upper_triangular()
         {
             echo_function_test("test_upper_triangular");
+
             double epsilon(0.0000001);
+
+            echo_single_test("The U of plu_B");
+            auto B=testMatrixA();
+                /*
+                 0  3  6
+                 0  0  2
+                 0  3  6
+                */
+            auto B_U=testMatrixA_U();
+            auto plu_B=B.getPLU();  
+            CPPUNIT_ASSERT(B_U.isNumericallyEqual(plu_B.getU(),epsilon));
+
+            echo_single_test("plu.getU==A_U");
             auto A=testMatrixB();
             /*
              1  2  3
@@ -112,32 +129,34 @@ class GaussTest : public CppUnit::TestCase
             */
             auto A_U=testMatrixB_U();
             auto plu_A= A.getPLU();
+            CPPUNIT_ASSERT(A_U.isNumericallyEqual(plu_A.getU(),epsilon));
 
-            // check that 'A' is turned into its 'U'
-            echo_single_test("plu_A.getU()");
-            CPPUNIT_ASSERT(plu_A.getU()==A);
+        }
+        void test_finitediff_U()
+        {
+            echo_function_test("test_finitediff_U");
+            //
+            // The test matrix and the answer to be tested against are
+            // created by the Sage script 'test_fd_ooTQFOooJrAfLb.sage'
+            
+            auto A=testsMatrix_ooTQFOooJrAfLb_A();
+            auto ans_U=testsMatrix_ooTQFOooJrAfLb_U();
+            unsigned int size=A.getSize();
 
-            echo_single_test("A==A_U");
-            CPPUNIT_ASSERT(A.isNumericallyEqual(A_U,epsilon));
+            auto plu=A.getPLU();
 
-            auto B=testMatrixA();
-                /*
-                 0  3  6
-                 0  0  2
-                 0  3  6
-                */
-            auto B_U=testMatrixA_U();
 
-            auto plu_B=B.getPLU();  
-            plu_B.getU().subtract(B_U);
-            CPPUNIT_ASSERT(B.max_norm()<epsilon);
+            double epsilon=0.000001;
+            echo_single_test("A more realistic test");
+            CPPUNIT_ASSERT( ans_U.isNumericallyEqual(plu.getU(),epsilon)  );
         }
     public :
         void runTest()
         {
+            test_upper_triangular();
             test_elimination_line();
             test_LminusL();
-            test_upper_triangular();
+            test_finitediff_U();
         }
 };
 

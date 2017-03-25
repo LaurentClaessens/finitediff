@@ -29,17 +29,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
-//#include <iostream>
-//std::ostream& debug_print(std::cout);
 
 // PRODUCTS ------------------------------------------
 
 
-// SNmatrix*SNmatrix.
-// cannot do better than compute everything.
+/**
+ SNgeneric * SNgeneric.
+ In general, I cannot do better than compute everything. The very point of making
+ many different classes is NOT to use this 'default' implementation for the product.
+*/
 
 template <class U,class V,unsigned int s,unsigned int t>
-SNmatrix<U,s> operator*(const SNmatrix<U,s>& A, const SNmatrix<V,t>& B)
+SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
 {
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
@@ -127,6 +128,12 @@ SNlowerTriangularMatrix<U,s> operator*
 // EQUALITIES ---------------------------------------
 
 template <class U,unsigned int s,class V,unsigned int t>
+bool operator==(const SNgeneric<U,s>& A,const SNgeneric<V,t>& B)
+{
+    return componentWiseeEquality(A,B);
+}
+
+template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 {
     checkSizeCompatibility(A,B);
@@ -134,27 +141,9 @@ bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 }
 
 template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNupperTriangularMatrix<U,s>& A,const SNmatrix<V,t>& B)
-{
-    return componentWiseeEquality(A,B);
-}
-template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNupperTriangularMatrix<V,t>& B)
 {
     return B==A;
 }
-
-template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNgaussianMatrix<U,s>& G,const SNmatrix<V,t>& A)
-{
-    return componentWiseeEquality(G,A);
-}
-
-template <class U,class V,unsigned int s,unsigned int t>
-bool operator==(const SNlowerTriangularMatrix<U,s>& G,const SNmatrix<V,t>& A)
-{
-    return componentWiseeEquality(G,A);
-}
-
 
 #endif
