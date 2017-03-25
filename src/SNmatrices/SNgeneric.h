@@ -26,6 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "MathUtilities.h"
 #include "../DebugPrint.h"
 
+
+
+
 // THE CLASS HEADER -----------------------------------------
 
 /**
@@ -98,10 +101,14 @@ class SNgeneric
         // return the gaussian matrix for the requested column
         SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
 
-        // numerical equality test 'up to epsilon'
-        // If if max norm of "this-A" is strictly larger than epsilon,
-        // return false.
-        // Else return true.
+        /** 
+        numerical equality test 'up to epsilon'.
+        If the max norm of "this-A" is strictly larger than epsilon,
+        return false.
+        Else return true.
+
+        For this reason, the template parameter `T` has to support `std::abs`
+         */
         template <class V,unsigned int s>
         bool isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const;
 };
