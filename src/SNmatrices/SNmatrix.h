@@ -37,18 +37,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../DebugPrint.h"
 
-/*
-This is my matrix type, designed for numerical computation. It represents a 
-square matrix.
-*/
 
 // forward definition
-
 template <class T,unsigned int tp_size>
 class SNplu;
 
 // THE CLASS HEADER -----------------------------------------
 
+/*
+This is my matrix type, designed for numerical computation. It represents a 
+square matrix.
+*/
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
 {
