@@ -21,12 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
-/*
+// THE CLASS HEADER -----------------------------------------
+
+/**
  This class represents a permutation. (not a matrix)
 
 
  The permutation is recorded in the array
-        std::array<unsigned int,tp_size> permutations;
+        `std::array<unsigned int,tp_size> permutations;`
  The array
  (a,b,c,d)
  represents the permutation that maps
@@ -47,10 +49,7 @@ b->c
 c->d
 d->a
 
-
 */
-
-// THE CLASS HEADER -----------------------------------------
 
 template <unsigned int tp_size>
 class Mpermutation
@@ -68,8 +67,8 @@ class Mpermutation
         Mpermutation(); 
 
 
-        // the multiplication "permutation1 * permutation2" 
-        // is the composition.
+        /**  the multiplication "permutation1 * permutation2" 
+         is the composition. */
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
         
         /** return by value the image of `k` */
