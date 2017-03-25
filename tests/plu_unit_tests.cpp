@@ -25,7 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include "../src/DebugPrint.h"
+#include <iostream>
+std::ostream& debug_print(std::cout);
 
 class pluTest : public CppUnit::TestCase
 {
@@ -42,7 +43,7 @@ class pluTest : public CppUnit::TestCase
         void test_plu_permutation()
         {
             echo_function_test("test_plu_permutation");
-            debug_print<<"THE PLU TEST TO BE STILLE IMPLEMENTED"<<std::endl;
+            debug_print<<"THE PLU TEST STILL TO BE IMPLEMENTED"<<std::endl;
 
             auto A=testMatrixE();
             auto plu=A.getPLU();

@@ -26,26 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNexceptions.cpp"
 
 
-/*
-   This represents a gaussian matrix.
-
-   A gaussian matrix is the multiplicative matrix which serves to eliminate
-   a column under the diagonal.
-
-   Let A be a matrix and 'c' be an index. Let 'm=A_{c,c}'  The gaussian matrix for 'A' on the index 'c' is full of zeros apart of
-   - 1 on the diagonal
-   - A_{i,c}/m on position (i,c) when i>c. 
-
-   That is there is something non trivial only on the column 'c', under the diagonal.
- *
- *
- * TODO : giving 'c' as a template argument, one can in average spare half of the memory by allowing 'c' as size in 'data' instead of 'tp_size'.
-*/
-
 // forward definition
-
-
-
 template <class T,unsigned int tp_size>
 class SNgeneric;
 template <class T>
@@ -54,15 +35,33 @@ class SpecialValue;
 
 // THE CLASS HEADER -----------------------------------------
 
+/**
+   This represents a gaussian matrix.
+
+   A gaussian matrix is the multiplicative matrix which serves to eliminate
+   a column under the diagonal.
+
+   Let \f$A\f$ be a matrix and \f$ c \f$ be an index. Let \f$ m=A_{c,c}\f$. The gaussian matrix for \f$ A \f$ on the index \f$ c \f$ is full of zeros except for
+   - \f$ 1\f$ on the diagonal
+   - \f$ A_{i,c}/m\f$  on position \f$ (i,c)\f$ when \f$ i>c\f$. 
+
+   That is there is something non trivial only on the column \f$ c \f$, under the diagonal.
+ 
+
+ TODO : giving 'c' as a template argument, one can in average spare half of the memory by allowing 'c' as size in 'data' instead of 'tp_size'.
+
+*/
+
 template <class T,unsigned int tp_size>
 class SNgaussianMatrix : public SNgeneric<T,tp_size>
 {
+
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
         SpecialValue<T> checkForSpecialElements(const m_num& i,const m_num& j) const;
 
-        // populate the matrix from the elements of the given matrix
+        //** populate the matrix from the elements of the given matrix */
         template <class U,unsigned int s>
         void populate_from(const SNgeneric<U,s>&);
         T _get(m_num,m_num) const override;

@@ -13,7 +13,10 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-mkdir build
+rm deploy.log
+touch deploy.log
+
+mkdir build > /dev/null
 git status
 make clean
 
@@ -31,6 +34,7 @@ function launch_test
     else
             echo "----" 
             echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}"
+            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}" >> deploy.log
             echo "----"
     fi
     echo "--- Ended " $1
@@ -47,3 +51,4 @@ launch_test "sn_line_unit_tests"
 launch_test "sn_element_unit_tests"
 launch_test "plu_unit_tests"
 
+cat deploy.log
