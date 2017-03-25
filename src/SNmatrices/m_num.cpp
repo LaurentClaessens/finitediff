@@ -37,7 +37,12 @@ m_num::m_num(const int n)
 
 // CONVERSIONS   ----------------------------------
 
-m_num::operator int() const
+//m_num::operator int() const
+//{
+//    return num;
+//}
+
+m_num::operator unsigned int() const
 {
     return num;
 }
@@ -54,20 +59,6 @@ m_num m_num::operator++(int)
     ++num;
     return tmp;
 }
-
-
-// ARITHMETIC -------------------------- 
-
-//m_num m_num::operator+(const int b) const 
-//{
-//    // maybe one should throw something when 'num+b<0'
-//    return m_num(num+b); 
-//}
-//m_num m_num::operator*(const int b) const 
-//{
-//    // maybe one should throw something when 'num*b<0'
-//    return m_num(num*b); 
-//}
 
 // COMPARISON -------------------------- 
 

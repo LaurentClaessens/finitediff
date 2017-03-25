@@ -40,10 +40,15 @@ class MelementaryPermutation
     public :
         MelementaryPermutation(unsigned int A,unsigned int B); 
 
-        // return by value the image of 'k' by the permutation.
-        // There are two ways to do that.
+
+        /** 
+        return by value the image of 'k' by the permutation.
+         */
         unsigned int operator()(const unsigned int k) const;
-        unsigned int get(const unsigned int k) const;
+        /** 
+        return by value the image of 'k' by the permutation.
+         */
+        unsigned int image(const unsigned int k) const;
 
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
 };
@@ -57,7 +62,7 @@ Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutat
     Mpermutation<tp_size> tmp;
     for (unsigned int k=0;k<tp_size;++k)
     {
-        tmp.at(k)=this->get( perm.get(k)  );
+        tmp.at(k)=this->image( perm.image(k)  );
     }
     return tmp;
 }
@@ -83,7 +88,7 @@ MelementaryPermutation<tp_size>::MelementaryPermutation(unsigned int A,unsigned 
 }
     
 template <unsigned int tp_size>
-unsigned int MelementaryPermutation<tp_size>::get(const unsigned int k) const
+unsigned int MelementaryPermutation<tp_size>::image(const unsigned int k) const
 {
     if (k>tp_size)
     {
@@ -103,7 +108,7 @@ unsigned int MelementaryPermutation<tp_size>::get(const unsigned int k) const
 template <unsigned int tp_size>
 unsigned int MelementaryPermutation<tp_size>::operator()(const unsigned int k) const
 {
-    return get(k);
+    return image(k);
 }
 
 

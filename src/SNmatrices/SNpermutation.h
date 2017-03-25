@@ -41,15 +41,18 @@ class SNpermutation : public SNgeneric<T,tp_size>
     private:
         Mpermutation<tp_size> data;
 
-        std::array<T,tp_size> d_foo;
-
         T& _at(const m_num i,const m_num j) override;
         T _get(const m_num i,const m_num j) const override;
     public :
         SNpermutation(const Mpermutation<tp_size>& d); 
+
+        /** The constructor with zero arguments initializes to the identity. */
         SNpermutation(); 
 
         Mpermutation<tp_size> getMpermutation() const;
+
+        /** returns the inverse matrix */
+        SNpermutation<T,tp_size> inverse() const;
 };
 
 // CONSTRUCTORS -------------------------------
@@ -81,24 +84,32 @@ std::ostream& operator<<(std::ostream& stream, SNpermutation<T,s> perm)
 template <class T,unsigned int tp_size>
 T& SNpermutation<T,tp_size>::_at(const m_num i,const m_num j)
 {
-    std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
-    std::cout<<"This should return the template parameter T"<<std::endl;
-    return d_foo.at(0);
+    throw SNchangeNotAllowedException(i,j);
 };
 
 template <class T,unsigned int tp_size>
 T SNpermutation<T,tp_size>::_get(const m_num i,const m_num j) const 
 {
-    std::cout<<"Not yet implemented _at for "<<i<<","<<j<<std::endl;
-    std::cout<<"This should return the template parameter T"<<std::endl;
-    return d_foo.at(0);
+    if (getMpermutation().image(j)==i)
+    {
+        return 1;
+    }
+    return 0;
 };
 
 template <class T,unsigned int tp_size>
 Mpermutation<tp_size> SNpermutation<T,tp_size>::getMpermutation() const
 {
-    std::cout<<"Not yet implemented : getMpermutation"<<std::endl;
-    return Mpermutation<tp_size>();
+    return data;
+}
+
+// MATHEMATICS -------------------------------
+
+template <class T,unsigned int tp_size>
+SNpermutation<T,tp_size> SNpermutation<T,tp_size>::inverse() const
+{
+    SNpermutation<T,tp_size> inv(this->getMpermutation().inverse());
+    return inv;
 }
 
 #endif

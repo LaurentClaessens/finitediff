@@ -138,9 +138,6 @@ class GaussTest : public CppUnit::TestCase
             //
             // The test matrix and the answer to be tested against are
             // created by the Sage script 'test_fd_ooTQFOooJrAfLb.sage'
-            //
-            //
-            // 
             
             auto A=testsMatrix_ooTQFOooJrAfLb_A();
             auto ans_U=testsMatrix_ooTQFOooJrAfLb_U();
