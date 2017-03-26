@@ -15,9 +15,9 @@ S.at(1,1)=4.00000000000000;
     return S;
 }
 
-SNpermutationMatrix<double,2> testMatrux_FOO_A_P()
+SNpermutation<double,2> testMatrix_FOO_A_P()
 {
-    SNpermutation<double,2> S(0);
+    SNpermutation<double,2> S;
 
     S.at(0,1)=1.00000000000000;
 S.at(1,0)=1.00000000000000;
@@ -25,9 +25,9 @@ S.at(1,0)=1.00000000000000;
     return S;
 }
 
-SNlowerTriangularMatrix<double,2> testsMatrix_FOO_A_L()
+SNlowerTriangular<double,2> testsMatrix_FOO_A_L()
 {
-    SNupperTriangularMatrix<double,2> S(0);
+    SNlowerTriangular<double,2> S(0);
 
     S.at(0,0)=1.00000000000000;
 S.at(1,0)=0.333333333333333;
@@ -36,9 +36,9 @@ S.at(1,1)=1.00000000000000;
     return S;
 }
 
-SNupperTriangularMatrix<double,2> testsMatrix_FOO_A_U()
+SNupperTriangular<double,2> testsMatrix_FOO_A_U()
 {
-    SNupperTriangularMatrix<double,2> S(0);
+    SNupperTriangular<double,2> S(0);
 
     S.at(0,0)=3.00000000000000;
 S.at(0,1)=4.00000000000000;

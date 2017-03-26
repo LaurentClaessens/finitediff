@@ -19,7 +19,7 @@ SNmatrix<TYPE,SIZE> testsMatrix_NAME_A()
 
 SNpermutation<TYPE,SIZE> testMatrix_NAME_A_P()
 {
-    SNpermutation<TYPE,SIZE> S(0);
+    SNpermutation<TYPE,SIZE> S;
 
     POPULATE_P
 
