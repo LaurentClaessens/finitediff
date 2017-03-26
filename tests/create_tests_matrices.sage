@@ -13,7 +13,7 @@ SNmatrix<TYPE,SIZE> testsMatrix_NAME_A()
     return S;
 }
 
-SNpermutationMatrix<TYPE,SIZE> testMatrux_NAME_A_P()
+SNpermutation<TYPE,SIZE> testMatrix_NAME_A_P()
 {
     SNpermutation<TYPE,SIZE> S(0);
 
@@ -22,18 +22,18 @@ SNpermutationMatrix<TYPE,SIZE> testMatrux_NAME_A_P()
     return S;
 }
 
-SNlowerTriangularMatrix<TYPE,SIZE> testsMatrix_NAME_A_L()
+SNlowerTriangular<TYPE,SIZE> testsMatrix_NAME_A_L()
 {
-    SNupperTriangularMatrix<TYPE,SIZE> S(0);
+    SNlowerTriangular<TYPE,SIZE> S(0);
 
     POPULATE_L
 
     return S;
 }
 
-SNupperTriangularMatrix<TYPE,SIZE> testsMatrix_NAME_A_U()
+SNupperTriangular<TYPE,SIZE> testsMatrix_NAME_A_U()
 {
-    SNupperTriangularMatrix<TYPE,SIZE> S(0);
+    SNupperTriangular<TYPE,SIZE> S(0);
 
     POPULATE_U
 

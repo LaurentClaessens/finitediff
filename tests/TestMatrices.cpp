@@ -192,7 +192,7 @@ auto testMatrixG()
     // 3 4 5 0
     // 6 7 8 1
 
-    SNlowerTriangularMatrix<double,4> A;
+    SNlowerTriangular<double,4> A;
     A.at(0,0)=3; 
     A.at(1,0)=1; A.at(1,1)=2; 
     A.at(2,0)=3; A.at(2,1)=4; A.at(2,2)=5;
