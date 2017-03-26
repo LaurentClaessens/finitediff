@@ -16,8 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SNgaussianMatrix_H__174236
-#define __SNgaussianMatrix_H__174236
+#ifndef __SNgaussian_H__174236
+#define __SNgaussian_H__174236
 
 #include <array>
 
@@ -53,7 +53,7 @@ class SpecialValue;
 */
 
 template <class T,unsigned int tp_size>
-class SNgaussianMatrix : public SNgeneric<T,tp_size>
+class SNgaussian : public SNgeneric<T,tp_size>
 {
 
 
@@ -66,7 +66,7 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
         void populate_from(const SNgeneric<U,s>&);
 
         /** Construct a matrix from its data. See the implementation of '_at' */
-        SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c);
+        SNgaussian(const std::array<T,tp_size>& d, const m_num& c);
 
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
@@ -79,9 +79,9 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
          * - setting 0 everywhere else  
          *   */
         template <class U,unsigned int s>
-        SNgaussianMatrix(const SNgeneric<U,s>& A, const m_num& c);
+        SNgaussian(const SNgeneric<U,s>& A, const m_num& c);
 
-        SNgaussianMatrix<T,tp_size> inverse() const;
+        SNgaussian<T,tp_size> inverse() const;
         
 };
 
@@ -89,7 +89,7 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
 
 template <class T,unsigned int tp_size> 
 template <class U, unsigned int s>
-void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
+void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 {
     if (s!=tp_size)
     {
@@ -105,14 +105,14 @@ void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 
 template <class T,unsigned int tp_size> 
 template<class U,unsigned int s>
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const m_num& c):
+SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
     column(c)
 {
     populate_from(A);
 }
 
 template <class T,unsigned int tp_size> 
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c):
+SNgaussian<T,tp_size>::SNgaussian(const std::array<T,tp_size>& d, const m_num& c):
     data(d),
     column(c)
 {}
@@ -120,7 +120,7 @@ SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const std::array<T,tp_size>& d, co
 // UTILITIES  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
+SpecialValue<T> SNgaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
 {
     if (i==j)
     {
@@ -156,7 +156,7 @@ SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const m_num
 
 
 template <class T,unsigned int tp_size>
-T SNgaussianMatrix<T,tp_size>::_get(m_num i,m_num j) const
+T SNgaussian<T,tp_size>::_get(m_num i,m_num j) const
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
@@ -167,7 +167,7 @@ T SNgaussianMatrix<T,tp_size>::_get(m_num i,m_num j) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j) 
+T& SNgaussian<T,tp_size>::_at(m_num i,m_num j) 
 
     // The elements are stored in 
     //   std::array<T,tp_size> data
@@ -198,14 +198,14 @@ T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j)
 
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size> SNgaussianMatrix<T,tp_size>::inverse() const
+SNgaussian<T,tp_size> SNgaussian<T,tp_size>::inverse() const
 {
     std::array<T,tp_size> new_data(data);
     for (unsigned int k=0;k<tp_size-column-1;++k)
     {
         new_data.at(k)=-new_data.at(k);
     }
-    return SNgaussianMatrix(new_data,column);
+    return SNgaussian(new_data,column);
 }
 
 #endif

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SNmatrices/SNmatrix.h"
-#include "SNmatrices/SNupperTriangularMatrix.h"
+#include "SNmatrices/SNupperTriangular.h"
 #include "SNmatrices/SNpermutation.h"
 #include "SNmatrices/Mpermutation.h"
 
@@ -36,8 +36,8 @@ class SNplu
 
     private :
         Mpermutation<tp_size> m_P;              // we store the "mathematical" permutation, not the matrix.
-        SNlowerTriangularMatrix<T,tp_size> m_L;
-        SNupperTriangularMatrix<T,tp_size> m_U;
+        SNlowerTriangular<T,tp_size> m_L;
+        SNupperTriangular<T,tp_size> m_U;
 
         /**  '_setU' takes a matrix and says that this is the 'U' one.
            - do not check that A is actually upper diagonale
@@ -49,7 +49,7 @@ class SNplu
         void _setU(const SNmatrix<T,tp_size>& A);
     public:
 
-        SNupperTriangularMatrix<T,tp_size> getU() const;
+        SNupperTriangular<T,tp_size> getU() const;
 
         Mpermutation<tp_size> getMpermutation() const;
         SNpermutation<T,tp_size> getSNpermutation() const;
@@ -68,7 +68,7 @@ void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A)
 // GETTER METHODS -----------------------
 
 template <class T,unsigned int tp_size>
-SNupperTriangularMatrix<T,tp_size> SNplu<T,tp_size>::getU() const
+SNupperTriangular<T,tp_size> SNplu<T,tp_size>::getU() const
 {
     return m_U;
 }

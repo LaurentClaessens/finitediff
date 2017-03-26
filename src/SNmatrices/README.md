@@ -50,12 +50,12 @@ The template arguments `T` and `tp_size` have the same meaning.
 * `Mpermutation` has one template parameter : `tp_size` which is the size of the set on which it acts.
 * `SNpermutation` is the associated matrix. It is obviously composed of many zero's and some ones. But these are `0` and `1` of the template type `T`.
  
-### `SNlowerTriangularMatrix`
+### `SNlowerTriangular`
 
 There is a subtlety with the `at` method.
 
 * Usually, the `get` method returns *by value* the value of the requested entry. This is the usual behaviour and it is the behaviour here.
-* The `at` method returns *by reference* the value of the requested entry. This is useful for populate or modify the matrix. However asking for the element `1,3` on a `SNlowerTriangularMatrix` will raise a `SNnonAllowedChange` exception.
+* The `at` method returns *by reference* the value of the requested entry. This is useful for populate or modify the matrix. However asking for the element `1,3` on a `SNlowerTriangular` will raise a `SNnonAllowedChange` exception.
 
 ## Operators
 
