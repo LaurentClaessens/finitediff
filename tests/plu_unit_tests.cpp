@@ -63,10 +63,10 @@ class pluTest : public CppUnit::TestCase
         }
         void launch_auto_tests_sage()
         {
-            auto A=testsMatrix_FOO_A();
-            auto ans_P=testsMatrix_FOO_A_P();
-            auto ans_L=testsMatrix_FOO_A_L();
-            auto ans_U=testsMatrix_FOO_A_U();
+            auto A=testMatrix_FOO_A();
+            auto ans_P=testMatrix_FOO_A_P();
+            auto ans_L=testMatrix_FOO_A_L();
+            auto ans_U=testMatrix_FOO_A_U();
             auto_test(A,ans_P,ans_L,ans_U);
         }
     public:
