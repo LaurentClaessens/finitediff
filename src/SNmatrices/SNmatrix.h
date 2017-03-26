@@ -62,6 +62,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
     
     friend std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+    friend std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
 
     private:
         std::array<T,tp_size*tp_size> data;

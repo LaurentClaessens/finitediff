@@ -39,8 +39,8 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         T _get(const m_num,const m_num) const override;
         T& _at(m_num,m_num) override;
     public :
+        std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
         SNlowerTriangular();
-
         SNlowerTriangular(const SNmatrix<T,tp_size>& A);
 };
 
@@ -49,8 +49,19 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(): data() { };
 
+
+// TODO : one has to factorize this function between here and 
+// the same in SNupperTriangular.
 template <class T,unsigned int tp_size>
-SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A): data(A.data) {};
+std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const
+{
+    return A.data;
+}
+
+template <class T,unsigned int tp_size>
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A):
+    data(_get_other_data(A))
+{};
 
 // _GET AND _AT METHODS ---------------------------------------
 

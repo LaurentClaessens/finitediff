@@ -60,7 +60,6 @@ SNupperTriangular<T,tp_size>::SNupperTriangular():
     data() 
 { };
 
-
 template <class T,unsigned int tp_size>
 std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const
 {
