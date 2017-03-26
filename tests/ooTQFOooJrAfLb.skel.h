@@ -11,9 +11,9 @@ SNmatrix<TYPE,SIZE> testsMatrix_ooTQFOooJrAfLb_A()
     return S;
 }
 
-SNupperTriangularMatrix<TYPE,SIZE> testsMatrix_ooTQFOooJrAfLb_U()
+SNupperTriangular<TYPE,SIZE> testsMatrix_ooTQFOooJrAfLb_U()
 {
-    SNupperTriangularMatrix<TYPE,SIZE> S(0);
+    SNupperTriangular<TYPE,SIZE> S(0);
 
     POPULATE_U
 
