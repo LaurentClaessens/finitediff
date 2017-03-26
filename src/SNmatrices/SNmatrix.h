@@ -66,7 +66,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
-        // the larger element on column 'col' under (or on) the line 'f_line'. 
+
+        /**  the larger element on column 'col' under (or on) the line 'f_line'.*/
         SNelement<T,tp_size> getLargerUnder(m_num f_line, m_num col) const;
 
         // Substrat the given vector (line) from the line 'line'
