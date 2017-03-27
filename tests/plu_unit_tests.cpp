@@ -29,10 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/DebugPrint.h"
 
 template <class T,unsigned int tp_size>
-void auto_test(const SNmatrix<T,tp_size>& A, const SNmatrix<T,tp_size>& ans_P,const SNlowerTriangular<T,tp_size>& ans_L, SNupperTriangular<T,tp_size>& ans_U)
+void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
 {
     echo_function_test("One more matrix");
-    auto plu=A.getPLU();
+    auto plu=atm.A.getPLU();
     double epsilon(0.0000001);
 
     auto cP=plu.getP();
@@ -42,11 +42,11 @@ void auto_test(const SNmatrix<T,tp_size>& A, const SNmatrix<T,tp_size>& ans_P,co
     // TODO : check that the product PLU is equal to A.
 
     echo_single_test("P factor");
-    CPPUNIT_ASSERT(cP.isNumericallyEqual(ans_P,epsilon));
+    CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));
     echo_single_test("L factor");
-    //CPPUNIT_ASSERT(cL.isNumericallyEqual(ans_L,epsilon));
+    CPPUNIT_ASSERT(cL.isNumericallyEqual(atm.ans_L,epsilon));
     echo_single_test("U factor");
-    CPPUNIT_ASSERT(cU.isNumericallyEqual(ans_U,epsilon));
+    CPPUNIT_ASSERT(cU.isNumericallyEqual(atm.ans_U,epsilon));
 }
 
 class pluTest : public CppUnit::TestCase
@@ -63,11 +63,8 @@ class pluTest : public CppUnit::TestCase
         }
         void launch_auto_tests_sage()
         {
-            auto A=testMatrix_FOO_A();
-            auto ans_P=testMatrix_FOO_A_P();
-            auto ans_L=testMatrix_FOO_A_L();
-            auto ans_U=testMatrix_FOO_A_U();
-            auto_test(A,ans_P,ans_L,ans_U);
+            auto_test(atm_FOO);
+            auto_test(atm_BAR);
         }
     public:
         void runTest()

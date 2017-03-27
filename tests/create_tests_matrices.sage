@@ -49,6 +49,8 @@ SNupperTriangular<TYPE,SIZE> testMatrix_NAME_A_U()
     return S;
 
 }
+
+AutoTestMatrix<TYPE,SIZE> atm_NAME( testMatrix_NAME_A(),testMatrix_NAME_A_P(),testMatrix_NAME_A_L(),testMatrix_NAME_A_U()  );
 """
 
 def populate(A):
@@ -72,12 +74,6 @@ def matrix_to_cpp(A,name,ttype):
     #    (this is a string)
     # - name : (string), the name of the matrix
     # return the C++ code that creates the matrix and its P,L,U.
-
-    print(A)
-    try :
-        print(  type(A[2,2])  )
-    except IndexError :
-        pass
 
     plu=A.LU()
     P=plu[0]
