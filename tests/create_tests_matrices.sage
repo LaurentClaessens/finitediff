@@ -66,12 +66,18 @@ def populate(A):
     return "\n".join(text)
 
 
-def matrix_to_cpp(A,ttype,name):
+def matrix_to_cpp(A,name,ttype):
     # - A : a matrix
     # - ttype : the (C++) type of the matrix elements (typically : "double")
     #    (this is a string)
     # - name : (string), the name of the matrix
     # return the C++ code that creates the matrix and its P,L,U.
+
+    print(A)
+    try :
+        print(  type(A[2,2])  )
+    except IndexError :
+        pass
 
     plu=A.LU()
     P=plu[0]
@@ -88,10 +94,22 @@ def matrix_to_cpp(A,ttype,name):
     new_text=new_text.replace("POPULATE_U",populate(U))
     return new_text
 
+class OneTestMatrix(object):
+    def __init__(self,A,name,ttype="double"):
+        self.A=A
+        self.name=name
+        self.ttype=ttype
+    def cpp_code(self):
+        return matrix_to_cpp(self.A,self.name,self.ttype)
 
-A=matrix( [ [1,2],[3,4] ]  )
+
+test_matrix_list=[]
+
+test_matrix_list.append( OneTestMatrix(  matrix( RDF, [ [1,2],[3,4] ] )   ,"FOO")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,6.2],[-3,2.5,4],[0.33,0.666,1.33333] ] )   ,"BAR")   )
 
 auto_filename="auto_tests_matrices.h"
 
 with open(auto_filename,"w") as f:
-    f.write(matrix_to_cpp(A,"double","FOO"))
+    for tmtr in test_matrix_list :
+        f.write(tmtr.cpp_code())
