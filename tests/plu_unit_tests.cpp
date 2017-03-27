@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/DebugPrint.h"
 
 template <class T,unsigned int tp_size>
-void auto_test(const SNmatrix<T,tp_size>& A, const SNpermutation<T,tp_size>& ans_P,const SNlowerTriangular<T,tp_size>& ans_L, SNupperTriangular<T,tp_size>& ans_U)
+void auto_test(const SNmatrix<T,tp_size>& A, const SNmatrix<T,tp_size>& ans_P,const SNlowerTriangular<T,tp_size>& ans_L, SNupperTriangular<T,tp_size>& ans_U)
 {
     echo_function_test("One more matrix");
     auto plu=A.getPLU();

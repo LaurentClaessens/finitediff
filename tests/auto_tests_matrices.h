@@ -15,9 +15,9 @@ S.at(1,1)=4.00000000000000;
     return S;
 }
 
-SNpermutation<double,2> testMatrix_FOO_A_P()
+SNmatrix<double,2> testMatrix_FOO_A_P()
 {
-    SNpermutation<double,2> S;
+    SNmatrix<double,2> S(0);
 
     S.at(0,1)=1.00000000000000;
 S.at(1,0)=1.00000000000000;

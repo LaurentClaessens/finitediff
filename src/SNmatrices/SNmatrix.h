@@ -285,8 +285,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
-                //
-                //
                 mU.lineMinusLine(l,m*killing_line);
             }
         }
