@@ -307,9 +307,9 @@ S.at(99,99)=-99.7777777777778;
     return S;
 }
 
-SNupperTriangularMatrix<double,100> testsMatrix_ooTQFOooJrAfLb_U()
+SNupperTriangular<double,100> testsMatrix_ooTQFOooJrAfLb_U()
 {
-    SNupperTriangularMatrix<double,100> S(0);
+    SNupperTriangular<double,100> S(0);
 
     S.at(0,0)=0.222222222222222;
 S.at(0,1)=-0.111111111111111;

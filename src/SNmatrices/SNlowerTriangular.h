@@ -16,8 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SNupperTriangularMatrix_H__103047
-#define __SNupperTriangularMatrix_H__103047
+#ifndef __SNlowerTriangular_H__103047
+#define __SNlowerTriangular_H__103047
 
 #include <array>
 
@@ -25,59 +25,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNexceptions.cpp"
 
 /*
-   This represents a upper triangular matrix (the diagonal can be non zero).
+   This represents a lower triangular matrix (the diagonal can be non zero).
 */
 
 // THE CLASS HEADER -----------------------------------------
 
 template <class T,unsigned int tp_size>
-class SNupperTriangularMatrix : public SNgeneric<T,tp_size>
+class SNlowerTriangular : public SNgeneric<T,tp_size>
 {
+
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
-
         T _get(const m_num,const m_num) const override;
         T& _at(m_num,m_num) override;
     public :
-        /**
-         * return `data` of the requested matrix. 
-         * Since I cannot declare the constructor of SNupperTriangularMatrix
-         * being a friend of SNmatrix (templated constructor ...), 
-         * the constructor
-         *  SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
-         * will use `_get_other_data` to get the `data` member of `A`.
-         * */
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
-
-        SNupperTriangularMatrix();
-        SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A);
+        SNlowerTriangular();
+        SNlowerTriangular(const SNmatrix<T,tp_size>& A);
 };
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(): 
-    data() 
-{ };
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(): data() { };
 
 
+// TODO : one has to factorize this function between here and 
+// the same in SNupperTriangular.
 template <class T,unsigned int tp_size>
-std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const
+std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const
 {
     return A.data;
 }
 
 template <class T,unsigned int tp_size>
-SNupperTriangularMatrix<T,tp_size>::SNupperTriangularMatrix(const SNmatrix<T,tp_size>& A): 
-    data(_get_other_data(A)) 
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A):
+    data(_get_other_data(A))
 {};
 
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNupperTriangularMatrix<T,tp_size>::_get(m_num l,m_num c) const
+T SNlowerTriangular<T,tp_size>::_get(m_num l,m_num c) const
 {
-    if (l>c)
+    if (l<c)
     {
         return 0;
     }
@@ -85,9 +76,9 @@ T SNupperTriangularMatrix<T,tp_size>::_get(m_num l,m_num c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNupperTriangularMatrix<T,tp_size>::_at(m_num l,m_num c) 
+T& SNlowerTriangular<T,tp_size>::_at(m_num l,m_num c) 
 {
-    if (l>c)
+    if (l<c)
     {
         throw SNchangeNotAllowedException(l,c);
     }
