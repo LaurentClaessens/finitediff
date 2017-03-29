@@ -42,7 +42,12 @@ class SNmultiGausian : public SNgeneric<T,tp_size>
 {
     private :
         SNlowerTriangular<T,tp_size> data_L;
-        m_num data_c;
+        m_num data_c;       // the last non trivial column
+
+    public:
+        // Initialize with a matrix A as argument produce the gaussian
+        // matrix of A for column 0
+
 }
 
 #endif

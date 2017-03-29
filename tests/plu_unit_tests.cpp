@@ -39,7 +39,7 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     auto cL=plu.getL();
     auto cU=plu.getU();
 
-    // TODO : check that the product PLU is equal to A.
+    // TODO : maybe check that the product PLU is equal to A.
 
     echo_single_test("P factor");
     CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));
