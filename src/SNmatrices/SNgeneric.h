@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cmath>
 
-#include "SNgaussianMatrix.h"
+#include "SNgaussian.h"
 #include "SNline.h"
 #include "m_num.h"
 
@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // forward
 template <class T,unsigned int tp_size>
-class SNgaussianMatrix;
+class SNgaussian;
 
 // THE CLASS HEADER -----------------------------------------
 
@@ -100,12 +100,12 @@ class SNgeneric
         template <class V,unsigned int s>
         void subtract(const SNgeneric<V,s>&);
         template <class V,unsigned int s>
-        void subtract(const SNgaussianMatrix<V,s>&);
+        void subtract(const SNgaussian<V,s>&);
 
         /** 
          * return the gaussian matrix for the requested column 'c'
          * */
-        SNgaussianMatrix<T,tp_size> getGaussian(const m_num c) const;
+        SNgaussian<T,tp_size> getGaussian(const m_num c) const;
 
         /** 
         numerical equality test 'up to epsilon'.
@@ -195,9 +195,9 @@ T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
 
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
+SNgaussian<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
 {
-    return SNgaussianMatrix<T,tp_size>(*this,c);
+    return SNgaussian<T,tp_size>(*this,c);
 }
 
 
@@ -217,7 +217,7 @@ void SNgeneric<T,tp_size>::subtract(const SNgeneric<V,s>& S)
 
 template <class T,unsigned int tp_size>
 template <class V,unsigned int s>
-void SNgeneric<T,tp_size>::subtract(const SNgaussianMatrix<V,s>& G)
+void SNgeneric<T,tp_size>::subtract(const SNgaussian<V,s>& G)
 {
     checkSizeCompatibility(*this,G);
     m_num c=G.column;

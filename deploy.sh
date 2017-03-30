@@ -40,6 +40,7 @@ function launch_test
     echo "--- Ended " $1
 }
 
+launch_test "plu_unit_tests"
 launch_test "sn_gaussian_unit_tests"
 launch_test "sn_permutation_unit_tests"
 launch_test "exceptions_unit_tests"
@@ -49,7 +50,6 @@ launch_test "multiplication_unit_tests"
 launch_test "sn_matrix_unit_tests"
 launch_test "sn_line_unit_tests"
 launch_test "sn_element_unit_tests"
-launch_test "plu_unit_tests"
 launch_test "gauss_unit_tests"
 
 cat deploy.log

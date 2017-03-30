@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-#include "../src/SNmatrices/SNgaussianMatrix.h"
+#include "../src/SNmatrices/SNgaussian.h"
 
 #include "../src/SNmatrices/SNmatrix.h"
 #include "../src/SNmatrices/SNpermutation.h"

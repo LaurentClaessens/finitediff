@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "SNelement.h"
 #include "SNline.h"
-#include "SNgaussianMatrix.h"
-#include "SNupperTriangularMatrix.h"
+#include "SNgaussian.h"
+#include "SNupperTriangular.h"
 #include "Mpermutation.h"
 #include "MelementaryPermutation.h"
 #include "MathUtilities.h"
@@ -61,12 +61,14 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
     
-    friend std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+    friend std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+    friend std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
 
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
-        // the larger element on column 'col' under (or on) the line 'f_line'. 
+
+        /**  the larger element on column 'col' under (or on) the line 'f_line'.*/
         SNelement<T,tp_size> getLargerUnder(m_num f_line, m_num col) const;
 
         // Substrat the given vector (line) from the line 'line'
@@ -260,8 +262,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 {
     SNplu<T,tp_size> plu;
 
-    Mpermutation<tp_size>& permutation=plu.m_P;
-    SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
+    Mpermutation<tp_size>& permutation=plu.data_P;
+    SNlowerTriangular<T,tp_size>& L=plu.data_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
     for (m_num c=0;c<tp_size;c++)
@@ -283,8 +285,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
-                //
-                //
                 mU.lineMinusLine(l,m*killing_line);
             }
         }

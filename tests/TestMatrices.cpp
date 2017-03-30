@@ -192,7 +192,7 @@ auto testMatrixG()
     // 3 4 5 0
     // 6 7 8 1
 
-    SNlowerTriangularMatrix<double,4> A;
+    SNlowerTriangular<double,4> A;
     A.at(0,0)=3; 
     A.at(1,0)=1; A.at(1,1)=2; 
     A.at(2,0)=3; A.at(2,1)=4; A.at(2,2)=5;
@@ -213,6 +213,22 @@ auto testMatrixH()
     return F;
 }
 
+template <class T,unsigned int tp_size>
+class AutoTestMatrix
+{
+    public :
+        SNmatrix<T,tp_size> A;
+        SNmatrix<T,tp_size> ans_P;
+        SNlowerTriangular<T,tp_size> ans_L;
+        SNupperTriangular<T,tp_size> ans_U;
+
+        AutoTestMatrix(const SNmatrix<T,tp_size>& mA,const SNmatrix<T,tp_size>& mP, const SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU) :
+            A(mA),
+            ans_P(mP),
+            ans_L(mL),
+            ans_U(mU)
+        { }
+};
 
 void echo_function_test(const std::string& s)
 {
