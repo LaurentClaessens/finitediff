@@ -45,6 +45,7 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     echo_single_test("product cPLU");
     auto c_prod=cP*cL*cU;
     CPPUNIT_ASSERT(c_prod.isNumericallyEqual(atm.A,epsilon));
+    // TODO : maybe check that the product PLU is equal to A.
 
     echo_single_test("P factor");
     CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));

@@ -33,8 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNgaussian;
 
-// THE CLASS HEADER -----------------------------------------
-
 /**
  
    This is the base class for the other matrices types. 
