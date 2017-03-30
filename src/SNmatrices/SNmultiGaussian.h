@@ -46,7 +46,7 @@ class SNmultiGausian : public SNgeneric<T,tp_size>
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGausian(const SNgeneric<T,tp_size>& A);
-}
+};
 
 template <class T,unsigned int tp_size>
 SNmultiGausian<T,tp_size>::SNmultiGausian(const SNgeneric<T,tp_size>& A):

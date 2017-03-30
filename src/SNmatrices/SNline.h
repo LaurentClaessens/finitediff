@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include<array>
 
+#include "m_num.h"
+
 /*
 This class describes a matrix line from a matrix of type 'SNmatrix'.
 
@@ -29,8 +31,7 @@ An element contains
 - its line number
 */
 
-
-// FORWARD DECLARATION ------------------------ 
+//forward
 
 template <class T,unsigned int tp_size>
 class SNmatrix;
@@ -44,12 +45,6 @@ class SNline
     private :
         std::array<T,tp_size> data;
         unsigned int line;
-
-        // Safe to use a raw pointer because I do not request any ownership.
-        // The matrix is owned by someone else and will be released by that guy.
-        SNmatrix<T,tp_size>* snmatrix;
-
-
     public :
 
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
@@ -85,15 +80,17 @@ class SNline
 
 template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(unsigned int l,SNmatrix<T,tp_size>& snm) : 
-    line(l),
-    snmatrix(&snm)
-{ }
+    line(l)
+{ 
+    for (m_num c=0;c<tp_size;++c)
+    {
+        data.at(c)=snm.get(l,c);
+    }
+}
 
 // the following constructor does not initialize the referenced matrix.
 template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(const std::array<T,tp_size>& ar) : data(ar) {};
-
-
 
 // OPERATORS -------------------------------------------
 
