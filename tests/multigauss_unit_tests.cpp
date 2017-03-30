@@ -31,7 +31,7 @@ class multigaussTests : public CppUnit::TestCase
             auto E=testMatrixE();
             double epsilon(0.0000001);
 
-            echo_single_test("Constructor from matrix");
+            echo_single_test("Constructor as gaussian matrix for zeroth column");
             
             SNmultiGaussian mg(E);
             CPPUNIT_ASSERT(mg.isNumericallyEqual(E.getGaussian(0),epsilon));
@@ -41,6 +41,8 @@ class multigaussTests : public CppUnit::TestCase
             auto M2=E.getGaussian(2);
 
             mg*=M1;
+            echo_single_test("Product with a gaussian");
+            CPPUNIT_ASSERT(mg.isNumericallyEqual( mg+M1-SNidentity(),epsilon  ));
         }
     public:
         void runTest()
