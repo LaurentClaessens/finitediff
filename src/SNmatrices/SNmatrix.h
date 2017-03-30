@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgaussian.h"
 #include "SNupperTriangular.h"
 #include "Mpermutation.h"
+#include "SNpermutation.h"
 #include "MelementaryPermutation.h"
 #include "MathUtilities.h"
 #include "SNoperators.h"
@@ -95,6 +96,9 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         T& _at(const m_num,const m_num) override;
         T _get(const m_num,const m_num) const override;
 
+        /** Set the matrix from another one */
+        void _set_from(const SNgeneric<T,tp_size>&);
+        void set_identity();
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
@@ -140,6 +144,30 @@ SNmatrix<T,tp_size>::SNmatrix(const T& v):
             data.at(k)=v;
     }
 };
+
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::_set_from(const SNgeneric<T,tp_size>& A)
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        for (m_num j=0;j<tp_size;j++)
+        {
+            this->at(i,j)=A.get(i,j);
+        }
+    }
+}
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::set_identity()
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        for (m_num j=0;j<tp_size;j++)
+        {
+            this->at(i,j)=0;
+        }
+        this->at(i,i)=1;
+    }
+}
 
 // GETTER METHODS  -------------------------------------------
 
@@ -266,9 +294,16 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNlowerTriangular<T,tp_size>& L=plu.data_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
+    SNmatrix<T,tp_size> essai;
+    essai.set_identity();
+
+
+
     for (m_num c=0;c<tp_size;c++)
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
+
+            debug_print<<"Nous faisons la colonne : "<<c<<std::endl;
 
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
@@ -277,6 +312,19 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
             permutation=el_perm*permutation; 
             mU.swapLines(c,max_el.line);
+
+            SNpermutation<T,tp_size> permut(el_perm);
+
+            auto M=mU.getGaussian(c);
+            if (c==0)
+            {
+                essai._set_from(M);
+            }
+            else
+            {
+                essai._set_from( permut*essai*permut*M.inverse());
+            }
+            debug_print<<essai<<std::endl;
 
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
