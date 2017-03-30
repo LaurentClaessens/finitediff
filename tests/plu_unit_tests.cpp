@@ -39,7 +39,12 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     auto cL=plu.getL();
     auto cU=plu.getU();
 
-    // TODO : check that the product PLU is equal to A.
+    echo_single_test("product ans_PLU");
+    auto ans_prod=atm.ans_P*atm.ans_L*atm.ans_U;
+    CPPUNIT_ASSERT(ans_prod.isNumericallyEqual(atm.A,epsilon));
+    echo_single_test("product cPLU");
+    auto c_prod=cP*cL*cU;
+    CPPUNIT_ASSERT(c_prod.isNumericallyEqual(atm.A,epsilon));
 
     echo_single_test("P factor");
     CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));
@@ -65,6 +70,7 @@ class pluTest : public CppUnit::TestCase
         {
             auto_test(atm_FOO);
             auto_test(atm_BAR);
+            auto_test(atm_ooIJXAooDhmylq);
         }
     public:
         void runTest()
