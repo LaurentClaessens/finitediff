@@ -42,14 +42,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNplu;
 
-// THE CLASS HEADER -----------------------------------------
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
 square matrix.
 
-NOTE : if you want the identity matrix, you should can create a permutation
-       with no arguments.
+NOTE : if you want the identity matrix, there is the `SNidentity` class.
 */
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
