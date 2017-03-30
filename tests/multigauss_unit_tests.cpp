@@ -16,46 +16,42 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <array>
-
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-#include "../src/SNmatrices/SNgaussian.h"
-
-#include "../src/SNmatrices/SNmatrix.h"
-#include "../src/SNmatrices/SNpermutation.h"
+#include "../src/SNmatrices/SNmultiGaussian.h"
 #include "TestMatrices.cpp"
 
-class SNgaussianTest : public CppUnit::TestCase
+class multigaussTests : public CppUnit::TestCase
 {
     private :
-        void test_inverse()
+        void constructor_test()
         {
-            echo_function_test("test_inverse");
+            auto E=testMatrixE();
+            double epsilon(0.0000001);
 
-            auto H=testMatrixH();
-            auto Hg=H.getGaussian(2);
-            auto iHg=Hg.inverse();
-            auto ID=SNpermutation<double,4>();
+            echo_single_test("Constructor from matrix");
+            
+            SNmultiGaussian mg(E);
+            CPPUNIT_ASSERT(mg.isNumericallyEqual(E.getGaussian(0),epsilon));
 
-            double epsilon(0.000001);
-            CPPUNIT_ASSERT(ID.isNumericallyEqual(Hg*iHg,epsilon)  );
-            CPPUNIT_ASSERT(ID.isNumericallyEqual(iHg*Hg,epsilon)  );
+            auto M0=E.getGaussian(0);
+            auto M1=E.getGaussian(1);
+            auto M2=E.getGaussian(2);
 
+            mg*=M1;
         }
     public:
         void runTest()
         {
-            test_inverse();
+            constructor_test();
         }
 };
 
 int main ()
 {
-    std::cout<<"sn_gaussian_unit_tests"<<std::endl;
-    SNgaussianTest sn_gauss_tests;
-    sn_gauss_tests.runTest();
+    std::cout<<"multigaussTests"<<std::endl;
+    multigaussTests mg_test;
+    mg_test.runTest();
 }
-

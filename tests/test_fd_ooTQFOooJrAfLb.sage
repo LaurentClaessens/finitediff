@@ -21,7 +21,7 @@ def c(k):
 def populate(A):
     """
     - A is a matrix
-    - we write the C++ code that populates a SNmatrix with the
+    Return the C++ code that populates a SNmatrix with the
       non vanishing elements of A
     """
     text=[]

@@ -33,18 +33,18 @@ class ExceptionsTests : public CppUnit::TestCase
         {
             SNmatrix<int,4> A;
             CPPUNIT_ASSERT_THROW(A.get(5,1),SNoutOfRangeException);
-            SNlowerTriangularMatrix<int,4> B;
+            SNlowerTriangular<int,4> B;
             CPPUNIT_ASSERT_THROW(B.at(1,5),SNoutOfRangeException);
         }
         void change_not_allowed_test()
         {
-            SNlowerTriangularMatrix<int,4> A;
+            SNlowerTriangular<int,4> A;
             CPPUNIT_ASSERT_THROW(A.at(1,2),SNchangeNotAllowedException);
         }
 
         void incompatible_matrix_size_test()
         {
-            SNlowerTriangularMatrix<int,4> A;
+            SNlowerTriangular<int,4> A;
             SNmatrix<double,2> B;
 
             // std::cout<<  is in order to avoid the warning about "equality comparison result unused"
