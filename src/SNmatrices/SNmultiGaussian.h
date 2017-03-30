@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNMULTIGAUSSIAN_H__105525
 
 
-#include "SNlower.h"
+#include "SNlowerTriangular.h"
 #include "m_num.h"
 
 /** 
@@ -43,13 +43,16 @@ class SNmultiGausian : public SNgeneric<T,tp_size>
     private :
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_c;       // the last non trivial column
-
     public:
-        // Initialize with a matrix A as argument produce the gaussian
-        // matrix of A for column 0
-
+        /** Construct gaussian matrix of the argument `A` */
+        SNmultiGausian(const SNgeneric<T,tp_size>& A);
 }
 
+template <class T,unsigned int tp_size>
+SNmultiGausian<T,tp_size>::SNmultiGausian(const SNgeneric<T,tp_size>& A):
+    data_L(A.getGaussian(0)),
+    data_c(0)
+{ }
+
+
 #endif
-
-

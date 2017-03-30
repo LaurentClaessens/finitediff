@@ -42,6 +42,8 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
         SNlowerTriangular();
         SNlowerTriangular(const SNmatrix<T,tp_size>& A);
+        /** Construct a lower triangular from a gaussian matrix */
+        SNlowerTriangular(const SNgaussian<T,tp_size>& A);
 };
 
 // CONSTRUCTOR  ---------------------------------------
@@ -62,6 +64,26 @@ template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A):
     data(_get_other_data(A))
 {};
+
+template <class T,unsigned int tp_size>
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
+{
+    for (m_num i=0;i<tp_size;++i)
+    {
+        this->at(i,i)=1;
+    }
+    for (m_num c=0;c<tp_size;++c)
+    {
+        for (m_num l=c+1;l<tp_size;++l)
+        {
+            this->at(l,c)=0;
+        }
+    }
+    for (m_num l= A.column+1;l<tp_size;++l )
+    {
+        this->at(l,A.column)=A.get(l,A.column);
+    }
+}
 
 // _GET AND _AT METHODS ---------------------------------------
 
