@@ -62,18 +62,22 @@ class SNline
         template <class V,unsigned int s>
         friend std::ostream& operator<<(std::ostream&, const SNline<V,s>&);
 
-        // return the value of the ith element on the line.
-        //  - at returns a reference (! non const)
-        //  - get returns a value.
+        /** 
+         * return by reference the value of the ith element on the line
+         * Useful for populating the line.
+         * */
         T& at(const unsigned int i);
+        /** Return by value the value of the ith element on the line */
         T get(const unsigned int i) const;
 
-        // return the number of the first non-zero element in the line.
+        /**   return the number of the first non-zero element in the line.*/
         unsigned int firstNonZeroColumn() const;
 
-        // divide all the elements by the first non-zero element. So the line becomes
-        // (0,0,1, blah )
-        // the original matrix is not updated.
+        /**
+         divide all the elements by the first non-zero element. So the line becomes
+         (0,0,1, blah )
+         the original matrix is not updated.
+        //  */
         void makeUnit();
 };
 
