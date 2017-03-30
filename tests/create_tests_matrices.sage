@@ -76,7 +76,7 @@ def matrix_to_cpp(A,name,ttype):
     # return the C++ code that creates the matrix and its P,L,U.
 
     plu=A.LU()
-    P=plu[0]
+    P=plu[0].inverse()          # Sage makes PA=LU while I do A=PLU
     L=plu[1]
     U=plu[2]
     new_text=skel_def
@@ -103,6 +103,7 @@ test_matrix_list=[]
 
 test_matrix_list.append( OneTestMatrix(  matrix( RDF, [ [1,2],[3,4] ] )   ,"FOO")   )
 test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,6.2],[-3,2.5,4],[0.33,0.666,1.33333] ] )   ,"BAR")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [-1,2,-6.2],[3,2.5,-4],[1/3,2/3,4/3] ] )   ,"ooIJXAooDhmylq")   )
 
 auto_filename="auto_tests_matrices.h"
 
