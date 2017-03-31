@@ -62,7 +62,6 @@ class SNgaussian : public SNgeneric<T,tp_size>
 
     
     /** 
-
      checkForSpecialElements(i,j)
      checks for element (i,j). If this is a special element 
      (a one whose value is fixed by the fact that we are a gaussian matrix)
