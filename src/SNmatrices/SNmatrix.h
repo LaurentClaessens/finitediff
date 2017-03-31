@@ -296,8 +296,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
 
-            debug_print<<"Nous faisons la colonne : "<<c<<std::endl;
-
         if (max_el.getValue()!=0)   // not a column full of zero's
         {
 
