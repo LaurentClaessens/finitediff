@@ -90,7 +90,7 @@ class SNgeneric
         virtual unsigned int getSize() const final;
 
         virtual T& at(const m_num,const m_num) final;
-        virtual T get(const m_num&,const m_num&) const final;
+        virtual T get(const m_num,const m_num) const final;
 
         virtual SNline<T,tp_size> getSNline(m_num l) const;
 
@@ -177,7 +177,7 @@ unsigned int SNgeneric<T,tp_size>::getSize() const
 // GET AND AT METHODS ------------------------------
 
 template <class T,unsigned int tp_size>
-T SNgeneric<T,tp_size>::get(const m_num& i,const m_num& j) const
+T SNgeneric<T,tp_size>::get(const m_num i,const m_num j) const
 {
     checkRangeCorectness(i,j);
     return _get(i,j);
