@@ -292,11 +292,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNlowerTriangular<T,tp_size>& L=plu.data_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
-    SNmatrix<T,tp_size> essai;
-    essai.set_identity();
-
-
-
     for (m_num c=0;c<tp_size;c++)
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
@@ -314,16 +309,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             SNpermutation<T,tp_size> permut(el_perm);
 
             auto M=mU.getGaussian(c);
-            if (c==0)
-            {
-                essai._set_from(M);
-            }
-            else
-            {
-                essai._set_from( permut*essai*permut*M.inverse());
-            }
-            debug_print<<essai<<std::endl;
-
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
             {
