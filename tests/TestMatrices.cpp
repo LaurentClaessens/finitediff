@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "../src/SNmatrices/SNmatrix.h"
 
 /*
  This file contains some matrices ready to be tested.
@@ -26,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     //F.at(1,0)=<++>; F.at(1,1)=<++>; F.at(1,2)=<++>; F.at(1,3)=<++>;
     //F.at(2,0)=<++>; F.at(2,1)=<++>; F.at(2,2)=<++>; F.at(2,3)=<++>;
     //F.at(3,0)=<++>; F.at(3,1)=<++>; F.at(3,2)=<++>; F.at(3,3)=<++>;
-
 
 auto testMatrixA()
 /*
