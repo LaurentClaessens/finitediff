@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestAssert.h>
 
 #include "../src/SNmatrices/SNmultiGaussian.h"
+#include "../src/SNmatrices/SNidentity.h"
 #include "TestMatrices.cpp"
 
 class multigaussTests : public CppUnit::TestCase
@@ -33,7 +34,7 @@ class multigaussTests : public CppUnit::TestCase
 
             echo_single_test("Constructor as gaussian matrix for zeroth column");
             
-            SNmultiGaussian mg(E);
+            SNmultiGaussian<double,4> mg(E);
             CPPUNIT_ASSERT(mg.isNumericallyEqual(E.getGaussian(0),epsilon));
 
             auto M0=E.getGaussian(0);
@@ -42,7 +43,7 @@ class multigaussTests : public CppUnit::TestCase
 
             mg*=M1;
             echo_single_test("Product with a gaussian");
-            CPPUNIT_ASSERT(mg.isNumericallyEqual( mg+M1-SNidentity(),epsilon  ));
+            CPPUNIT_ASSERT(mg.isNumericallyEqual( mg+M1-SNidentity<double,4>(),epsilon  ));
         }
     public:
         void runTest()
