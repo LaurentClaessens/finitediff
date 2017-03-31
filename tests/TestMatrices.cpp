@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "../src/SNmatrices/SNmatrix.h"
 
 /*
  This file contains some matrices ready to be tested.
@@ -26,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     //F.at(1,0)=<++>; F.at(1,1)=<++>; F.at(1,2)=<++>; F.at(1,3)=<++>;
     //F.at(2,0)=<++>; F.at(2,1)=<++>; F.at(2,2)=<++>; F.at(2,3)=<++>;
     //F.at(3,0)=<++>; F.at(3,1)=<++>; F.at(3,2)=<++>; F.at(3,3)=<++>;
-
 
 auto testMatrixA()
 /*
@@ -192,7 +192,7 @@ auto testMatrixG()
     // 3 4 5 0
     // 6 7 8 1
 
-    SNlowerTriangularMatrix<double,4> A;
+    SNlowerTriangular<double,4> A;
     A.at(0,0)=3; 
     A.at(1,0)=1; A.at(1,1)=2; 
     A.at(2,0)=3; A.at(2,1)=4; A.at(2,2)=5;
@@ -213,6 +213,39 @@ auto testMatrixH()
     return F;
 }
 
+auto testMatrixI()
+    /*
+    2 5 6 7
+    5 1 7 1
+    3 2 3 4
+    4 6 8 9
+    */
+{
+    SNmatrix<double,4> A;
+    A.at(0,0)=2; A.at(0,1)=5; A.at(0,2)=6; A.at(0,3)=7;  
+    A.at(1,0)=5; A.at(1,1)=1; A.at(1,2)=7; A.at(1,3)=1;
+    A.at(2,0)=3; A.at(2,1)=2; A.at(2,2)=3; A.at(2,3)=4;  
+    A.at(3,0)=4; A.at(3,1)=6; A.at(3,2)=8; A.at(3,3)=9;
+    return A;
+}
+
+
+template <class T,unsigned int tp_size>
+class AutoTestMatrix
+{
+    public :
+        SNmatrix<T,tp_size> A;
+        SNmatrix<T,tp_size> ans_P;
+        SNlowerTriangular<T,tp_size> ans_L;
+        SNupperTriangular<T,tp_size> ans_U;
+
+        AutoTestMatrix(const SNmatrix<T,tp_size>& mA,const SNmatrix<T,tp_size>& mP, const SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU) :
+            A(mA),
+            ans_P(mP),
+            ans_L(mL),
+            ans_U(mU)
+        { }
+};
 
 void echo_function_test(const std::string& s)
 {

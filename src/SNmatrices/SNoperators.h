@@ -24,8 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef  OPERATORS_H__064802_
 #define  OPERATORS_H__064802_
 
-#include "SNgaussianMatrix.h"
-#include "SNlowerTriangularMatrix.h"
+#include "SNgaussian.h"
+#include "SNidentity.h"
+#include "SNlowerTriangular.h"
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
@@ -54,11 +55,11 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
     return ans;   //relies on RVO.
 }
 
-// SNgaussianMatrix * SNgeneric
+// SNgaussian * SNgeneric
 // can copy the first 'c' lines.
 template <class U,class V,unsigned int s,unsigned int t>
 void productGaussianTimesGeneric
-(SNgeneric<U,s>& ans,const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>&B )
+(SNgeneric<U,s>& ans,const SNgaussian<U,s>& A, const SNgeneric<V,t>&B )
 {
     if (s!=t)
     {
@@ -85,7 +86,7 @@ void productGaussianTimesGeneric
 
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
-(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
+(const SNgaussian<U,s>& A, const SNmatrix<V,t>& B)
 {
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
@@ -94,8 +95,8 @@ SNmatrix<U,s> operator*
 }
 
 template <class U,class V,unsigned int s,unsigned int t>
-SNlowerTriangularMatrix<U,s> operator*
-(const SNgaussianMatrix<U,s>& A, const SNlowerTriangularMatrix<V,t>& B)
+SNlowerTriangular<U,s> operator*
+(const SNgaussian<U,s>& A, const SNlowerTriangular<V,t>& B)
 {
 
     // gaussian * lower trig -> lower trig
@@ -106,7 +107,7 @@ SNlowerTriangularMatrix<U,s> operator*
     checkSizeCompatibility(A,B);
     unsigned int size=A.getSize();
     unsigned int c=A.column;
-    SNlowerTriangularMatrix<U,s> ans;
+    SNlowerTriangular<U,s> ans;
 
     for (unsigned int i=0;i<c+1;i++)
     {
@@ -125,6 +126,46 @@ SNlowerTriangularMatrix<U,s> operator*
     return ans;
 }
 
+// SUM ---------------------------------------
+
+/** 
+ * Sum of two SNmatrix.
+ *
+ * The return type is the one of the left argument.
+ * THUS : this is *not* totally commutative. You may have
+ * \f$ A+B\neq B+A \f$
+ * */
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
+{
+
+    // TODO : since this sum is not commutative, maybe one has to implement it
+    // as member function.
+
+    SNmatrix<U,s> new_matrix(A);
+    for (unsigned int k=0;k<s*s;k++)
+    {
+        new_matrix.data.at(k)+=B.data.at(k);
+    }
+    return new_matrix;
+}
+
+// DIFFERENCE ---------------------------------------
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator-(const SNgeneric<U,s>& A,const SNidentity<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+    SNmatrix<U,s> new_matrix(A);
+    for (m_num k=0;k<s;k++)
+    {
+        new_matrix.at(k,k)-=1;
+    }
+    return new_matrix;
+}
+
+
 // EQUALITIES ---------------------------------------
 
 template <class U,unsigned int s,class V,unsigned int t>
@@ -141,7 +182,7 @@ bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 }
 
 template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNmatrix<U,s>& A,const SNupperTriangularMatrix<V,t>& B)
+bool operator==(const SNmatrix<U,s>& A,const SNupperTriangular<V,t>& B)
 {
     return B==A;
 }
