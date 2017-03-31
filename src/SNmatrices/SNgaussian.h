@@ -59,6 +59,26 @@ class SNgaussian : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
+
+    
+    /** 
+
+     checkForSpecialElements(i,j)
+     checks for element (i,j). If this is a special element 
+     (a one whose value is fixed by the fact that we are a gaussian matrix)
+     then it returns a 'SpecialValue<T>' with its boolean part set to true,
+     meaning that this is a special value.
+     In that case :
+     - _get returns the corresponding value.
+     - _at throws SNchangeNotAllowedException.
+    
+    If this is not a special value, it returns a 'SpecialValue<T>' with boolean part
+    set to false. 
+    In that case :
+    - both _get and _at have to search in the stored values.
+
+     */
+
         SpecialValue<T> checkForSpecialElements(const m_num& i,const m_num& j) const;
 
         //** populate the matrix from the elements of the given matrix */
@@ -139,20 +159,6 @@ SpecialValue<T> SNgaussian<T,tp_size>::checkForSpecialElements(const m_num& i,co
 
 // _AT AND _GET METHODS ---------------------------------------
 
-
-// checkForSpecialElements(i,j)
-// checks for element (i,j). If this is a special element 
-// (a one whose value is fixed by the fact that we are a gaussian matrix)
-// then it returns a 'SpecialValue<T>' with its boolean part set to true,
-// meaning that this is a special value.
-// In that case :
-// - _get returns the corresponding value.
-// - _at throws SNchangeNotAllowedException.
-//
-// If this is not a special value, it returns a 'SpecialValue<T>' with boolean part
-// set to false. 
-// In that case :
-// - both _get and _at have to search in the stored values.
 
 
 template <class T,unsigned int tp_size>
