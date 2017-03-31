@@ -49,15 +49,51 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+
+        /**
+         * The product \f$ AB \f$ is easy when \f$ A \f$ is
+         * multigaussian and \f$ B \f$ is a gaussian matrix
+         * for the next line.
+         *
+         * `A*=B` does
+         * - `A=A*B` if A is multigaussian with last non trivial column 
+         *   \f$ l_l \f$ and if B is gaussian for the column \f$ l_c+1 \f$.
+         * - throw `IncompatibleMatrixSizeException` exception if the size are
+         *   not the same.
+         * - throw `ProbablyNotWhatYouWantException` if the requirements about
+         *   the column are not fulfilled.
+         * */
+        void operator *=(const SNgaussian<T,tp_size>& other);
 };
 
 // CONSTRUCTORS -------------------------------------------------
 
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
-    data_L(A.getGaussian(0)),
     data_last_column(0)
-{ }
+{ 
+    debug_print<<"prêt pour getGaussian ?"<<std::endl;
+    data_L=A.getGaussian(0);
+    // Je crois que le = est mal définit, il me faut encore trouver où il est.
+    debug_print<<"Fini le constructeur de SNmultiGaussian"<<std::endl;
+}
+
+// OPERATORS  ---------------------------------------
+
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
+{
+    checkSizeCompatibility(*this,other);
+    if (other.column!=data_last_column+1)
+    {
+        throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
+    }
+    for (m_num l=other.column+1;l<tp_size;++l)
+    {
+        this->at(l,other.column)+=other.get(l,other.column);
+    }
+}
 
 // UTILITIES  ---------------------------------------
 

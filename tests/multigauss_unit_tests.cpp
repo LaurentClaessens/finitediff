@@ -31,7 +31,11 @@ class multigaussTests : public CppUnit::TestCase
         {
             echo_function_test("get_at_test");
             auto A=testMatrixI();
+
+            debug_print<<"GAT 1"<<std::endl;
+
             SNmultiGaussian<double,4> mg(A);
+            debug_print<<"GAT 2"<<std::endl;
 
             echo_single_test("A simple get");
             CPPUNIT_ASSERT(mg.get(3,0)==2);
@@ -57,8 +61,22 @@ class multigaussTests : public CppUnit::TestCase
             auto M2=E.getGaussian(2);
 
             mg*=M1;
+
+            // The point in passing through SNmatrix and testing
+            // sn_mg+sn_M1-SNidentity
+            // instead of testing directly
+            // mg+M1-SNidentity
+            // is that I do not want to define the sum of gaussian matrices.
+            // As far as I know, there are no legitimate situations in which you want to 
+            // sum such matrices.
+            echo_single_test("SNmatrix from gaussian");
+            SNmatrix<double,4> sn_mg(mg);
+            SNmatrix<double,4> sn_M1(M1);
+            CPPUNIT_ASSERT(mg==sn_mg);
+            CPPUNIT_ASSERT(M1==sn_M1);
+
             echo_single_test("Product with a gaussian");
-            CPPUNIT_ASSERT(mg.isNumericallyEqual( mg+M1-SNidentity<double,4>(),epsilon  ));
+            CPPUNIT_ASSERT(mg.isNumericallyEqual( sn_mg+sn_M1-SNidentity<double,4>(),epsilon  ));
         }
     public:
         void runTest()
