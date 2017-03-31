@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
+#include "MelementaryPermutation.h"
+
 // THE CLASS HEADER -----------------------------------------
 
 /**
@@ -62,6 +64,7 @@ class Mpermutation
         std::array<unsigned int,tp_size> data;
     public :
         Mpermutation(const std::array<unsigned int,tp_size>& d); 
+        Mpermutation(const MelementaryPermutation<tp_size>& ); 
 
         /** The no-argument constructors initializes to identity */
         Mpermutation(); 
@@ -109,6 +112,13 @@ Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
             throw PermutationIdexoutOfRangeException(k,tp_size);
         }
     }
+}
+
+template <unsigned int tp_size>
+Mpermutation<tp_size>::Mpermutation(const MelementaryPermutation<tp_size>& p )
+{
+    this->at(  p.elA  )=p.elB;
+    this->at(  p.elB  )=p.elA;
 }
 
 template <unsigned int tp_size>

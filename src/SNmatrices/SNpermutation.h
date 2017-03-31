@@ -45,6 +45,7 @@ class SNpermutation : public SNgeneric<T,tp_size>
         T _get(const m_num i,const m_num j) const override;
     public :
         SNpermutation(const Mpermutation<tp_size>& d); 
+        SNpermutation(const MelementaryPermutation<tp_size>& d); 
 
         /** The constructor with zero arguments initializes to the identity. */
         SNpermutation(); 
@@ -60,6 +61,11 @@ class SNpermutation : public SNgeneric<T,tp_size>
 
 template <class T,unsigned int tp_size>
 SNpermutation<T,tp_size>::SNpermutation(const Mpermutation<tp_size>& d) :
+    data(d)
+{}
+
+template <class T,unsigned int tp_size>
+SNpermutation<T,tp_size>::SNpermutation(const MelementaryPermutation<tp_size>& d):
     data(d)
 {}
 
