@@ -18,7 +18,8 @@ Non-official purposes include
 ## Latest news
 
 * I'm currently implementing the PLU decomposition.
-* U is done. P is almost done (I have the list of line swap, but not yet a matrix). L is still to be done.
+* P and U are done.
+* Working on more automatic testing.
 * Working on the documentation with Doxygen ...
 
 ## deploy.sh
