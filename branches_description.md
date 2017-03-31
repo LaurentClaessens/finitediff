@@ -20,4 +20,4 @@ virtual T& at(const m_num,const m_num) final;
 virtual T get(const m_num&,const m_num&) const final;
 ```
 
-For consistency we pass the arguments of `get` by value. And then change a lot here and there.
+For consistency we pass the arguments of `get` by value.
