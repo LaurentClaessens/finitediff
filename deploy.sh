@@ -20,6 +20,10 @@ mkdir build > /dev/null
 git status
 make clean
 
+echo "Creating the documentation"
+
+doxygen Doxyfile > /dev/null
+
 echo
 echo "TESTS --------------------"
 echo
