@@ -43,6 +43,7 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
     private :
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_last_column;       // the last non trivial column
+        SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
