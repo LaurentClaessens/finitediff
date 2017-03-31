@@ -38,18 +38,18 @@ Some of the properties of these matrices are
  */
 
 template <class T,unsigned int tp_size>
-class SNmultiGausian : public SNgeneric<T,tp_size>
+class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
     private :
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_c;       // the last non trivial column
     public:
         /** Construct gaussian matrix of the argument `A` */
-        SNmultiGausian(const SNgeneric<T,tp_size>& A);
+        SNmultiGaussian(const SNgeneric<T,tp_size>& A);
 };
 
 template <class T,unsigned int tp_size>
-SNmultiGausian<T,tp_size>::SNmultiGausian(const SNgeneric<T,tp_size>& A):
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
     data_L(A.getGaussian(0)),
     data_c(0)
 { }
