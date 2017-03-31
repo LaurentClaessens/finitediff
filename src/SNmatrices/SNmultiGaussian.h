@@ -42,17 +42,65 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
     private :
         SNlowerTriangular<T,tp_size> data_L;
-        m_num data_c;       // the last non trivial column
+        m_num data_last_column;       // the last non trivial column
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
 };
 
+// CONSTRUCTORS -------------------------------------------------
+
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
     data_L(A.getGaussian(0)),
-    data_c(0)
+    data_last_column(0)
 { }
+
+// UTILITIES  ---------------------------------------
+
+template <class T,unsigned int tp_size>
+SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
+{
+    if (i==j)
+    {
+        return SpecialValue<T>(1,true);
+    }
+    if (j>data_last_column)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    if (i<j)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    return SpecialValue<T>(0,false);      // In this case, the value "0" is dummy.
+}
+
+
+// _GET AND _AT METHODS ---------------------------------------
+
+template <class T,unsigned int tp_size>
+T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
+{
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
+    {
+        return sv.value;
+    }
+    return data_L.at(i,j);  //if you change here, you have to change _at
+}
+
+template <class T,unsigned int tp_size>
+T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j) 
+{
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
+    {
+        throw SNchangeNotAllowedException(i,j);
+    }
+    return data_L.at(i,j);  //if you change here, you have to change _get
+}
+
 
 
 #endif
