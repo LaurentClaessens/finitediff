@@ -92,9 +92,11 @@ class SNgeneric
 
         virtual SNline<T,tp_size> getSNline(m_num l) const;
 
-        // subtract the given matrix from this matrix.
-        // This is in-place replacement. Thus the least const in the 
-        // world.
+        /**
+         subtract the given matrix from this matrix.
+         This is in-place replacement. Thus the least const in the 
+         world.
+        */
         template <class V,unsigned int s>
         void subtract(const SNgeneric<V,s>&);
         template <class V,unsigned int s>
