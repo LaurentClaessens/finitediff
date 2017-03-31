@@ -44,6 +44,8 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_last_column;       // the last non trivial column
         SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
+        T _get(m_num,m_num) const override;
+        T& _at(m_num,m_num) override;
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
@@ -88,7 +90,7 @@ T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
     {
         return sv.value;
     }
-    return data_L.at(i,j);  //if you change here, you have to change _at
+    return data_L.get(i,j);  //if you change here, you have to change _at
 }
 
 template <class T,unsigned int tp_size>
@@ -101,7 +103,5 @@ T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j)
     }
     return data_L.at(i,j);  //if you change here, you have to change _get
 }
-
-
 
 #endif
