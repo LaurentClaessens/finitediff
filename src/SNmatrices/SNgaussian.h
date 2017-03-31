@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "m_num.h"
 #include "../SNexceptions.cpp"
+#include "../DebugPrint.h"
 
 
 // forward definition
@@ -116,10 +117,13 @@ void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
     }
 
     T m = A.get(column,column);
+    debug_print<<"le max trouvé "<<m<<std::endl;
     for (m_num i=column+1;i<tp_size;i++)
     {
+        debug_print<<"ligne "<<i<<std::endl;
         this->at(i,column)=-A.get(i,column)/m;
     }
+    debug_print<<"fini populate_from"<<std::endl;
 }
 
 template <class T,unsigned int tp_size> 
@@ -128,6 +132,7 @@ SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
     column(c)
 {
     populate_from(A);
+    debug_print<<"fini le constructeur de SNgaussian"<<std::endl;
 }
 
 template <class T,unsigned int tp_size> 
