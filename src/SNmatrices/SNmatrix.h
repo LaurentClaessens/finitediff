@@ -59,9 +59,12 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
+    template <class U,unsigned int s,class V,unsigned int t>
+    friend SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B);
     
     friend std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
     friend std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+
 
     private:
         std::array<T,tp_size*tp_size> data;
@@ -100,6 +103,11 @@ class SNmatrix  : public SNgeneric<T,tp_size>
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
+        /**
+         * Construct a SNmatrix as copy of a generic matrix.
+         * Here we copy every elements.
+         * */
+        SNmatrix(const SNgeneric<T,tp_size>&);
         /** Creates a matrix full of x */
         SNmatrix(const T& x);
 
@@ -125,7 +133,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
 };
 
-// CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
+// CONSTRUCTORS  -------------------------------------------
 
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(): data() { };
@@ -142,6 +150,14 @@ SNmatrix<T,tp_size>::SNmatrix(const T& v):
             data.at(k)=v;
     }
 };
+
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(const SNgeneric<T,tp_size>& A)
+{
+    this->_set_from(A);
+}
+
+//  SOME ILLEGITIMATE(?) WAYS TO SET THE VALUES OF A MATRIX -----------------
 
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::_set_from(const SNgeneric<T,tp_size>& A)
