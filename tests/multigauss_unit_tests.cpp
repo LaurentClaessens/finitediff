@@ -32,10 +32,8 @@ class multigaussTests : public CppUnit::TestCase
             echo_function_test("get_at_test");
             auto A=testMatrixI();
 
-            debug_print<<"GAT 1"<<std::endl;
 
             SNmultiGaussian<double,4> mg(A);
-            debug_print<<"GAT 2"<<std::endl;
 
             echo_single_test("A simple get");
             CPPUNIT_ASSERT(mg.get(3,0)==2);

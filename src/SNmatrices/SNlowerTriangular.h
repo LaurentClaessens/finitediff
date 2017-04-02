@@ -68,7 +68,7 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A):
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
 {
-    for (m_num i=0;i<tp_size;++i)
+    for (m_num i=0;i<tp_size;i++)
     {
         this->at(i,i)=1;
     }

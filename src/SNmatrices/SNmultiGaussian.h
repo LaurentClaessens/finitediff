@@ -70,13 +70,9 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
-    data_last_column(0)
-{ 
-    debug_print<<"prêt pour getGaussian ?"<<std::endl;
-    data_L=A.getGaussian(0);
-    // Je crois que le = est mal définit, il me faut encore trouver où il est.
-    debug_print<<"Fini le constructeur de SNmultiGaussian"<<std::endl;
-}
+    data_last_column(0),
+    data_L(A.getGaussian(0))
+{ }
 
 // OPERATORS  ---------------------------------------
 

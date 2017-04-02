@@ -196,7 +196,6 @@ T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
 template <class T,unsigned int tp_size>
 SNgaussian<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
 {
-    debug_print<<"dans SNgeneric"<<std::endl;
     return SNgaussian<T,tp_size>(*this,c);
 }
 
