@@ -16,16 +16,10 @@ NC='\033[0m' # No Color
 rm .deploy.log
 touch .deploy.log
 
-rm -rf doc
-mkdir doc > /dev/null
 
 mkdir build > /dev/null
 git status
 make clean
-
-echo "Creating the documentation"
-
-doxygen Doxyfile > /dev/null
 
 echo
 echo "TESTS --------------------"
