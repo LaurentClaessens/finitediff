@@ -27,25 +27,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class multigaussTests : public CppUnit::TestCase
 {
     private :
-        void get_at_test()
+        void working_tests()
         {
-            echo_function_test("get_at_test");
+        }
+        :w
+        void get_at_tests()
+        {
+            echo_function_test("get_at_tests");
             auto A=testMatrixI();
-
+    /*
+    2 5 6 7
+    5 1 7 1
+    3 2 3 4
+    4 6 8 9
+    */
 
             SNmultiGaussian<double,4> mg(A);
 
             echo_single_test("A simple get");
-            CPPUNIT_ASSERT(mg.get(3,0)==2);
+            CPPUNIT_ASSERT(mg.get(3,0)==-2);
 
             echo_single_test("Modifying with 'at'");
             mg.at(2,0)=12;
             CPPUNIT_ASSERT(mg.get(2,0)==12);
 
         }
-        void constructor_test()
+        void constructor_tests()
         {
-            echo_function_test("constructor_test");
+            echo_function_test("constructor_tests");
             auto E=testMatrixE();
             double epsilon(0.0000001);
 
@@ -79,8 +88,9 @@ class multigaussTests : public CppUnit::TestCase
     public:
         void runTest()
         {
-            get_at_test();
-            constructor_test();
+            working_tests();
+            get_at_tests();
+            constructor_tests();
         }
 };
 
