@@ -21,3 +21,7 @@ virtual T get(const m_num&,const m_num&) const final;
 ```
 
 For consistency we pass the arguments of `get` by value.
+
+# m_num_increment
+
+Rationalize how `i++` and `++i` work when `i` is of type `m_num`.

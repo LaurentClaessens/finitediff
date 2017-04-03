@@ -51,7 +51,8 @@ m_num::operator unsigned int() const
 
 m_num m_num::operator++() 
 {
-    return m_num(num+1);
+    ++num;
+    return *this;
 }
 m_num m_num::operator++(int) 
 {
@@ -64,5 +65,13 @@ m_num m_num::operator++(int)
 
 bool m_num::operator >(const unsigned int& b) const { return num>b; }
 bool m_num::operator >(const m_num& b) const { return num>b.num; }
+bool m_num::operator >(const int& b) const 
+{ 
+    return int(num)>b; 
+}
 bool m_num::operator <(const unsigned int& b) const { return num<b; }
 bool m_num::operator <(const m_num& b) const { return num<b.num; }
+bool m_num::operator <(const int& b) const 
+{ 
+    return int(num)<b; 
+}
