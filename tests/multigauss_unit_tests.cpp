@@ -30,7 +30,6 @@ class multigaussTests : public CppUnit::TestCase
         void working_tests()
         {
         }
-        :w
         void get_at_tests()
         {
             echo_function_test("get_at_tests");
