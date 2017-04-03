@@ -51,7 +51,8 @@ m_num::operator unsigned int() const
 
 m_num m_num::operator++() 
 {
-    return m_num(num+1);
+    ++num;
+    return *this;
 }
 m_num m_num::operator++(int) 
 {
