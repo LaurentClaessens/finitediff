@@ -37,11 +37,6 @@ m_num::m_num(const int n)
 
 // CONVERSIONS   ----------------------------------
 
-//m_num::operator int() const
-//{
-//    return num;
-//}
-
 m_num::operator unsigned int() const
 {
     return num;
