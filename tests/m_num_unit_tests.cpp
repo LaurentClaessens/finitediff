@@ -74,7 +74,7 @@ class mNumTest : public CppUnit::TestCase
             increment_tests();
             loop_tests();
         }
-}
+};
  
 int main ()
 {
