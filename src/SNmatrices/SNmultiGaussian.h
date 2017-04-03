@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNMULTIGAUSSIAN_H__105525
 
 
-#include "SNlower.h"
+#include "SNlowerTriangular.h"
 #include "m_num.h"
 
 /** 
@@ -35,21 +35,117 @@ Some of the properties of these matrices are
   trivial columns here.
 - The diagonal is filled by 1.
 
- */
+*/
 
 template <class T,unsigned int tp_size>
-class SNmultiGausian : public SNgeneric<T,tp_size>
+class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
     private :
         SNlowerTriangular<T,tp_size> data_L;
-        m_num data_c;       // the last non trivial column
-
+        m_num data_last_column;       // the last non trivial column
+        SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
+        T _get(m_num,m_num) const override;
+        T& _at(m_num,m_num) override;
     public:
-        // Initialize with a matrix A as argument produce the gaussian
-        // matrix of A for column 0
+        /** Construct gaussian matrix of the argument `A` */
+        SNmultiGaussian(const SNgeneric<T,tp_size>& A);
 
+        /** return the last non trivial column */
+        m_num lastColumn() const;
+
+        /**
+         * The product \f$ AB \f$ is easy when \f$ A \f$ is
+         * multigaussian and \f$ B \f$ is a gaussian matrix
+         * for the next line.
+         *
+         * `A*=B` does
+         * - `A=A*B` if A is multigaussian with last non trivial column 
+         *   \f$ l_l \f$ and if B is gaussian for the column \f$ l_c+1 \f$.
+         * - throw `IncompatibleMatrixSizeException` exception if the size are
+         *   not the same.
+         * - throw `ProbablyNotWhatYouWantException` if the requirements about
+         *   the column are not fulfilled.
+         * */
+        void operator *=(const SNgaussian<T,tp_size>& other);
+};
+
+// CONSTRUCTORS -------------------------------------------------
+
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
+    data_last_column(0),
+    data_L(A.getGaussian(0))
+{ }
+
+// GETTER METHODS  ---------------------------------------
+
+
+template <class T,unsigned int tp_size>
+m_num SNmultiGaussian<T,tp_size>::lastColumn() const
+{
+    return data_last_column;
+}
+
+// OPERATORS  ---------------------------------------
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
+{
+    checkSizeCompatibility(*this,other);
+    if (other.column!=data_last_column+1)
+    {
+        throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
+    }
+    data_last_column++;
+    for (m_num l=other.column+1;l<tp_size;++l)
+    {
+        this->at(l,other.column)+=other.get(l,other.column);
+    }
+}
+
+// UTILITIES  ---------------------------------------
+
+template <class T,unsigned int tp_size>
+SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
+{
+    if (i==j)
+    {
+        return SpecialValue<T>(1,true);
+    }
+    if (j>data_last_column)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    if (i<j)
+    {
+        return SpecialValue<T>(0,true);
+    }
+    return SpecialValue<T>(0,false);      // In this case, the value "0" is dummy.
+}
+
+
+// _GET AND _AT METHODS ---------------------------------------
+
+template <class T,unsigned int tp_size>
+T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
+{
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
+    {
+        return sv.value;
+    }
+    return data_L.get(i,j);  //if you change here, you have to change _at
+}
+
+template <class T,unsigned int tp_size>
+T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j) 
+{
+    SpecialValue<T> sv=checkForSpecialElements(i,j);
+    if (sv.special)
+    {
+        throw SNchangeNotAllowedException(i,j);
+    }
+    return data_L.at(i,j);  //if you change here, you have to change _get
 }
 
 #endif
-
-

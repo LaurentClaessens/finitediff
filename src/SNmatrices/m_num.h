@@ -47,10 +47,12 @@ class m_num
 
         bool operator >(const unsigned int& b) const;
         bool operator >(const m_num& b) const;
+        bool operator >(const int& b) const;
+        
         bool operator <(const unsigned int& b) const;
         bool operator <(const m_num& b) const;
+        bool operator <(const int& b) const;
 
-        //operator int() const;
         operator unsigned int() const;
 };
 

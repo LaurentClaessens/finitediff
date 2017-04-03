@@ -146,6 +146,21 @@ class OutOfRangeConstructionElementaryPermutationException : public std::excepti
         }
 };
 
+class ProbablyNotWhatYouWantException : public std::exception
+{
+    private :
+        std::string message;
+
+    public: 
+        ProbablyNotWhatYouWantException(const std::string m): 
+            message(m)
+    {}
+        virtual const char* what() const throw()
+        {
+            return message.c_str();
+        }
+};
+
 class NegativeMatrixElementNumberException : public std::exception
 {
     private :

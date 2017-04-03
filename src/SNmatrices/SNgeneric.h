@@ -64,7 +64,6 @@ As an example, on a lower diagonal matrix,
 - `_get(1,3)` returns 0 (by value)
 - `_at(1,3)` throws SNchangeNotAllowedException
 
-
 */
 
 template <class T,unsigned int tp_size>
@@ -88,13 +87,15 @@ class SNgeneric
         virtual unsigned int getSize() const final;
 
         virtual T& at(const m_num,const m_num) final;
-        virtual T get(const m_num&,const m_num&) const final;
+        virtual T get(const m_num,const m_num) const final;
 
         virtual SNline<T,tp_size> getSNline(m_num l) const;
 
-        // subtract the given matrix from this matrix.
-        // This is in-place replacement. Thus the least const in the 
-        // world.
+        /** 
+         subtract the given matrix from this matrix.
+         This is in-place replacement. Thus the least const in the 
+         world.
+          */
         template <class V,unsigned int s>
         void subtract(const SNgeneric<V,s>&);
         template <class V,unsigned int s>
@@ -175,7 +176,7 @@ unsigned int SNgeneric<T,tp_size>::getSize() const
 // GET AND AT METHODS ------------------------------
 
 template <class T,unsigned int tp_size>
-T SNgeneric<T,tp_size>::get(const m_num& i,const m_num& j) const
+T SNgeneric<T,tp_size>::get(const m_num i,const m_num j) const
 {
     checkRangeCorectness(i,j);
     return _get(i,j);

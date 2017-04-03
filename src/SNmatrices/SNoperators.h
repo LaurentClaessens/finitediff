@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define  OPERATORS_H__064802_
 
 #include "SNgaussian.h"
+#include "SNidentity.h"
 #include "SNlowerTriangular.h"
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
@@ -124,6 +125,46 @@ SNlowerTriangular<U,s> operator*
     }
     return ans;
 }
+
+// SUM ---------------------------------------
+
+/** 
+ * Sum of two SNmatrix.
+ *
+ * The return type is the one of the left argument.
+ * THUS : this is *not* totally commutative. You may have
+ * \f$ A+B\neq B+A \f$
+ * */
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
+{
+
+    // TODO : since this sum is not commutative, maybe one has to implement it
+    // as member function.
+
+    SNmatrix<U,s> new_matrix(A);
+    for (unsigned int k=0;k<s*s;k++)
+    {
+        new_matrix.data.at(k)+=B.data.at(k);
+    }
+    return new_matrix;
+}
+
+// DIFFERENCE ---------------------------------------
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator-(const SNgeneric<U,s>& A,const SNidentity<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+    SNmatrix<U,s> new_matrix(A);
+    for (m_num k=0;k<s;k++)
+    {
+        new_matrix.at(k,k)-=1;
+    }
+    return new_matrix;
+}
+
 
 // EQUALITIES ---------------------------------------
 
