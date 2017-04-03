@@ -35,7 +35,7 @@ Some of the properties of these matrices are
   trivial columns here.
 - The diagonal is filled by 1.
 
- */
+*/
 
 template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
@@ -49,6 +49,9 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
     public:
         /** Construct gaussian matrix of the argument `A` */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+
+        /** return the last non trivial column */
+        m_num lastColumn() const;
 
         /**
          * The product \f$ AB \f$ is easy when \f$ A \f$ is
@@ -74,8 +77,16 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
     data_L(A.getGaussian(0))
 { }
 
-// OPERATORS  ---------------------------------------
+// GETTER METHODS  ---------------------------------------
 
+
+template <class T,unsigned int tp_size>
+m_num SNmultiGaussian<T,tp_size>::lastColumn() const
+{
+    return data_last_column;
+}
+
+// OPERATORS  ---------------------------------------
 
 template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
@@ -85,6 +96,7 @@ void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
     {
         throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
     }
+    data_last_column++;
     for (m_num l=other.column+1;l<tp_size;++l)
     {
         this->at(l,other.column)+=other.get(l,other.column);
