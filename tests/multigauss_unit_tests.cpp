@@ -29,10 +29,7 @@ class multigaussTests : public CppUnit::TestCase
     private :
         void working_tests()
         {
-        }
-        void get_at_tests()
-        {
-            echo_function_test("get_at_tests");
+            echo_function_test("working tests");
             auto A=testMatrixI();
     /*
     2 5 6 7
@@ -41,6 +38,18 @@ class multigaussTests : public CppUnit::TestCase
     4 6 8 9
     */
 
+            SNmultiGaussian<double,4> mg(A);
+            SNmatrix<double,4> prod=mg*A;
+
+            CPPUNIT_ASSERT(prod.get(1,0)==0);
+            CPPUNIT_ASSERT(prod.get(2,0)==0);
+            CPPUNIT_ASSERT(prod.get(3,0)==0);
+
+        }
+        void get_at_tests()
+        {
+            echo_function_test("get_at_tests");
+            auto A=testMatrixI();
             SNmultiGaussian<double,4> mg(A);
 
             echo_single_test("A simple get");
