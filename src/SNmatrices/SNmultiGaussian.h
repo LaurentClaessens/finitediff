@@ -92,14 +92,14 @@ template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
 {
     checkSizeCompatibility(*this,other);
-    if (other.column!=data_last_column+1)
+    if (other.getColumn()!=data_last_column+1)
     {
         throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
     }
     data_last_column++;
-    for (m_num l=other.column+1;l<tp_size;++l)
+    for (m_num l=other.getColumn()+1;l<tp_size;++l)
     {
-        this->at(l,other.column)+=other.get(l,other.column);
+        this->at(l,other.getColumn())+=other.get(l,other.getColumn());
     }
 }
 

@@ -219,7 +219,7 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgaussian<V,s>& G)
 {
     checkSizeCompatibility(*this,G);
-    m_num c=G.column;
+    m_num c=G.getColumn();
 
     // subtract the non trivial "half column"
     for (m_num i=c+1;i<tp_size;i++)
