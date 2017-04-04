@@ -75,6 +75,7 @@ class multigaussTests : public CppUnit::TestCase
             auto M1=E.getGaussian(1);
             auto M2=E.getGaussian(2);
 
+            auto i_mg=mg;       // we recall how was out multigaussian before the multiplication by M1.
             mg*=M1;
 
             // The point in passing through SNmatrix and testing
@@ -85,13 +86,13 @@ class multigaussTests : public CppUnit::TestCase
             // As far as I know, there are no legitimate situations in which you want to 
             // sum such matrices.
             echo_single_test("SNmatrix from gaussian");
-            SNmatrix<double,4> sn_mg(mg);
+            SNmatrix<double,4> sn_i_mg(i_mg);
             SNmatrix<double,4> sn_M1(M1);
-            CPPUNIT_ASSERT(mg==sn_mg);
+            CPPUNIT_ASSERT(i_mg==sn_i_mg);
             CPPUNIT_ASSERT(M1==sn_M1);
 
             echo_single_test("Product with a gaussian");
-            CPPUNIT_ASSERT(mg.isNumericallyEqual( sn_mg+sn_M1-SNidentity<double,4>(),epsilon  ));
+            CPPUNIT_ASSERT(mg.isNumericallyEqual( sn_i_mg+sn_M1-SNidentity<double,4>(),epsilon  ));
         }
     public:
         void runTest()
