@@ -65,7 +65,7 @@ void productGaussianTimesGeneric
     {
         throw IncompatibleMatrixSizeException(s,t);
     }
-    const unsigned int c=A.column;
+    const unsigned int c=A.getColumn();
     // copy the 'c' first lines
     for (unsigned int l=0;l<c+1;l++)
     {
@@ -106,7 +106,7 @@ SNlowerTriangular<U,s> operator*
 
     checkSizeCompatibility(A,B);
     unsigned int size=A.getSize();
-    unsigned int c=A.column;
+    unsigned int c=A.getColumn();
     SNlowerTriangular<U,s> ans;
 
     for (unsigned int i=0;i<c+1;i++)

@@ -79,9 +79,9 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
             this->at(l,c)=0;
         }
     }
-    for (m_num l= A.column+1;l<tp_size;++l )
+    for (m_num l= A.getColumn()+1;l<tp_size;++l )
     {
-        this->at(l,A.column)=A.get(l,A.column);
+        this->at(l,A.getColumn())=A.get(l,A.getColumn());
     }
 }
 

@@ -60,7 +60,7 @@ class SNgaussian : public SNgeneric<T,tp_size>
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
-
+        m_num data_column;
     
     /** 
      checkForSpecialElements(i,j)
@@ -91,7 +91,6 @@ class SNgaussian : public SNgeneric<T,tp_size>
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public :
-        const m_num column;
 
         /** Construct a gaussian matrix from a generic one by 
          * - setting 1 on the diagonal (whatever there is in 'A'),
@@ -102,8 +101,25 @@ class SNgaussian : public SNgeneric<T,tp_size>
         SNgaussian(const SNgeneric<U,s>& A, const m_num& c);
 
         SNgaussian<T,tp_size> inverse() const;
+        void setColumn(const m_num& col);
+        m_num getColumn() const;
         
 };
+
+
+// GETTER/SETTER  ---------------------------------------
+
+template <class T,unsigned int tp_size> 
+void SNgaussian<T,tp_size>::setColumn(const m_num& col)
+{
+    data_column=col;
+}
+
+template <class T,unsigned int tp_size> 
+m_num SNgaussian<T,tp_size>::getColumn() const
+{
+    return data_column;
+}
 
 // CONSTRUCTOR  ---------------------------------------
 
@@ -111,6 +127,7 @@ template <class T,unsigned int tp_size>
 template <class U, unsigned int s>
 void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 {
+    m_num column=getColumn();
     if (s!=tp_size)
     {
         throw IncompatibleMatrixSizeException(tp_size,s);
@@ -126,7 +143,7 @@ void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 template <class T,unsigned int tp_size> 
 template<class U,unsigned int s>
 SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
-    column(c)
+    data_column(c)
 {
     populate_from(A);
 }
@@ -134,7 +151,7 @@ SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
 template <class T,unsigned int tp_size> 
 SNgaussian<T,tp_size>::SNgaussian(const std::array<T,tp_size>& d, const m_num& c):
     data(d),
-    column(c)
+    data_column(c)
 {}
 
 // UTILITIES  ---------------------------------------
@@ -146,7 +163,7 @@ SpecialValue<T> SNgaussian<T,tp_size>::checkForSpecialElements(const m_num& i,co
     {
         return SpecialValue<T>(1,true);
     }
-    if (j!=column)
+    if (j!=getColumn())
     {
         return SpecialValue<T>(0,true);
     }
@@ -169,7 +186,7 @@ T SNgaussian<T,tp_size>::_get(m_num i,m_num j) const
     {
         return sv.value;
     }
-    return data.at(i-column-1);  //if you change here, you have to change _at
+    return data.at(i-getColumn()-1);  //if you change here, you have to change _at
 }
 
 template <class T,unsigned int tp_size>
@@ -193,7 +210,7 @@ T& SNgaussian<T,tp_size>::_at(m_num i,m_num j)
     {
         throw SNchangeNotAllowedException(i,j);
     }
-    return data.at(i-column-1);  //if you change here, you have to change _get
+    return data.at(i-getColumn()-1);  //if you change here, you have to change _get
 }
 
 // MATHEMATICS  ---------------------------------------
@@ -203,11 +220,11 @@ template <class T,unsigned int tp_size>
 SNgaussian<T,tp_size> SNgaussian<T,tp_size>::inverse() const
 {
     std::array<T,tp_size> new_data(data);
-    for (unsigned int k=0;k<tp_size-column-1;++k)
+    for (unsigned int k=0;k<tp_size-getColumn()-1;++k)
     {
         new_data.at(k)=-new_data.at(k);
     }
-    return SNgaussian(new_data,column);
+    return SNgaussian(new_data,getColumn());
 }
 
 #endif
