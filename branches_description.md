@@ -25,3 +25,7 @@ For consistency we pass the arguments of `get` by value.
 # m_num_increment
 
 Rationalize how `i++` and `++i` work when `i` is of type `m_num`.
+
+# getColumn
+
+For `SNgaussian`, we set the attribute `column` as private and add the 'get' and 'set' methods.
