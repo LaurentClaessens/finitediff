@@ -210,6 +210,8 @@ SNmultiGaussian<U,s> operator*
     return ans;
 }
 
+// SNgaussian * SNlowerTriangular
+
 template <class U,class V,unsigned int s,unsigned int t>
 SNlowerTriangular<U,s> operator*
 (const SNgaussian<U,s>& A, const SNlowerTriangular<V,t>& B)
@@ -240,6 +242,26 @@ SNlowerTriangular<U,s> operator*
         }
     }
     return ans;
+}
+
+// Mpermutation * Mpermutation
+
+/** 
+ * The multiplication "permutation1 * permutation2" 
+ * is the composition. 
+*/
+
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> operator*
+(const Mpermutation<tp_size>& p1, const Mpermutation<tp_size>& p2)
+{
+    Mpermutation<tp_size> new_perm;
+    for (unsigned int i=0;i<tp_size;++i)
+    {
+        new_perm.at(i)=p1.image(  p2.image(i)  );
+    }
+    return new_perm;
 }
 
 // SUM ---------------------------------------
