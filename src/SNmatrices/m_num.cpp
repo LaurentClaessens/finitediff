@@ -64,7 +64,10 @@ bool m_num::operator >(const int& b) const
 { 
     return int(num)>b; 
 }
-bool m_num::operator <(const unsigned int& b) const { return num<b; }
+bool m_num::operator <(const unsigned int& b) const 
+{
+    return num<b;
+}
 bool m_num::operator <(const m_num& b) const { return num<b.num; }
 bool m_num::operator <(const int& b) const 
 { 

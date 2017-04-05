@@ -41,7 +41,18 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
     public :
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
         SNlowerTriangular();
+        /** Construct a lower diagonal matrix from a SNmatrix.
+         *
+         * Whatever was over the diagonal is forgotten.
+         * */
         SNlowerTriangular(const SNmatrix<T,tp_size>& A);
+        /** Construct a lower diagonal matrix from a generic matrix.
+         *
+         * Due to the way the data is recorded in `SNmatrix` and 
+         * `SNlowerTriangular`, it could be faster to initialize from a
+         * `SNmatrix` than from a generic one (if you have the choice ...).
+         * */
+        SNlowerTriangular(const SNgeneric<T,tp_size>& A);
         /** Construct a lower triangular from a gaussian matrix */
         SNlowerTriangular(const SNgaussian<T,tp_size>& A);
 };
@@ -51,6 +62,17 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(): data() { };
 
+template <class T,unsigned int tp_size>
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgeneric<T,tp_size>& A)
+{
+    for (m_num l=0;l<tp_size;++l)
+    {
+        for (m_num c=0;c<l+1;++c)
+        {
+            this->at(l,c)=A.get(l,c);
+        }
+    }
+}
 
 // TODO : one has to factorize this function between here and 
 // the same in SNupperTriangular.
@@ -79,9 +101,9 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
             this->at(l,c)=0;
         }
     }
-    for (m_num l= A.column+1;l<tp_size;++l )
+    for (m_num l= A.getColumn()+1;l<tp_size;++l )
     {
-        this->at(l,A.column)=A.get(l,A.column);
+        this->at(l,A.getColumn())=A.get(l,A.getColumn());
     }
 }
 

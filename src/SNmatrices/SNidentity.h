@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNidentity  : public SNgeneric<T,tp_size>
 {
-
     private:
         T& _at(const m_num,const m_num) override;
         T _get(const m_num,const m_num) const override;
