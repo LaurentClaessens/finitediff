@@ -67,7 +67,7 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgeneric<T,tp_size>& A)
 {
     for (m_num l=0;l<tp_size;++l)
     {
-        for (m_num c=l;c<tp_size;++c)
+        for (m_num c=0;c<l+1;++c)
         {
             this->at(l,c)=A.get(l,c);
         }
