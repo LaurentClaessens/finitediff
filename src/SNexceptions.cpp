@@ -51,7 +51,7 @@ class SNchangeNotAllowedException : public std::exception
         const std::string message;
 
     public: 
-        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string::msg): 
+        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string msg=""): 
             line(i),
             column(j),
             message(msg)
