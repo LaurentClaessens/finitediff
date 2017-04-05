@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef  OPERATORS_H__064802_
 #define  OPERATORS_H__064802_
 
+#include "SNpermutation.h"
 #include "SNgaussian.h"
 #include "SNmultiGaussian.h"
 #include "SNidentity.h"
@@ -110,7 +111,7 @@ SNmultiGaussian<U,s> operator*
     SNmultiGaussian<U,s> ans;
     if (A.getColumn()>=B.getColumn())
     {
-        ans.setLastColumn(B.getColumn());
+        ans.setLastColumn(A.getColumn());
 
         for (m_num col=0;col<s;++col)
         {
