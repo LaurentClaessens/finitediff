@@ -30,6 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // forward definition
 template <class T,unsigned int tp_size>
 class SNgeneric;
+//template <class T,unsigned int tp_size>
+//class SNmatrix;
+//template <class T,unsigned int tp_size>
+//class SNmultiGaussian;
 template <class T>
 class SpecialValue;
 
@@ -57,6 +61,8 @@ template <class T,unsigned int tp_size>
 class SNgaussian : public SNgeneric<T,tp_size>
 {
 
+    //template <class U,class V,unsigned int s,unsigned int t>
+    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNgaussian<V,t>&);
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
@@ -96,9 +102,17 @@ class SNgaussian : public SNgeneric<T,tp_size>
          * - setting 1 on the diagonal (whatever there is in 'A'),
          * - keeping what is below the diagonal on column 'c' 
          * - setting 0 everywhere else  
+         *   
+         * Default column is zero. So 
+         * ```
+         * SNgaussian<double,4> G(E)
+         * ```
+         * will produce the gaussian matrix of E for its first column
+         * (first=number zero) provided the type and size of E are compatible
+         * with "double" and zero.
          *   */
         template <class U,unsigned int s>
-        SNgaussian(const SNgeneric<U,s>& A, const m_num& c);
+        SNgaussian(const SNgeneric<U,s>& A, const m_num& c=0);
 
         SNgaussian<T,tp_size> inverse() const;
         void setColumn(const m_num& col);
