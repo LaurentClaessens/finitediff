@@ -12,7 +12,7 @@
 std::ostream& debug_print(std::cout);
 
 template <class M>
-void debug_matrix_print(const M& mtr,const std::string& name)
+void debug_matrix_print(const std::string& name, const M& mtr)
 {
     std::cout<<name<<std::endl;
     std::cout<<mtr<<std::endl;
