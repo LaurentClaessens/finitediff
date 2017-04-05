@@ -17,11 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-
 #ifndef __MNUM_H__094427__
 #define __MNUM_H__094427__
 
-
+#import <iostream>
 
 /*
  
@@ -31,7 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     For the moment, the template parameter for the matrix size itself
     remains 'unsigned int'.
-
 */
 
 class m_num
