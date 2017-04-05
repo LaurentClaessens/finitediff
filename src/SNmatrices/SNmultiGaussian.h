@@ -42,11 +42,6 @@ template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
     
-    //template <class U,class V,unsigned int s,unsigned int t>
-    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNgaussian<V,t>&);
-    //template <class U,class V,unsigned int s,unsigned int t>
-    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNmultiGaussian<V,t>&);
-
     private :
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_last_column;       // the last non trivial column
