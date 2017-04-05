@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SNlowerTriangular.h"
+#include "SNidentity.h"
 #include "m_num.h"
 
 /** 
@@ -40,18 +41,30 @@ Some of the properties of these matrices are
 template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
+    
+    //template <class U,class V,unsigned int s,unsigned int t>
+    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNgaussian<V,t>&);
+    //template <class U,class V,unsigned int s,unsigned int t>
+    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNmultiGaussian<V,t>&);
+
     private :
         SNlowerTriangular<T,tp_size> data_L;
-        m_num data_last_column;       // the last non trivial column
         SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
+        m_num data_last_column;       // the last non trivial column
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public:
-        /** Construct gaussian matrix of the argument `A` */
+        SNmultiGaussian();
+       /**
+        * Construct gaussian matrix of the first line of the argument `A` 
+        *
+        * A gaussian matrix is a particular case of multi-gaussian matrix.
+        * */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+        SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+        SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
-        /** return the last non trivial column */
-        m_num lastColumn() const;
+        SNmultiGaussian<T,tp_size>& operator=(const SNmultiGaussian<T,tp_size>&);
 
         /**
          * The product \f$ AB \f$ is easy when \f$ A \f$ is
@@ -67,23 +80,74 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          *   the column are not fulfilled.
          * */
         void operator *=(const SNgaussian<T,tp_size>& other);
+
+        /** return the number of the last non trivial column */
+        m_num getLastColumn() const;
+        /** Set the number of the last non trivial column
+         *
+         * Needed for optimization purpose : during the PLU decomposition,
+         * one need to modify a multi-gaussian matrix at each step. The point
+         * is to *modify* it, not re-creating a new one each time.
+         * */
+        void setLastColumn(const m_num& lc);
 };
 
 // CONSTRUCTORS -------------------------------------------------
-
+//
+// from nothing
 template <class T,unsigned int tp_size>
-SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
-    data_last_column(0),
-    data_L(A.getGaussian(0))
+SNmultiGaussian<T,tp_size>::SNmultiGaussian():
+    data_L(SNidentity<T,tp_size>()),
+    data_last_column(0)
 { }
 
-// GETTER METHODS  ---------------------------------------
+// from generic
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
+    data_L(A.getGaussian(0)),
+    data_last_column(0)
+{ }
+
+// from multigaussian
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
+    data_L(A.data_L),
+    data_last_column(A.getLastColumn())
+{
+}
+
+// from gaussian
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
+    data_last_column(A.getColumn())
+{ 
+    for (m_num c=0;c<A.getColumn();++c)
+    {
+        for (m_num l=c+1;l<tp_size;++l)
+        {
+            this->at(l,c)=A.get(l,c);
+        }
+    }
+    for (m_num l=A.getColumn()+1;l<tp_size;++l)
+    {
+        this->at(l,A.getColumn())=A.get(l,A.getColumn());
+    }
+}
+
+
+// GETTER/SETTER METHODS  ---------------------------------------
 
 
 template <class T,unsigned int tp_size>
-m_num SNmultiGaussian<T,tp_size>::lastColumn() const
+m_num SNmultiGaussian<T,tp_size>::getLastColumn() const
 {
     return data_last_column;
+}
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
+{
+    data_last_column=lc;
 }
 
 // OPERATORS  ---------------------------------------
@@ -104,6 +168,19 @@ void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
 }
 
 // UTILITIES  ---------------------------------------
+
+
+/**
+ * A `SpecialValue` represents a value in the matrix that is fixed by
+ * the type of the matrix (like "0" at position (1,4) for a lower triangular
+ * matrix).
+ *
+ * This is merely a pair "value,boolean". 
+ * The boolean says if the requested element is special. 
+ * - if true, the value is the special value
+ * - if false, the value is dummy because it means that the requested element
+ *   is not special in this kind of matrix.
+ * */
 
 template <class T,unsigned int tp_size>
 SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
