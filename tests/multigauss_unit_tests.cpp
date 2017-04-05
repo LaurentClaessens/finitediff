@@ -33,12 +33,33 @@ class multigaussTests : public CppUnit::TestCase
             echo_function_test("wrong_order_works");
             auto E=testMatrixE();
 
-            auto M1=E.getGaussian(1);
-            auto M2=E.getGaussian(2);
+   /* E=
+    4 6 8 9
+    5 1 7 1
+    3 2 3 4
+    2 5 6 7
+    */
 
-            SNmultiGaussian<double,4> ans;
+            auto G1=E.getGaussian(1);
+            auto G2=E.getGaussian(2);
 
-            CPPUNIT_ASSERT( M2*M1==ans );
+            SNmultiGaussian<double,4> ans12;
+            ans12.setLastColumn(2);
+            ans12.at(2,1)=-0.33333333;
+            ans12.at(3,1)=-0.83333333;
+            ans12.at(3,2)=-0.75;
+
+            SNmultiGaussian<double,4> ans21;
+            ans21.setLastColumn(2);
+            ans21.at(2,1)=-0.333333333;
+            ans21.at(3,1)=-0.58333333;
+            ans21.at(3,2)=-0.75;
+
+            echo_single_test("Product of two gaussians -- right order");
+            CPPUNIT_ASSERT( G1*G2==ans12 );
+
+            echo_single_test("Product of two gaussians -- wrong order");
+            CPPUNIT_ASSERT( G2*G1==ans21 );
 
         }
         void working_tests()
@@ -74,14 +95,6 @@ class multigaussTests : public CppUnit::TestCase
 
             SNmultiGaussian<double,4> mg=G0*(G1*G2);
 
-            debug_print<<"G1*G2"<<std::endl;
-            debug_print<<G1*G2<<std::endl;
-
-            debug_print<<"G0*G1*G2"<<std::endl;
-            debug_print<<G0*G1*G2<<std::endl;
-            
-            debug_print<<"mg"<<std::endl;
-            debug_print<<mg<<std::endl;
             
             echo_single_test("G0*G1*G2");
             CPPUNIT_ASSERT(mg.isNumericallyEqual(G0*G1*G2,epsilon));
@@ -95,16 +108,13 @@ class multigaussTests : public CppUnit::TestCase
             auto E=testMatrixE();
             double epsilon(0.0000001);
 
-            SNmultiGaussian<double,4> M0(E);
+            SNgaussian<double,4> G0(E);
 
-            auto M1=(M0*E).getGaussian(1);
-
-
-
-            auto M2=(M1*M0*E).getGaussian(2);
+            auto G1=(G0*E).getGaussian(1);
+            auto G2=(G1*G0*E).getGaussian(2);
 
 
-            SNmultiGaussian<double,4> mg=M2*(M1*M0);
+            SNmultiGaussian<double,4> mg=G2*(G1*G0);
 
             auto prod=mg*E;
 
@@ -167,9 +177,27 @@ class multigaussTests : public CppUnit::TestCase
         {
             CPPUNIT_ASSERT(false);      // to be implemented.
         }
+        void non_initialized_tests()
+        {
+            SNmultiGaussian<int,4> A;
+            CPPUNIT_ASSERT_THROW(A.at(0,2)=3,NotInitializedMemberException);
+            SNgaussian<int,4> B;
+            CPPUNIT_ASSERT_THROW(B.at(0,2)=3,NotInitializedMemberException);
+
+            SNmultiGaussian<int,4> C;
+            CPPUNIT_ASSERT_THROW(C.setLastColumn(4),OutOfRangeColumnNumber);
+            SNmultiGaussian<int,4> D;
+            CPPUNIT_ASSERT_THROW(D.setLastColumn(4),OutOfRangeColumnNumber);
+
+            SNmultiGaussian<int,4> E;
+            CPPUNIT_ASSERT_THROW(E.setLastColumn(7),OutOfRangeColumnNumber);
+            SNmultiGaussian<int,4> F;
+            CPPUNIT_ASSERT_THROW(F.setLastColumn(7),OutOfRangeColumnNumber);
+        }
     public:
         void runTest()
         {
+            non_initialized_tests();
             wrong_order_works();
             associativity_check();
             multi_working_tests();

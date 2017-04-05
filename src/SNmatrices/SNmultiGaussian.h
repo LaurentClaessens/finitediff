@@ -49,11 +49,20 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 
     private :
         SNlowerTriangular<T,tp_size> data_L;
-        SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
         m_num data_last_column;       // the last non trivial column
+
+        SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public:
+        /** 
+         * The no-parameter constructor initializes `data_last_column` to
+         * `tp_size+1`, and this is detected by `_at` so that you cannot
+         * populate the matrix before to have initialized the maximal
+         * non trivial column number.
+         *
+         * See `setLastColumn`.
+         * */
         SNmultiGaussian();
        /**
         * Construct gaussian matrix of the first line of the argument `A` 
@@ -98,7 +107,7 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
     data_L(SNidentity<T,tp_size>()),
-    data_last_column(0)
+    data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
 { }
 
 // from generic
@@ -147,6 +156,11 @@ m_num SNmultiGaussian<T,tp_size>::getLastColumn() const
 template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
 {
+    if (lc>tp_size-1)   // makes no sense to have a gaussian 
+                        // behaviour on the last line.
+    {
+        throw OutOfRangeColumnNumber("The specified column number is larger than the size of the matrix.");
+    }
     data_last_column=lc;
 }
 
@@ -217,6 +231,10 @@ T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
 template <class T,unsigned int tp_size>
 T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j) 
 {
+    if (data_last_column==tp_size+1)
+    {
+        throw NotInitializedMemberException("You are trying to populate a 'SNmultiGaussian' before to initialize the member 'data_last_column'. Use setLastColumn().");
+    }
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
     {
