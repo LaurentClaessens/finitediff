@@ -43,7 +43,6 @@ class IncompatibleMatrixSizeException : public std::exception
         }
 };
 
-
 class SNchangeNotAllowedException : public std::exception
 {
     private :
@@ -64,6 +63,37 @@ class SNchangeNotAllowedException : public std::exception
             return text.c_str();
         }
 };
+
+class NotInitializedMemberException : public std::exception
+{
+    private :
+        std::string text;
+
+    public: 
+        NotInitializedMemberException(std::string t): 
+            text(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            return text.c_str();
+        }
+};
+
+class OutOfRangeColumnNumber : public std::exception
+{
+    private :
+        std::string text;
+
+    public: 
+        OutOfRangeColumnNumber(std::string t): 
+            text(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            return text.c_str();
+        }
+};
+
 
 class SNoutOfRangeException : public std::exception
 {
