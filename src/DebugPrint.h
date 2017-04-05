@@ -11,4 +11,11 @@
 
 std::ostream& debug_print(std::cout);
 
+template <class M>
+void debug_matrix_print(const M& mtr,const std::string& name)
+{
+    std::cout<<name<<std::endl;
+    std::cout<<mtr<<std::endl;
+}
+
 #endif
