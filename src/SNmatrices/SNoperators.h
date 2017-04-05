@@ -25,8 +25,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define  OPERATORS_H__064802_
 
 #include "SNgaussian.h"
+#include "SNmultiGaussian.h"
 #include "SNidentity.h"
 #include "SNlowerTriangular.h"
+#include "SNupperTriangular.h"
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
@@ -84,6 +86,8 @@ void productGaussianTimesGeneric
     }
 }
 
+// SNgaussian * SNmatrix
+
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
 (const SNgaussian<U,s>& A, const SNmatrix<V,t>& B)
@@ -91,6 +95,118 @@ SNmatrix<U,s> operator*
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
     productGaussianTimesGeneric(ans,A,B);
+    return ans;
+}
+
+
+// SNgaussian * SNgaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNgaussian<U,s>& A, const SNgaussian<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+
+    SNmultiGaussian<U,s> ans;
+    if (A.getColumn()>=B.getColumn())
+    {
+        ans.setLastColumn(B.getColumn());
+
+        for (m_num col=0;col<s;++col)
+        {
+            if (col==A.getColumn())
+            {
+                for (m_num line=col+1;line<s;++line)
+                {
+                    ans.at(line,col)=A.get(line,col);
+                }
+            }
+            else if (col==B.getColumn())
+            {
+                for (m_num line=B.getColumn()+1;line<A.getColumn();++line)
+                {
+                    ans.at(line,col)=B.get(line,col);
+                }
+                for (m_num line=A.getColumn();line<s;++line)
+                {
+                    ans.at(line,col)=A.get(line,col)*B.get(col,B.getColumn())+B.get(line,B.getColumn());
+                }
+            }
+            else
+            {
+                for (m_num line=col+1;line<s;++line)
+                {
+                    ans.at(line,col)=0;
+                }
+            }
+        }
+    }
+    else
+    {
+        ans.setLastColumn(B.getColumn());
+
+        for (m_num c=0;c<s;c++)
+        {
+            for (m_num l=c+1;l<s;l++)
+            {
+                ans.at(l,c)=A.get(l,c)+B.get(l,c);
+            }
+        }
+    }
+    return ans;
+}
+
+// SNmultiGaussian * SNgaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNmultiGaussian<U,s>& M, const SNgaussian<V,t>& G)
+{
+    checkSizeCompatibility(M,G);
+    SNmultiGaussian<U,s> ans(M);
+    if (M.getLastColumn()  >=  G.getColumn())
+    {
+        m_num col=G.getColumn();
+        for (m_num line=col+1;line<s;++line)
+        {
+            ans.at(line,col)=matrixProductComponent(M,G,line,col);
+        }
+    }
+    else
+    {
+        ans.setLastColumn(G.getColumn());
+
+        for (m_num l=G.getColumn();l<s;l++)
+        {
+            ans.at(l,G.getColumn())+=G.get(l,G.getColumn());
+        }
+    }
+    return ans;
+}
+
+// SNmultiGaussian * SNmultigaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNmultiGaussian<U,s>& A, const SNmultiGaussian<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+    SNmultiGaussian<U,s> ans;
+    ans.setLastColumn(std::max(A.getLastColumn(),B.getLastColumn()));
+
+    for (m_num col=0;col<ans.getLastColumn();++col)
+    {
+        for (m_num line=col+1;line<s;++line)
+        {
+            U acc=0;
+            // TODO : non optimal because the first and last products are 1*something and something*1.
+            for (m_num k=col;k<line;++k)
+            {
+                acc+=(A.get(line,k)*B.get(k,col));
+            }
+            ans.at(line,col)=acc;
+        }
+    }
     return ans;
 }
 
