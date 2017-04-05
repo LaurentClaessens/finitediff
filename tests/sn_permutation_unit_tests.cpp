@@ -63,7 +63,7 @@ class SNpermutationsTest : public CppUnit::TestCase
          }
         void test_identity()
         {
-            echo_function_test("test_identiry");
+            echo_function_test("test_identity");
 
             std::array<unsigned int, 4> aID{ {0,1, 2, 3} };
             Mpermutation<4> permID(aID);

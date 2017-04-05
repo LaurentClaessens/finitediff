@@ -16,19 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SNgaussianMatrix_H__174236
-#define __SNgaussianMatrix_H__174236
+#ifndef __SNgaussian_H__174236
+#define __SNgaussian_H__174236
 
 #include <array>
 
 #include "SNgeneric.h"
 #include "m_num.h"
 #include "../SNexceptions.cpp"
+#include "../DebugPrint.h"
 
 
 // forward definition
 template <class T,unsigned int tp_size>
 class SNgeneric;
+//template <class T,unsigned int tp_size>
+//class SNmatrix;
+//template <class T,unsigned int tp_size>
+//class SNmultiGaussian;
 template <class T>
 class SpecialValue;
 
@@ -53,12 +58,33 @@ class SpecialValue;
 */
 
 template <class T,unsigned int tp_size>
-class SNgaussianMatrix : public SNgeneric<T,tp_size>
+class SNgaussian : public SNgeneric<T,tp_size>
 {
 
+    //template <class U,class V,unsigned int s,unsigned int t>
+    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNgaussian<V,t>&);
 
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
+        m_num data_column;
+    
+    /** 
+     checkForSpecialElements(i,j)
+     checks for element (i,j). If this is a special element 
+     (a one whose value is fixed by the fact that we are a gaussian matrix)
+     then it returns a 'SpecialValue<T>' with its boolean part set to true,
+     meaning that this is a special value.
+     In that case :
+     - _get returns the corresponding value.
+     - _at throws SNchangeNotAllowedException.
+    
+    If this is not a special value, it returns a 'SpecialValue<T>' with boolean part
+    set to false. 
+    In that case :
+    - both _get and _at have to search in the stored values.
+
+     */
+
         SpecialValue<T> checkForSpecialElements(const m_num& i,const m_num& j) const;
 
         //** populate the matrix from the elements of the given matrix */
@@ -66,31 +92,56 @@ class SNgaussianMatrix : public SNgeneric<T,tp_size>
         void populate_from(const SNgeneric<U,s>&);
 
         /** Construct a matrix from its data. See the implementation of '_at' */
-        SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c);
+        SNgaussian(const std::array<T,tp_size>& d, const m_num& c);
 
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public :
-        const m_num column;
 
         /** Construct a gaussian matrix from a generic one by 
          * - setting 1 on the diagonal (whatever there is in 'A'),
          * - keeping what is below the diagonal on column 'c' 
          * - setting 0 everywhere else  
+         *   
+         * Default column is zero. So 
+         * ```
+         * SNgaussian<double,4> G(E)
+         * ```
+         * will produce the gaussian matrix of E for its first column
+         * (first=number zero) provided the type and size of E are compatible
+         * with "double" and zero.
          *   */
         template <class U,unsigned int s>
-        SNgaussianMatrix(const SNgeneric<U,s>& A, const m_num& c);
+        SNgaussian(const SNgeneric<U,s>& A, const m_num& c=0);
 
-        SNgaussianMatrix<T,tp_size> inverse() const;
+        SNgaussian<T,tp_size> inverse() const;
+        void setColumn(const m_num& col);
+        m_num getColumn() const;
         
 };
+
+
+// GETTER/SETTER  ---------------------------------------
+
+template <class T,unsigned int tp_size> 
+void SNgaussian<T,tp_size>::setColumn(const m_num& col)
+{
+    data_column=col;
+}
+
+template <class T,unsigned int tp_size> 
+m_num SNgaussian<T,tp_size>::getColumn() const
+{
+    return data_column;
+}
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size> 
 template <class U, unsigned int s>
-void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
+void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 {
+    m_num column=getColumn();
     if (s!=tp_size)
     {
         throw IncompatibleMatrixSizeException(tp_size,s);
@@ -105,28 +156,28 @@ void SNgaussianMatrix<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
 
 template <class T,unsigned int tp_size> 
 template<class U,unsigned int s>
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const SNgeneric<U,s>& A , const m_num& c):
-    column(c)
+SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
+    data_column(c)
 {
     populate_from(A);
 }
 
 template <class T,unsigned int tp_size> 
-SNgaussianMatrix<T,tp_size>::SNgaussianMatrix(const std::array<T,tp_size>& d, const m_num& c):
+SNgaussian<T,tp_size>::SNgaussian(const std::array<T,tp_size>& d, const m_num& c):
     data(d),
-    column(c)
+    data_column(c)
 {}
 
 // UTILITIES  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
+SpecialValue<T> SNgaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
 {
     if (i==j)
     {
         return SpecialValue<T>(1,true);
     }
-    if (j!=column)
+    if (j!=getColumn())
     {
         return SpecialValue<T>(0,true);
     }
@@ -140,72 +191,54 @@ SpecialValue<T> SNgaussianMatrix<T,tp_size>::checkForSpecialElements(const m_num
 // _AT AND _GET METHODS ---------------------------------------
 
 
-// checkForSpecialElements(i,j)
-// checks for element (i,j). If this is a special element 
-// (a one whose value is fixed by the fact that we are a gaussian matrix)
-// then it returns a 'SpecialValue<T>' with its boolean part set to true,
-// meaning that this is a special value.
-// In that case :
-// - _get returns the corresponding value.
-// - _at throws SNchangeNotAllowedException.
-//
-// If this is not a special value, it returns a 'SpecialValue<T>' with boolean part
-// set to false. 
-// In that case :
-// - both _get and _at have to search in the stored values.
-
 
 template <class T,unsigned int tp_size>
-T SNgaussianMatrix<T,tp_size>::_get(m_num i,m_num j) const
+T SNgaussian<T,tp_size>::_get(m_num i,m_num j) const
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
     {
         return sv.value;
     }
-    return data.at(i-column-1);  //if you change here, you have to change _at
+    return data.at(i-getColumn()-1);  //if you change here, you have to change _at
 }
 
 template <class T,unsigned int tp_size>
-T& SNgaussianMatrix<T,tp_size>::_at(m_num i,m_num j) 
+T& SNgaussian<T,tp_size>::_at(m_num i,m_num j) 
 
-    // The elements are stored in 
-    //   std::array<T,tp_size> data
-    // while the matrix only contains non fixed values on one column, under
-    // the diagonal.
-    //
-    // First element of 'data' stores the first non fixed value.
-    // Example for a gaussian matrix on column 1 :
-    //
-    //  1  0   0  0
-    //  0  1   0  0
-    //  0  d0  1  0
-    //  0  d1  0  1
-    //
-    //
-    // Only the first (tp_size-c-1) elements of 'data' are used.
+    /**
+     The elements are stored in `std::array<T,tp_size> data` while
+     the matrix only contains non fixed values on one column, under the diagonal.
+    
+     First element of `data` stores the first non fixed value.
+     Example for a gaussian matrix on column 1 :
 
+   \f$
+     \matrix{ 1&  0&   0&  0\cr 0& 1  & 0 & 0\cr 0&  d_0&  1&  0\cr 0&  d_1&  0&  1\cr }  \f$
+    
+    Only the first (tp_size-c-1) elements of 'data' are used.
+  */
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
     {
         throw SNchangeNotAllowedException(i,j);
     }
-    return data.at(i-column-1);  //if you change here, you have to change _get
+    return data.at(i-getColumn()-1);  //if you change here, you have to change _get
 }
 
 // MATHEMATICS  ---------------------------------------
 
 
 template <class T,unsigned int tp_size>
-SNgaussianMatrix<T,tp_size> SNgaussianMatrix<T,tp_size>::inverse() const
+SNgaussian<T,tp_size> SNgaussian<T,tp_size>::inverse() const
 {
     std::array<T,tp_size> new_data(data);
-    for (unsigned int k=0;k<tp_size-column-1;++k)
+    for (unsigned int k=0;k<tp_size-getColumn()-1;++k)
     {
         new_data.at(k)=-new_data.at(k);
     }
-    return SNgaussianMatrix(new_data,column);
+    return SNgaussian(new_data,getColumn());
 }
 
 #endif

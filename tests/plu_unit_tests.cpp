@@ -24,8 +24,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNplu.h"
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
+#include "auto_tests_matrices.h"
 
 #include "../src/DebugPrint.h"
+
+template <class T,unsigned int tp_size>
+void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
+{
+    echo_function_test("One more matrix");
+    auto plu=atm.A.getPLU();
+    double epsilon(0.0000001);
+
+    auto cP=plu.getP();
+    auto cL=plu.getL();
+    auto cU=plu.getU();
+
+    echo_single_test("product ans_PLU");
+    auto ans_prod=atm.ans_P*atm.ans_L*atm.ans_U;
+    CPPUNIT_ASSERT(ans_prod.isNumericallyEqual(atm.A,epsilon));
+
+
+    echo_single_test("P factor");
+    CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));
+    echo_single_test("L factor");
+    CPPUNIT_ASSERT(cL.isNumericallyEqual(atm.ans_L,epsilon));
+    echo_single_test("U factor");
+    CPPUNIT_ASSERT(cU.isNumericallyEqual(atm.ans_U,epsilon));
+
+    echo_single_test("product cPLU");
+    auto c_prod=cP*cL*cU;
+    CPPUNIT_ASSERT(c_prod.isNumericallyEqual(atm.A,epsilon));
+}
 
 class pluTest : public CppUnit::TestCase
 {
@@ -39,15 +68,11 @@ class pluTest : public CppUnit::TestCase
             double epsilon(0.0000001);
             CPPUNIT_ASSERT(mU.isNumericallyEqual(A_U,epsilon));
         }
-        void test_plu_permutation()
+        void launch_auto_tests_sage()
         {
-            echo_function_test("test_plu_permutation");
-            debug_print<<"THE PLU TEST STILL TO BE IMPLEMENTED"<<std::endl;
-
-            auto A=testMatrixE();
-            auto plu=A.getPLU();
-            std::cout<<"La permutation :"<<std::endl;
-            std::cout<<plu.getMpermutation()<<std::endl;
+            auto_test(atm_FOO);
+            auto_test(atm_BAR);
+            auto_test(atm_ooIJXAooDhmylq);
         }
     public:
         void runTest()
@@ -56,7 +81,7 @@ class pluTest : public CppUnit::TestCase
             test_A(testMatrixB(),testMatrixB_U());
             test_A(testMatrixD(),testMatrixD_U());
             test_A(testMatrixE(),testMatrixE_U());
-            test_plu_permutation();
+            launch_auto_tests_sage();
         }
 };
 

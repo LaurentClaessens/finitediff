@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../DebugPrint.h"
 
+template <unsigned int tp_size>
+class Mpermutation;
+
 /*
 
     This class represents an elementary permutation, that is a 
@@ -34,12 +37,10 @@ class MelementaryPermutation
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
 
-    private:
+    public :
         unsigned int elA;
         unsigned int elB;
-    public :
         MelementaryPermutation(unsigned int A,unsigned int B); 
-
 
         /** 
         return by value the image of 'k' by the permutation.

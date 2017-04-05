@@ -26,9 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "SNelement.h"
 #include "SNline.h"
-#include "SNgaussianMatrix.h"
-#include "SNupperTriangularMatrix.h"
+#include "SNgaussian.h"
+#include "SNupperTriangular.h"
 #include "Mpermutation.h"
+#include "SNpermutation.h"
 #include "MelementaryPermutation.h"
 #include "MathUtilities.h"
 #include "SNoperators.h"
@@ -42,14 +43,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <class T,unsigned int tp_size>
 class SNplu;
 
-// THE CLASS HEADER -----------------------------------------
 
 /*
 This is my matrix type, designed for numerical computation. It represents a 
 square matrix.
 
-NOTE : if you want the identity matrix, you should can create a permutation
-       with no arguments.
+NOTE : if you want the identity matrix, there is the `SNidentity` class.
 */
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
@@ -60,13 +59,18 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
     template <class U,unsigned int s,class V,unsigned int t>
     friend bool operator==(const SNmatrix<U,s>&,const SNmatrix<V,t>&);
+    template <class U,unsigned int s,class V,unsigned int t>
+    friend SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B);
     
-    friend std::array<T,tp_size*tp_size> SNupperTriangularMatrix<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+    friend std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+    friend std::array<T,tp_size*tp_size> SNlowerTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>&) const;
+
 
     private:
         std::array<T,tp_size*tp_size> data;
         unsigned int size=tp_size;
-        // the larger element on column 'col' under (or on) the line 'f_line'. 
+
+        /**  the larger element on column 'col' under (or on) the line 'f_line'.*/
         SNelement<T,tp_size> getLargerUnder(m_num f_line, m_num col) const;
 
         // Substrat the given vector (line) from the line 'line'
@@ -93,9 +97,17 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         T& _at(const m_num,const m_num) override;
         T _get(const m_num,const m_num) const override;
 
+        /** Set the matrix from another one */
+        void _set_from(const SNgeneric<T,tp_size>&);
+        void set_identity();
     public:
         SNmatrix();
         SNmatrix(const SNmatrix<T,tp_size>&);
+        /**
+         * Construct a SNmatrix as copy of a generic matrix.
+         * Here we copy every elements.
+         * */
+        SNmatrix(const SNgeneric<T,tp_size>&);
         /** Creates a matrix full of x */
         SNmatrix(const T& x);
 
@@ -121,7 +133,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
 
 };
 
-// CONSTRUCTORS, OPERATORS, ...  -------------------------------------------
+// CONSTRUCTORS  -------------------------------------------
 
 template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(): data() { };
@@ -138,6 +150,38 @@ SNmatrix<T,tp_size>::SNmatrix(const T& v):
             data.at(k)=v;
     }
 };
+
+template <class T,unsigned int tp_size>
+SNmatrix<T,tp_size>::SNmatrix(const SNgeneric<T,tp_size>& A)
+{
+    this->_set_from(A);
+}
+
+//  SOME ILLEGITIMATE(?) WAYS TO SET THE VALUES OF A MATRIX -----------------
+
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::_set_from(const SNgeneric<T,tp_size>& A)
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        for (m_num j=0;j<tp_size;j++)
+        {
+            this->at(i,j)=A.get(i,j);
+        }
+    }
+}
+template <class T,unsigned int tp_size>
+void SNmatrix<T,tp_size>::set_identity()
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        for (m_num j=0;j<tp_size;j++)
+        {
+            this->at(i,j)=0;
+        }
+        this->at(i,i)=1;
+    }
+}
 
 // GETTER METHODS  -------------------------------------------
 
@@ -260,8 +304,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 {
     SNplu<T,tp_size> plu;
 
-    Mpermutation<tp_size>& permutation=plu.m_P;
-    SNlowerTriangularMatrix<T,tp_size>& L=plu.m_L;
+    Mpermutation<tp_size>& permutation=plu.data_P;
+    SNlowerTriangular<T,tp_size>& L=plu.data_L;
     SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
 
     for (m_num c=0;c<tp_size;c++)
@@ -276,6 +320,9 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             permutation=el_perm*permutation; 
             mU.swapLines(c,max_el.line);
 
+            SNpermutation<T,tp_size> permut(el_perm);
+
+            auto M=mU.getGaussian(c);
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
             {
@@ -283,8 +330,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
                 // TODO : this is not optimal because
                 // we already know the first 'c' differences are 0.
-                //
-                //
                 mU.lineMinusLine(l,m*killing_line);
             }
         }

@@ -24,8 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef  OPERATORS_H__064802_
 #define  OPERATORS_H__064802_
 
-#include "SNgaussianMatrix.h"
-#include "SNlowerTriangularMatrix.h"
+#include "SNgaussian.h"
+#include "SNmultiGaussian.h"
+#include "SNidentity.h"
+#include "SNlowerTriangular.h"
+#include "SNupperTriangular.h"
 #include "MathUtilities.h"
 #include "../SNexceptions.cpp"
 
@@ -54,17 +57,17 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
     return ans;   //relies on RVO.
 }
 
-// SNgaussianMatrix * SNgeneric
+// SNgaussian * SNgeneric
 // can copy the first 'c' lines.
 template <class U,class V,unsigned int s,unsigned int t>
 void productGaussianTimesGeneric
-(SNgeneric<U,s>& ans,const SNgaussianMatrix<U,s>& A, const SNgeneric<V,t>&B )
+(SNgeneric<U,s>& ans,const SNgaussian<U,s>& A, const SNgeneric<V,t>&B )
 {
     if (s!=t)
     {
         throw IncompatibleMatrixSizeException(s,t);
     }
-    const unsigned int c=A.column;
+    const unsigned int c=A.getColumn();
     // copy the 'c' first lines
     for (unsigned int l=0;l<c+1;l++)
     {
@@ -83,9 +86,11 @@ void productGaussianTimesGeneric
     }
 }
 
+// SNgaussian * SNmatrix
+
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
-(const SNgaussianMatrix<U,s>& A, const SNmatrix<V,t>& B)
+(const SNgaussian<U,s>& A, const SNmatrix<V,t>& B)
 {
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
@@ -93,9 +98,121 @@ SNmatrix<U,s> operator*
     return ans;
 }
 
+
+// SNgaussian * SNgaussian
+
 template <class U,class V,unsigned int s,unsigned int t>
-SNlowerTriangularMatrix<U,s> operator*
-(const SNgaussianMatrix<U,s>& A, const SNlowerTriangularMatrix<V,t>& B)
+SNmultiGaussian<U,s> operator*
+(const SNgaussian<U,s>& A, const SNgaussian<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+
+    SNmultiGaussian<U,s> ans;
+    if (A.getColumn()>=B.getColumn())
+    {
+        ans.setLastColumn(B.getColumn());
+
+        for (m_num col=0;col<s;++col)
+        {
+            if (col==A.getColumn())
+            {
+                for (m_num line=col+1;line<s;++line)
+                {
+                    ans.at(line,col)=A.get(line,col);
+                }
+            }
+            else if (col==B.getColumn())
+            {
+                for (m_num line=B.getColumn()+1;line<A.getColumn();++line)
+                {
+                    ans.at(line,col)=B.get(line,col);
+                }
+                for (m_num line=A.getColumn();line<s;++line)
+                {
+                    ans.at(line,col)=A.get(line,col)*B.get(col,B.getColumn())+B.get(line,B.getColumn());
+                }
+            }
+            else
+            {
+                for (m_num line=col+1;line<s;++line)
+                {
+                    ans.at(line,col)=0;
+                }
+            }
+        }
+    }
+    else
+    {
+        ans.setLastColumn(B.getColumn());
+
+        for (m_num c=0;c<s;c++)
+        {
+            for (m_num l=c+1;l<s;l++)
+            {
+                ans.at(l,c)=A.get(l,c)+B.get(l,c);
+            }
+        }
+    }
+    return ans;
+}
+
+// SNmultiGaussian * SNgaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNmultiGaussian<U,s>& M, const SNgaussian<V,t>& G)
+{
+    checkSizeCompatibility(M,G);
+    SNmultiGaussian<U,s> ans(M);
+    if (M.getLastColumn()  >=  G.getColumn())
+    {
+        m_num col=G.getColumn();
+        for (m_num line=col+1;line<s;++line)
+        {
+            ans.at(line,col)=matrixProductComponent(M,G,line,col);
+        }
+    }
+    else
+    {
+        ans.setLastColumn(G.getColumn());
+
+        for (m_num l=G.getColumn();l<s;l++)
+        {
+            ans.at(l,G.getColumn())+=G.get(l,G.getColumn());
+        }
+    }
+    return ans;
+}
+
+// SNmultiGaussian * SNmultigaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNmultiGaussian<U,s>& A, const SNmultiGaussian<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+    SNmultiGaussian<U,s> ans;
+    ans.setLastColumn(std::max(A.getLastColumn(),B.getLastColumn()));
+
+    for (m_num col=0;col<ans.getLastColumn();++col)
+    {
+        for (m_num line=col+1;line<s;++line)
+        {
+            U acc=0;
+            // TODO : non optimal because the first and last products are 1*something and something*1.
+            for (m_num k=col;k<line;++k)
+            {
+                acc+=(A.get(line,k)*B.get(k,col));
+            }
+            ans.at(line,col)=acc;
+        }
+    }
+    return ans;
+}
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNlowerTriangular<U,s> operator*
+(const SNgaussian<U,s>& A, const SNlowerTriangular<V,t>& B)
 {
 
     // gaussian * lower trig -> lower trig
@@ -105,8 +222,8 @@ SNlowerTriangularMatrix<U,s> operator*
 
     checkSizeCompatibility(A,B);
     unsigned int size=A.getSize();
-    unsigned int c=A.column;
-    SNlowerTriangularMatrix<U,s> ans;
+    unsigned int c=A.getColumn();
+    SNlowerTriangular<U,s> ans;
 
     for (unsigned int i=0;i<c+1;i++)
     {
@@ -125,6 +242,46 @@ SNlowerTriangularMatrix<U,s> operator*
     return ans;
 }
 
+// SUM ---------------------------------------
+
+/** 
+ * Sum of two SNmatrix.
+ *
+ * The return type is the one of the left argument.
+ * THUS : this is *not* totally commutative. You may have
+ * \f$ A+B\neq B+A \f$
+ * */
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
+{
+
+    // TODO : since this sum is not commutative, maybe one has to implement it
+    // as member function.
+
+    SNmatrix<U,s> new_matrix(A);
+    for (unsigned int k=0;k<s*s;k++)
+    {
+        new_matrix.data.at(k)+=B.data.at(k);
+    }
+    return new_matrix;
+}
+
+// DIFFERENCE ---------------------------------------
+
+template <class U,unsigned int s,class V,unsigned int t>
+SNmatrix<U,s> operator-(const SNgeneric<U,s>& A,const SNidentity<V,t>& B)
+{
+    checkSizeCompatibility(A,B);
+    SNmatrix<U,s> new_matrix(A);
+    for (m_num k=0;k<s;k++)
+    {
+        new_matrix.at(k,k)-=1;
+    }
+    return new_matrix;
+}
+
+
 // EQUALITIES ---------------------------------------
 
 template <class U,unsigned int s,class V,unsigned int t>
@@ -141,7 +298,7 @@ bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
 }
 
 template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNmatrix<U,s>& A,const SNupperTriangularMatrix<V,t>& B)
+bool operator==(const SNmatrix<U,s>& A,const SNupperTriangular<V,t>& B)
 {
     return B==A;
 }
