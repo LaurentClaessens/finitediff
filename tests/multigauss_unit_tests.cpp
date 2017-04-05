@@ -40,16 +40,9 @@ class multigaussTests : public CppUnit::TestCase
     3 2 3 4
     2 5 6 7
     */
-            debug_print<<"E"<<std::endl;
-            debug_print<<E<<std::endl;
 
             auto G1=E.getGaussian(1);
             auto G2=E.getGaussian(2);
-
-            debug_matrix_print("G2",G2);
-            debug_matrix_print("G1",G1);
-
-            debug_matrix_print("G2*E",G2*E);
 
             SNmultiGaussian<double,4> ans12;
             ans12.setLastColumn(2);
@@ -62,12 +55,6 @@ class multigaussTests : public CppUnit::TestCase
             ans21.at(2,1)=-2;
             ans21.at(3,1)=-1;
             ans21.at(3,2)=-2;
-
-
-            debug_print<<"G1*G2"<<std::endl;
-            debug_print<<G1*G2<<std::endl;
-            debug_print<<"ans12"<<std::endl;
-            debug_print<<ans12<<std::endl;
 
             echo_single_test("Product of two gaussians -- right order");
             CPPUNIT_ASSERT(ans12.isNumericallyEqual(G1*G2,epsilon) );

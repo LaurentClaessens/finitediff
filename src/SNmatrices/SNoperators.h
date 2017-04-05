@@ -124,13 +124,13 @@ SNmultiGaussian<U,s> operator*
             }
             else if (col==B.getColumn())
             {
-                for (m_num line=B.getColumn()+1;line<A.getColumn();++line)
+                for (m_num line=B.getColumn()+1;line<A.getColumn()+1;++line)
                 {
                     ans.at(line,col)=B.get(line,col);
                 }
-                for (m_num line=A.getColumn();line<s;++line)
+                for (m_num line=A.getColumn()+1;line<s;++line)
                 {
-                    ans.at(line,col)=A.get(line,col)*B.get(col,B.getColumn())+B.get(line,B.getColumn());
+                    ans.at(line,col)=A.get(line,A.getColumn())*B.get(A.getColumn(),col)+B.get(line,B.getColumn());
                 }
             }
             else
