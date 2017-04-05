@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SNlowerTriangular.h"
+#include "SNidentity.h"
 #include "m_num.h"
 
 /** 
@@ -35,20 +36,39 @@ Some of the properties of these matrices are
   trivial columns here.
 - The diagonal is filled by 1.
 
- */
+*/
 
 template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
+    
     private :
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_last_column;       // the last non trivial column
+
         SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
         T _get(m_num,m_num) const override;
         T& _at(m_num,m_num) override;
     public:
-        /** Construct gaussian matrix of the argument `A` */
+        /** 
+         * The no-parameter constructor initializes `data_last_column` to
+         * `tp_size+1`, and this is detected by `_at` so that you cannot
+         * populate the matrix before to have initialized the maximal
+         * non trivial column number.
+         *
+         * See `setLastColumn`.
+         * */
+        SNmultiGaussian();
+       /**
+        * Construct gaussian matrix of the first line of the argument `A` 
+        *
+        * A gaussian matrix is a particular case of multi-gaussian matrix.
+        * */
         SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+        SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+        SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
+
+        SNmultiGaussian<T,tp_size>& operator=(const SNmultiGaussian<T,tp_size>&);
 
         /**
          * The product \f$ AB \f$ is easy when \f$ A \f$ is
@@ -64,38 +84,112 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          *   the column are not fulfilled.
          * */
         void operator *=(const SNgaussian<T,tp_size>& other);
+
+        /** return the number of the last non trivial column */
+        m_num getLastColumn() const;
+        /** Set the number of the last non trivial column
+         *
+         * Needed for optimization purpose : during the PLU decomposition,
+         * one need to modify a multi-gaussian matrix at each step. The point
+         * is to *modify* it, not re-creating a new one each time.
+         * */
+        void setLastColumn(const m_num& lc);
 };
 
 // CONSTRUCTORS -------------------------------------------------
+//
+// from nothing
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian():
+    data_L(SNidentity<T,tp_size>()),
+    data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
+{ }
 
+// from generic
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
+    data_L(A.getGaussian(0)),
     data_last_column(0)
+{ }
+
+// from multigaussian
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
+    data_L(A.data_L),
+    data_last_column(A.getLastColumn())
+{
+}
+
+// from gaussian
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
+    data_last_column(A.getColumn())
 { 
-    debug_print<<"prêt pour getGaussian ?"<<std::endl;
-    data_L=A.getGaussian(0);
-    // Je crois que le = est mal définit, il me faut encore trouver où il est.
-    debug_print<<"Fini le constructeur de SNmultiGaussian"<<std::endl;
+    for (m_num c=0;c<A.getColumn();++c)
+    {
+        for (m_num l=c+1;l<tp_size;++l)
+        {
+            this->at(l,c)=A.get(l,c);
+        }
+    }
+    for (m_num l=A.getColumn()+1;l<tp_size;++l)
+    {
+        this->at(l,A.getColumn())=A.get(l,A.getColumn());
+    }
+}
+
+
+// GETTER/SETTER METHODS  ---------------------------------------
+
+
+template <class T,unsigned int tp_size>
+m_num SNmultiGaussian<T,tp_size>::getLastColumn() const
+{
+    return data_last_column;
+}
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
+{
+    if (lc>tp_size-1)   // makes no sense to have a gaussian 
+                        // behaviour on the last line.
+    {
+        throw OutOfRangeColumnNumber("The specified column number is larger than the size of the matrix.");
+    }
+    data_last_column=lc;
 }
 
 // OPERATORS  ---------------------------------------
-
 
 template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
 {
     checkSizeCompatibility(*this,other);
-    if (other.column!=data_last_column+1)
+    if (other.getColumn()!=data_last_column+1)
     {
         throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
     }
-    for (m_num l=other.column+1;l<tp_size;++l)
+    data_last_column++;
+    for (m_num l=other.getColumn()+1;l<tp_size;++l)
     {
-        this->at(l,other.column)+=other.get(l,other.column);
+        this->at(l,other.getColumn())+=other.get(l,other.getColumn());
     }
 }
 
 // UTILITIES  ---------------------------------------
+
+
+/**
+ * A `SpecialValue` represents a value in the matrix that is fixed by
+ * the type of the matrix (like "0" at position (1,4) for a lower triangular
+ * matrix).
+ *
+ * This is merely a pair "value,boolean". 
+ * The boolean says if the requested element is special. 
+ * - if true, the value is the special value
+ * - if false, the value is dummy because it means that the requested element
+ *   is not special in this kind of matrix.
+ * */
 
 template <class T,unsigned int tp_size>
 SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
@@ -132,6 +226,10 @@ T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
 template <class T,unsigned int tp_size>
 T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j) 
 {
+    if (data_last_column==tp_size+1)
+    {
+        throw NotInitializedMemberException("You are trying to populate a 'SNmultiGaussian' before to initialize the member 'data_last_column'. Use setLastColumn().");
+    }
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
     {

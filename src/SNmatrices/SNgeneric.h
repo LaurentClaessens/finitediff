@@ -196,7 +196,6 @@ T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
 template <class T,unsigned int tp_size>
 SNgaussian<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
 {
-    debug_print<<"dans SNgeneric"<<std::endl;
     return SNgaussian<T,tp_size>(*this,c);
 }
 
@@ -220,7 +219,7 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgaussian<V,s>& G)
 {
     checkSizeCompatibility(*this,G);
-    m_num c=G.column;
+    m_num c=G.getColumn();
 
     // subtract the non trivial "half column"
     for (m_num i=c+1;i<tp_size;i++)

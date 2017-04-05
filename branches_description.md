@@ -5,6 +5,11 @@ This file is mainly for personal usage. It describes the purpose of each created
 
 The class `SNline` has a reference to the matrix it is issued from. We remove that reference.
 
+# operator_member
+
+On this branch we work on [The Decision between Member and Non-member](http://stackoverflow.com/questions/4421706/operator-overloading/4421729#4421729).
+
+We will follow the three rules of thumb proposed there.
 
 # multigaussian
 
@@ -21,3 +26,11 @@ virtual T get(const m_num&,const m_num&) const final;
 ```
 
 For consistency we pass the arguments of `get` by value.
+
+# m_num_increment
+
+Rationalize how `i++` and `++i` work when `i` is of type `m_num`.
+
+# getColumn
+
+For `SNgaussian`, we set the attribute `column` as private and add the 'get' and 'set' methods.
