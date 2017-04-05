@@ -61,9 +61,6 @@ template <class T,unsigned int tp_size>
 class SNgaussian : public SNgeneric<T,tp_size>
 {
 
-    //template <class U,class V,unsigned int s,unsigned int t>
-    //friend SNmultiGaussian<U,s> operator*(const SNgaussian<U,s>&, const SNgaussian<V,t>&);
-
     private:
         std::array<T,tp_size> data;     // see implementation of "_at"
         m_num data_column;
