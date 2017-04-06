@@ -55,7 +55,7 @@ void echo_single_test(const std::string& s);
 /**
  So I can put `debug_print<<blahblah` everywhere in my code (for debugging purpose) and found them back with a simple `ack`.
  */ 
-std::ostream& debug_print(std::cout);
+extern std::ostream& debug_print;
 
 /** 
  * Print a small message and a matrix, for debug purpose.
@@ -64,7 +64,12 @@ std::ostream& debug_print(std::cout);
  *\param mte the matrix to print.
  * */
 template <class M>
-void debug_matrix_print(const std::string& name, const M& mtr);
+void debug_matrix_print(const std::string& name, const M& mtr)
+{
+    std::cout<<name<<std::endl;
+    std::cout<<mtr<<std::endl;
+}
+
 
 
 #endif
