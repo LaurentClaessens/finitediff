@@ -22,9 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <iostream>
 
-/*
- 
-    This class is a wrapper for (a priori) 'unsigned int'.
+/**
+    This class is a wrapper for (a priori) `unsigned int`.
 
     It represents a number of line or column in a matrix.
 
@@ -51,6 +50,7 @@ class m_num
         bool operator <(const m_num& b) const;
         bool operator <(const int& b) const;
 
+        /** Allows conversion to `unsigned int` */
         operator unsigned int() const;
 };
 
