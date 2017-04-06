@@ -117,8 +117,7 @@ template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
     data_L(A.data_L),
     data_last_column(A.getLastColumn())
-{
-}
+{ }
 
 // from gaussian
 template <class T,unsigned int tp_size>
