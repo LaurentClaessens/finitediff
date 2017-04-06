@@ -52,6 +52,8 @@ class m_num
 
         /** Allows conversion to `unsigned int` */
         operator unsigned int() const;
+
+        void swap(m_num& other);
 };
 
 

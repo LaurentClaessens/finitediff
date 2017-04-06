@@ -35,6 +35,12 @@ m_num::m_num(const int n)
     num=n;
 }
 
+
+void m_num::swap(m_num& other)
+{
+    std::swap(num,other.num);
+}
+
 // CONVERSIONS   ----------------------------------
 
 m_num::operator unsigned int() const

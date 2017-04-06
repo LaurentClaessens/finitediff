@@ -68,7 +68,8 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         SNmultiGaussian(const SNgaussian<T,tp_size>& A);
         SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
-        SNmultiGaussian<T,tp_size>& operator=(const SNmultiGaussian<T,tp_size>&);
+        void swap(SNmultiGaussian<T,tp_size>&);
+        SNmultiGaussian<T,tp_size>& operator=(const SNmultiGaussian<T,tp_size>);
 
         /**
          * The product \f$ AB \f$ is easy when \f$ A \f$ is
@@ -117,7 +118,11 @@ template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
     data_L(A.data_L),
     data_last_column(A.getLastColumn())
-{ }
+{ 
+    debug_print<<"constructeur SNmultiGaussian"<<std::endl;
+    debug_print<<"this -> last : "<<this->getLastColumn()<<std::endl;
+    debug_print<<"A-> last : "<<A.getLastColumn()<<std::endl;
+}
 
 // from gaussian
 template <class T,unsigned int tp_size>
@@ -137,6 +142,21 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
     }
 }
 
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::swap(SNmultiGaussian<T,tp_size>& other)
+{
+    data_L.swap(other.data_L);
+    data_last_column.swap(other.data_L);
+}
+
+// assignation
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>& SNmultiGaussian<T,tp_size>::operator=(const SNmultiGaussian<T,tp_size> other)
+{
+    debug_print<<"je passe par operator= dans SNmultiGaussian"<<std::endl;
+    swap(other);
+    return *this;
+}
 
 // GETTER/SETTER METHODS  ---------------------------------------
 

@@ -140,9 +140,18 @@ class multigaussTests : public CppUnit::TestCase
 
             auto G1=(G0*E).getGaussian(1);
             auto G2=(G1*G0*E).getGaussian(2);
+
+            debug_print<<"On va créer mg"<<std::endl;
+
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
 
+            debug_print<<"last de mg : "<<mg.getLastColumn()<<std::endl;
+
             auto prod=mg*E;
+
+            debug_matrix_print("mg",mg);
+            debug_matrix_print("G2*G1*G0",G2*G1*G0);
+
 
             debug_matrix_print("prod",prod);
 
