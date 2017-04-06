@@ -34,3 +34,8 @@ Rationalize how `i++` and `++i` work when `i` is of type `m_num`.
 # getColumn
 
 For `SNgaussian`, we set the attribute `column` as private and add the 'get' and 'set' methods.
+
+# utilities
+
+* Regroup the small functions here and there in `Utilities.h` and `Utilities.cpp`
+* Develop and test the function `value_length`
