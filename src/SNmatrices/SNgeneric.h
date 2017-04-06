@@ -183,6 +183,7 @@ std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
             }
         }
         col_size.at(col)=acc;
+        col_size.at(col)=10;
     }
 
     for (m_num l=0;l<tp_size;l++)
