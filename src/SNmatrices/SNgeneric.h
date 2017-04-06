@@ -163,6 +163,12 @@ std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
     const unsigned int tp_size=s;     // homogenize the notations.
     std::array<int,tp_size> col_size;
 
+    // - we parse each column to know its size (max length of the elements).
+    // - the size of the columns are stored in `col_size`
+    // - we parse the matrix line by line, adding the right 
+    //   amount of ' ' (blanck) to fit the length of the column 
+    //   (+2 for aesthetics)
+
     for (m_num col=0;col<tp_size;++col)
     {
         unsigned int acc=0;
@@ -171,20 +177,22 @@ std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
             V value = snm.get(line,col);
             unsigned int l_value = value_length(value);
 
-            debug_print<<"value : "<<value<<" taille "<<l_value<<std::endl;
-
             if (l_value>acc)
             {
                 acc=l_value;
             }
         }
         col_size.at(col)=acc;
-        debug_print<<"taille de la colonne "<<col<<" : "<<col_size.at(col)<<std::endl;
     }
 
-    for (m_num l=0;l<s;l++)
+    for (m_num l=0;l<tp_size;l++)
     {
-        stream<<snm.getSNline(l)<<std::endl;
+        for (m_num c=0;c<tp_size;++c)
+        {
+            V value = snm.get(l,c);
+            stream<<value<<std::string(col_size.at(c)-value_length(value)+2,' ');
+        }
+        stream<<std::endl;
     }
     return stream;
 }
