@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNidentity.h"
 #include "../src/SNmatrices/SNoperators.h"
 #include "TestMatrices.cpp"
+#include "../src/Utilities.h"
 
 class multigaussTests : public CppUnit::TestCase
 {
@@ -93,14 +94,40 @@ class multigaussTests : public CppUnit::TestCase
 
             auto G1=(G0*E).getGaussian(1);
             auto G2=(G1*G0*E).getGaussian(2);
-
-            SNmultiGaussian<double,4> mg=G0*(G1*G2);
-
             
-            echo_single_test("G0*G1*G2");
-            CPPUNIT_ASSERT(mg.isNumericallyEqual(G0*G1*G2,epsilon));
+            SNmultiGaussian<double,4> ans;
+            ans.setLastColumn(2);
+
+            ans.at(1,0)=-1.25; 
+            ans.at(2,0)=-0.75; ans.at(2,1)=-0.38461538461538464; 
+            ans.at(3,0)=-0.5; ans.at(3,1)=0.3076923076923077; ans.at(3,2)=0.5833333333333335;
+
+
+            // the following tests are essentially there to check that the
+            // products are well defined. Mainly, they have not to throw 
+            // `SNchangeNotAllowedException` due to bad line/column numbering
+            // in the loops that are computing the products.
+
+            auto c=G1*G0;
+            auto da=G0*G1; 
+            auto aa=G1*G2;
+            auto ba=G0*E;
+
+            auto a=G1*ba;
+            auto b=c*E;
+            auto ca=da*G2; // (G0*G1)*G2
+            auto cb=G0*aa; // G0*(G1*G2)
+
+            // avoid warning about unused variable.
+            CPPUNIT_ASSERT(a.isNumericallyEqual(b,epsilon));
+            CPPUNIT_ASSERT(ca.isNumericallyEqual(cb,epsilon));
+
             echo_single_test("(G0*G1)*G2");
-            CPPUNIT_ASSERT(mg==(G0*G1)*G2);
+            CPPUNIT_ASSERT(ans.isNumericallyEqual((G0*G1)*G2,epsilon));
+            echo_single_test("G0*(G1*G2)");
+            CPPUNIT_ASSERT(ans.isNumericallyEqual(G0*(G1*G2),epsilon));
+            echo_single_test("G0*G1*G2");
+            CPPUNIT_ASSERT(ans.isNumericallyEqual(G0*G1*G2,epsilon));
         }
         void multi_working_tests()
         {
@@ -113,12 +140,11 @@ class multigaussTests : public CppUnit::TestCase
 
             auto G1=(G0*E).getGaussian(1);
             auto G2=(G1*G0*E).getGaussian(2);
-
-
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
 
             auto prod=mg*E;
 
+            debug_matrix_print("prod",prod);
 
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
@@ -198,10 +224,10 @@ class multigaussTests : public CppUnit::TestCase
     public:
         void runTest()
         {
+            multi_working_tests();
             non_initialized_tests();
             wrong_order_works();
             associativity_check();
-            multi_working_tests();
             working_tests();
             get_at_tests();
             constructor_tests();

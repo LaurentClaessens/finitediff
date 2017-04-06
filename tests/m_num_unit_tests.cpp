@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../src/SNmatrices/m_num.h"
 #include "TestMatrices.cpp"
-#include "../src/DebugPrint.h"
+#include "../src/Utilities.h"
 
 class mNumTest : public CppUnit::TestCase
 {
