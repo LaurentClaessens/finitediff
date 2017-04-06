@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __MELEMENTARYPERMUTATION_H_095019_
 #define __MELEMENTARYPERMUTATION_H_095019_
 
-#include "../DebugPrint.h"
+#include "../Utilities.h"
 
 template <unsigned int tp_size>
 class Mpermutation;

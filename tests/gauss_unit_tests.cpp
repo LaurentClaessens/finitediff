@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ooTQFOooJrAfLb.h"     // automatically generated, see 
 
-#include "../src/DebugPrint.h"
+#include "../src/Utilities.h"
 
 class GaussTest : public CppUnit::TestCase
 {
