@@ -140,8 +140,6 @@ class multigaussTests : public CppUnit::TestCase
 
             auto G1=(G0*E).getGaussian(1);
             auto G2=(G1*G0*E).getGaussian(2);
-
-
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
 
             auto prod=mg*E;
