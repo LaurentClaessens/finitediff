@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "m_num.h"
 
 #include "MathUtilities.h"
-#include "../DebugPrint.h"
+#include "../Utilities.h"
 
 
 // forward

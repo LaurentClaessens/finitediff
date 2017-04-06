@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNidentity.h"
 #include "../src/SNmatrices/SNoperators.h"
 #include "TestMatrices.cpp"
+#include "../src/Utilities.h"
 
 class multigaussTests : public CppUnit::TestCase
 {
@@ -145,7 +146,7 @@ class multigaussTests : public CppUnit::TestCase
 
             auto prod=mg*E;
 
-            debug_matrix_print(prod,"prod");
+            debug_matrix_print("prod",prod);
 
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
