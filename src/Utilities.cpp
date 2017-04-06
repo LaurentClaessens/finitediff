@@ -18,14 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Utilities.h"
 
-template <class T>
-unsigned int value_length(const T& value)
-{
-    std::stringstream s;
-    s<<value;
-    return s.tellp();
-}
-
 void echo_function_test(const std::string& s)
 {
     std::cout<<"   function : "<<s<<std::endl;

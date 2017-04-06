@@ -42,6 +42,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 template <class T>
 unsigned int value_length(const T& value);
+{
+    std::stringstream s;
+    s<<value;
+    return s.tellp();
+}
 
 /** The test functions use this function to announce (output) that they are 
  * starting */
