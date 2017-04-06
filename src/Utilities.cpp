@@ -23,5 +23,23 @@ unsigned int value_length(const T& value)
 {
     std::stringstream s;
     s<<value;
-    return std::length(s);
+    return s.tellp();
 }
+
+void echo_function_test(const std::string& s)
+{
+    std::cout<<"   function : "<<s<<std::endl;
+}
+
+void echo_single_test(const std::string& s)
+{
+    std::cout<<"      single test : "<<s<<std::endl;
+}
+
+template <class M>
+void debug_matrix_print(const std::string& name, const M& mtr)
+{
+    std::cout<<name<<std::endl;
+    std::cout<<mtr<<std::endl;
+}
+

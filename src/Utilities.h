@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __UTILITIES_H_062410__
 
 #include <sstream>
+#include <iostream>
 
 /**
  * return the length of a value supposed to be a numerical type.
@@ -41,6 +42,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 template <class T>
 unsigned int value_length(const T& value);
+
+/** The test functions use this function to announce (output) that they are 
+ * starting */
+void echo_function_test(const std::string& s);
+
+/** Use this function to announce (output) that a `CPPUNIT_ASSERT`
+ * is about to be launched.
+ * */
+void echo_single_test(const std::string& s);
+
+/**
+ So I can put `debug_print<<blahblah` everywhere in my code (for debugging purpose) and found them back with a simple `ack`.
+ */ 
+std::ostream& debug_print(std::cout);
+
+/** 
+ * Print a small message and a matrix, for debug purpose.
+ *
+ *\param name A small descrition of the matrix that will be printed.
+ *\param mte the matrix to print.
+ * */
+template <class M>
+void debug_matrix_print(const std::string& name, const M& mtr);
 
 
 #endif
