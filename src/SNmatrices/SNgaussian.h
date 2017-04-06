@@ -165,6 +165,8 @@ void SNgaussian<T,tp_size>::populate_from(const SNgeneric<U,s>& A)
     }
 }
 
+// from a generic
+
 template <class T,unsigned int tp_size> 
 template<class U,unsigned int s>
 SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
@@ -173,11 +175,15 @@ SNgaussian<T,tp_size>::SNgaussian(const SNgeneric<U,s>& A , const m_num& c):
     populate_from(A);
 }
 
+// from the array
+
 template <class T,unsigned int tp_size> 
 SNgaussian<T,tp_size>::SNgaussian(const std::array<T,tp_size>& d, const m_num& c):
     data(d),
     data_column(c)
 {}
+
+// from nothing (the we leave a trash in 'data_column')
 
 template <class T,unsigned int tp_size> 
 SNgaussian<T,tp_size>::SNgaussian():
