@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * printed by `std::cout`.
  * */
 template <class T>
-unsigned int value_length(const T& value);
+unsigned int value_length(const T& value)
 {
     std::stringstream s;
     s<<value;
