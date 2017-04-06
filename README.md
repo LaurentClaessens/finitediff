@@ -19,8 +19,8 @@ Non-official purposes include
 
 * I'm currently implementing the PLU decomposition.
 * P and U are done.
-* Working on more automatic testing.
-* Working on the documentation with Doxygen ...
+* Working and debugging products of gaussian matrices.
+* Working on a better rendering when printing matrices on screen.
 
 ## deploy.sh
 
