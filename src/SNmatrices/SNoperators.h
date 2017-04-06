@@ -113,7 +113,12 @@ SNmultiGaussian<U,s> operator*
     {
         ans.setLastColumn(A.getColumn());
 
-        for (m_num col=0;col<s;++col)
+            // The `_at` function in in `SNmultigauss` automatically 
+            // returns '0' when the column number is large than 
+            // // `getLastColumn`. In other words, these are 
+            // "special values" // and attempting to access them with `_at`
+            // throws a `SNchangeNotAllowedException`. 
+        for (m_num col=0;col <= ans.getLastColumn() ;++col)
         {
             if (col==A.getColumn())
             {
@@ -146,7 +151,7 @@ SNmultiGaussian<U,s> operator*
     {
         ans.setLastColumn(B.getColumn());
 
-        for (m_num c=0;c<s;c++)
+        for (m_num c=0;c <= ans.getLastColumn();c++)
         {
             for (m_num l=c+1;l<s;l++)
             {
@@ -165,8 +170,11 @@ SNmultiGaussian<U,s> operator*
 {
     checkSizeCompatibility(M,G);
     SNmultiGaussian<U,s> ans(M);
+
     if (M.getLastColumn()  >=  G.getColumn())
     {
+        ans.setLastColumn(M.getLastColumn());
+
         m_num col=G.getColumn();
         for (m_num line=col+1;line<s;++line)
         {
@@ -177,7 +185,7 @@ SNmultiGaussian<U,s> operator*
     {
         ans.setLastColumn(G.getColumn());
 
-        for (m_num l=G.getColumn();l<s;l++)
+        for (m_num l=G.getColumn()+1;l<s;l++)
         {
             ans.at(l,G.getColumn())+=G.get(l,G.getColumn());
         }
