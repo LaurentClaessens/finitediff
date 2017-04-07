@@ -383,12 +383,11 @@ SNmultiGaussian<U,s> operator*
 
     for (m_num i=col+1;i<tp_size;++i)   // loop over the next lines
     {
-        for (m_num j=0;j<tp_size;++j)
+        for (m_num j=0;j<i;++j)
         {
             ans.at(i,j)=M.get(i,j)+G.get(i,col)*M.get(col,j);
         }
     }
-
     return ans;
 }
 

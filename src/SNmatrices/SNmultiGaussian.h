@@ -120,8 +120,8 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          *   are, for numerical reasons, non vanishing; in this case we loose a
          *   good occasion to make then real zeroes.
          *
-         *   Thus after calling `setFirstLines` you have to set by hand the last
-         *   column attribute.
+         *   You have to set by hand the last column attribute *before* to 
+         *   call `setLastColumn`.
          *
          * \see `setLastColumn`
          *
@@ -226,7 +226,7 @@ void SNmultiGaussian<T,tp_size>::setFirstLines
     {
         for (m_num col=0; col < line ;++col)
         {
-            ans.at(line,col)=A.get(line,col);
+            this->at(line,col)=other.get(line,col);
         }
     }
 }
