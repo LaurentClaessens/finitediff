@@ -100,16 +100,22 @@ T matrixProductComponent(const SNgeneric<T,s>& A,const SNgeneric<U,t>& B,unsigne
  *
  * This function is useful to populate the "answer" matrix when multiplying a gaussian matrix
  * by something else.
+ *
+ * Remarks :
  * 
+ * - the matrices `ans` and `A` must have same size;
+ * - for the template type, `ans` is `SNgeneric<U,s>` and `A` is SNgeneric<T,tp_size>. Obviously
+ *   the conversion from `T` to `U` must be possible.
  */
-template <class T,unsigned int tp_size>
-void copyFirstLines(SNgeneric& ans, const SNgeneric<T,s>& A,const unsigned int max_l)
+template <class U, unsigned int t,class T,unsigned int tp_size>
+void copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const unsigned int max_l)
 {
-    for (m_num line=0;l<max_l+1;line++)
+    checkSizeCompatibility(ans,A);
+    for (m_num line=0;line<max_l+1;line++)
     {
         for (m_num col=0; col < tp_size;++col)
         {
-            ans.at(line,col)=B.get(line,col);
+            ans.at(line,col)=A.get(line,col);
         }
     }
 }
