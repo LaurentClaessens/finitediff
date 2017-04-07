@@ -88,13 +88,47 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 
         /** return the number of the last non trivial column */
         m_num getLastColumn() const;
-        /** Set the number of the last non trivial column
+        /** 
+         * \brief Set the number of the last non trivial column
          *
          * Needed for optimization purpose : during the PLU decomposition,
          * one need to modify a multi-gaussian matrix at each step. The point
          * is to *modify* it, not re-creating a new one each time.
          * */
         void setLastColumn(const m_num& lc);
+
+        /** 
+         * \brief copies the first `max_l` lines from `other` to `this`.
+         *
+         * The first `max_l` lines are copied from `other` taking into account :
+         * - the elements that cannot be changed here will not be changed.
+         *   Typically, the element (0,0) of `other` will be neglected. Also every
+         *   diagonal elements are ignored, and all the elements that are beyond
+         *   `this->getLastColumn()`.
+         * - The size of `other` must be the same.
+         * - The template type of `other` must be convertible to the template
+         *   type of `this`.
+         * - The copy copies each line from column 0 to the diagonal (exclusively).
+         *   It does not restrict itself to something like the minimum between
+         *   the diagonal and `this->getLastColumn()`. Thus : **the real
+         *   last column of the resulting matrix could be incorrect**.
+         *
+         *   The last point needs attention. One *could* just take care of that
+         *   issue during the copying process by looking at non zero elements 
+         *   located beyond the `data_last_column` column.
+         *   But if these elements are "fake zeroes" like they should be zero but
+         *   are, for numerical reasons, non vanishing; in this case we loose a
+         *   good occasion to make then real zeroes.
+         *
+         *   Thus after calling `setFirstLines` you have to set by hand the last
+         *   column attribute.
+         *
+         * \see `setLastColumn`
+         *
+         * \see copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num max_l)
+         */
+        template <class U,unsigned int s>
+        void setFirstLines(const SNgeneric<U,s>& other,const m_num max_l);
 };
 
 // CONSTRUCTORS -------------------------------------------------
@@ -183,6 +217,20 @@ void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
     data_last_column=lc;
 }
 
+template <class T,unsigned int tp_size>
+template <class U,unsigned int s>
+void SNmultiGaussian<T,tp_size>::setFirstLines
+        (const SNgeneric<U,s>& other,const m_num max_l)
+{
+    for (m_num line=0;line<max_l+1;line++)
+    {
+        for (m_num col=0; col < line ;++col)
+        {
+            ans.at(line,col)=A.get(line,col);
+        }
+    }
+}
+
 // OPERATORS  ---------------------------------------
 
 template <class T,unsigned int tp_size>
@@ -261,5 +309,7 @@ T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j)
     }
     return data_L.at(i,j);  //if you change here, you have to change _get
 }
+
+
 
 #endif

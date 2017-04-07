@@ -370,19 +370,16 @@ SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& G, const SNmultiGaussian<V,t>& M)
 {
 
-    debug_print<<"Dans le produit gaussien * multigaussien"<<std::endl;
-    debug_print<<"  Cette fonction n'est pas terminée, donc le résultat sera incorrect"<<std::endl;
-
     checkSizeCompatibility(G,M);
 
-    const unsigned int size=G.getSize();
+    const unsigned int tp_size=G.getSize(); // for homogeneity
     const m_num col=G.getColumn();
     const m_num last_col=M.getLastColumn();
 
     SNmultiGaussian<U,s> ans;
     ans.setLastColumn(  std::max(G.getColumn(),M.getLastColumn())  );
 
-    copyFirstLines(ans,M,col);
+    ans.setFirstLines(M,col);
 
     for (m_num i=col+1;i<tp_size;++i)   // loop over the next lines
     {
