@@ -144,6 +144,15 @@ class multigaussTests : public CppUnit::TestCase
             debug_print<<"On va créer mg"<<std::endl;
 
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
+            debug_print<<"mg est créée"<<std::endl;
+
+            debug_print<<"On va créer mag"<<std::endl;
+            SNmultiGaussian<double,4> mag;
+            debug_print<<"last de mag : "<<mag.getLastColumn()<<std::endl;
+            debug_print<<"mag est créée"<<std::endl;
+            mag=G2*(G1*G0);
+            debug_print<<"mag est assignée"<<std::endl;
+            debug_print<<"last de mag : "<<mag.getLastColumn();
 
             debug_print<<"last de mg : "<<mg.getLastColumn()<<std::endl;
 

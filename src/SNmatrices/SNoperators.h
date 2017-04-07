@@ -38,14 +38,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 /**
- SNgeneric * SNgeneric.
- In general, I cannot do better than compute everything. The very point of making
- many different classes is NOT to use this 'default' implementation for the product.
+\brief `SNgeneric` * `SNgeneric`.
+
+In general, I cannot do better than compute everything. 
+ 
+The very point of making many different classes is NOT to use this 'default' implementation for the product.
+
+When this product is used, a warning is displayed.
+
+\see `tooGenericWarning`
 */
 
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
 {
+    tooGenericWarning("Warning : using a very generic product 'SNgeneric * SNgeneric'. Can't you be more specific ?");
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
     for (unsigned int i=0;i<s;i++)
@@ -64,6 +71,10 @@ template <class U,class V,unsigned int s,unsigned int t>
 void productGaussianTimesGeneric
 (SNgeneric<U,s>& ans,const SNgaussian<U,s>& A, const SNgeneric<V,t>&B )
 {
+    tooGenericWarning("Warning : using a very generic product 'SNgaussian * SNgeneric'. Can't you be more specific ?");
+    checkSizeCompatibility(A,B);
+
+    // à quoi servent ces lignes si on a le checkSizeCompatibility ?
     if (s!=t)
     {
         throw IncompatibleMatrixSizeException(s,t);
@@ -235,6 +246,41 @@ SNlowerTriangular<U,s> operator*
     unsigned int size=A.getSize();
     unsigned int c=A.getColumn();
     SNlowerTriangular<U,s> ans;
+
+    for (unsigned int i=0;i<c+1;i++)
+    {
+        for (unsigned int j=0;j<i+1;j++)
+        {
+            ans.at(i,j)=B.get(i,j);
+        }
+    }
+    for (unsigned int i=c+1;i<size;i++)
+    {
+        for (unsigned int j=0;j<i+1;j++)
+        {
+            ans.at(i,j)=matrixProductComponent(A,B,i,j);
+        }
+    }
+    return ans;
+}
+
+// SNgaussian * SNmultiGaussian
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmultiGaussian<U,s> operator*
+(const SNgaussian<U,s>& A, const SNmultiGaussian<V,t>& B)
+{
+
+    // gaussian * multi-gaussian -> multigaussian
+
+    checkSizeCompatibility(A,B);
+
+    unsigned int size=A.getSize();
+    unsigned int c=A.getColumn();
+
+    SNmultiGaussian<U,s> ans;
+    debug_print<<"Ok, je suis ici en fait"<<std::endl;
+    return ans;
 
     for (unsigned int i=0;i<c+1;i++)
     {

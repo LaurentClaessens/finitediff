@@ -69,7 +69,7 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNmultiGaussian<T,tp_size>&);
-        SNmultiGaussian<T,tp_size>& operator=(const SNmultiGaussian<T,tp_size>);
+        SNmultiGaussian<T,tp_size>& operator=(SNmultiGaussian<T,tp_size>);
 
         /**
          * The product \f$ AB \f$ is easy when \f$ A \f$ is
@@ -104,7 +104,9 @@ template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
     data_L(SNidentity<T,tp_size>()),
     data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
-{ }
+{
+debug_print<<"constructeur sans argument"<<std::endl;
+}
 
 // from generic
 template <class T,unsigned int tp_size>
@@ -145,13 +147,16 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
 template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::swap(SNmultiGaussian<T,tp_size>& other)
 {
+    debug_print<<"Dans le swap de multigaussian "<<std::endl;
+    debug_print<<"last this : "<<getLastColumn()<<std::endl;
+    debug_print<<"last other : "<<other.getLastColumn()<<std::endl;
     data_L.swap(other.data_L);
-    data_last_column.swap(other.data_L);
+    data_last_column.swap(other.data_last_column);
 }
 
 // assignation
 template <class T,unsigned int tp_size>
-SNmultiGaussian<T,tp_size>& SNmultiGaussian<T,tp_size>::operator=(const SNmultiGaussian<T,tp_size> other)
+SNmultiGaussian<T,tp_size>& SNmultiGaussian<T,tp_size>::operator=(SNmultiGaussian<T,tp_size> other)
 {
     debug_print<<"je passe par operator= dans SNmultiGaussian"<<std::endl;
     swap(other);
