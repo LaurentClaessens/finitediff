@@ -370,32 +370,28 @@ SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& G, const SNmultiGaussian<V,t>& M)
 {
 
-    // gaussian * multi-gaussian -> multigaussian
+    debug_print<<"Dans le produit gaussien * multigaussien"<<std::endl;
+    debug_print<<"  Cette fonction n'est pas terminée, donc le résultat sera incorrect"<<std::endl;
 
     checkSizeCompatibility(G,M);
 
     const unsigned int size=G.getSize();
     const m_num col=G.getColumn();
-    const m_num last_col=M.getColumn();
+    const m_num last_col=M.getLastColumn();
 
     SNmultiGaussian<U,s> ans;
-    debug_print<<"Ok, je suis ici en fait"<<std::endl;
-    return ans;
+    ans.setLastColumn(  std::max(G.getColumn(),M.getLastColumn())  );
 
-    for (unsigned int i=0;i<c+1;i++)
+    copyFirstLines(ans,M,col);
+
+    for (m_num i=col+1;i<tp_size;++i)   // loop over the next lines
     {
-        for (unsigned int j=0;j<i+1;j++)
+        for (m_num j=0;j<tp_size;++j)
         {
-            ans.at(i,j)=B.get(i,j);
+            ans.at(i,j)=M.get(i,j)+G.get(i,col)*M.get(col,j);
         }
     }
-    for (unsigned int i=c+1;i<size;i++)
-    {
-        for (unsigned int j=0;j<i+1;j++)
-        {
-            ans.at(i,j)=matrixProductComponent(A,B,i,j);
-        }
-    }
+
     return ans;
 }
 
@@ -414,7 +410,7 @@ Mpermutation<tp_size> operator*
     Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
-        new_perm.at(i)=p1.image(  p2.image(i)  );
+        new_perm.at(i)=p1.image( p2.image(i) );
     }
     return new_perm;
 }
