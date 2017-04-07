@@ -95,14 +95,7 @@ SNmatrix<U,s> operator*
 
     const unsigned int c=A.getColumn();
 
-    // copy the 'c' first lines
-    for (unsigned int l=0;l<c+1;l++)
-    {
-        for (unsigned int j=0;j<s;j++)
-        {
-            ans.at(l,j)=B.get(l,j);
-        }
-    }
+    copyFirstLines(ans,B,c);
 
     // for the other lines, one has only two non vanishing elements
     // in the gaussian.
@@ -348,17 +341,42 @@ SNlowerTriangular<U,s> operator*
 
 // SNgaussian * SNmultiGaussian
 
+/** 
+ * \brief Product `SNgaussian` * `SNmultiGaussian`
+ *
+ * The answer is `SNmultiGaussian<T,tp_size>` with
+ *
+ * - `T` is the type of the gaussian (the left operand)
+ * - `tp_size` is the common size of the two matrices.
+ * - the last non trivial column is the max of the column of the first argument and
+ *   of the last non trivial of the second argument.
+ *
+ *
+ * Let \f$ G \f$ be a gaussian matrix for the column \f$ col \f$ and \f$ M \f$ 
+ * a multi-gaussian with max column \f$ l_c \f$.
+ *
+ * For computing the element \f$ (GM)_{ij}=\sum_kG_{ik}M{kj} \f$ we use the 
+ * structure of \f$ G \f$.
+ *
+ * - If \f$ i\leq col \f$ we have \f$ (GM)_{ij}=M_{ij} \f$. So we copy the first 
+ *   \f$ col \f$ lines.
+ * - The sum has only two non vanishing terms and we have
+ *   \f$ (GM)_{ij}=M_{ij}+G_{i,col}M_{col,j} \f$.
+ *
+ * */
+
 template <class U,class V,unsigned int s,unsigned int t>
 SNmultiGaussian<U,s> operator*
-(const SNgaussian<U,s>& A, const SNmultiGaussian<V,t>& B)
+(const SNgaussian<U,s>& G, const SNmultiGaussian<V,t>& M)
 {
 
     // gaussian * multi-gaussian -> multigaussian
 
-    checkSizeCompatibility(A,B);
+    checkSizeCompatibility(G,M);
 
-    unsigned int size=A.getSize();
-    unsigned int c=A.getColumn();
+    const unsigned int size=G.getSize();
+    const m_num col=G.getColumn();
+    const m_num last_col=M.getColumn();
 
     SNmultiGaussian<U,s> ans;
     debug_print<<"Ok, je suis ici en fait"<<std::endl;
