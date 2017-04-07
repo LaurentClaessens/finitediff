@@ -36,13 +36,27 @@ class MelementaryPermutation
     friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
 
     private:
-        const unsigned int data_elA;
+        /** The permutation permutes `data_elA` with `data_elB`  */
+        const unsigned int data_elA; 
+        /** The permutation permutes `data_elA` with `data_elB`  */
         const unsigned int data_elB;
 
     public :
+        /** 
+         * \param A an unsigned integer between `0` and `tp_size`
+         * \param B an unsigned integer between `0` and `tp_size`
+         *
+         * Construct the permutation of \f$ A \f$ and \f$ B \f$.
+         * */
         MelementaryPermutation(const unsigned int A,const unsigned int B); 
 
+         /**
+         *\brief Return the first of the two elements that are permuted.
+         * */
         unsigned int getA() const;
+         /**
+         *\brief Return the second of the two elements that are permuted.
+         * */
         unsigned int getB() const;
 
         /** 
@@ -54,6 +68,14 @@ class MelementaryPermutation
          */
         unsigned int image(const unsigned int k) const;
 
+        /** 
+         * The product is the composition of permutations.
+         *
+         * `perm1 * perm2` is the composition of the elementary permutations `perm1` and `perm2`.
+         * The result is not an *elementary* permutation anymore.
+         *
+         * \see `Mpermutation`.
+         * */
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
 };
 
