@@ -66,20 +66,35 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
 }
 
 // SNgaussian * SNgeneric
-// can copy the first 'c' lines.
+
+/** 
+ * \brief Product `SNgaussian` * `SNgeneric`
+ *
+ * As far as the template parameters are concerned,
+ * the answer is `SNmatrix<T,tp_size>` with
+ *
+ * - `T` is the type of the gaussian (the left operand)
+ * - `tp_size` is the common size of the two matrices.
+ *
+ * Let \f$ G \f$ be gaussian with non trivial column \f$ c \f$ and \f$ E \f$
+ * be generic. For the product \f$ GE \f$ one can copy the first \f$ c \f$ lines.
+ *
+ * For the other lines (\f$ i>c \f$) the sum \f$ (GE)_{ij}=\sum_kG_{ik}E_{kj} \f$
+ * is non vanishing only with \f$ k=i \f$ and \f$ k=c \f$.
+ *
+ * */
+
 template <class U,class V,unsigned int s,unsigned int t>
-void productGaussianTimesGeneric
-(SNgeneric<U,s>& ans,const SNgaussian<U,s>& A, const SNgeneric<V,t>&B )
+SNmatrix<U,s> operator*
+(const SNgaussian<U,s>& A, const SNgeneric<V,t>& B)
 {
-    tooGenericWarning("Warning : using a very generic product 'SNgaussian * SNgeneric'. Can't you be more specific ?");
+
     checkSizeCompatibility(A,B);
 
-    // à quoi servent ces lignes si on a le checkSizeCompatibility ?
-    if (s!=t)
-    {
-        throw IncompatibleMatrixSizeException(s,t);
-    }
+    SNmatrix<U,s> ans;
+
     const unsigned int c=A.getColumn();
+
     // copy the 'c' first lines
     for (unsigned int l=0;l<c+1;l++)
     {
@@ -88,25 +103,16 @@ void productGaussianTimesGeneric
             ans.at(l,j)=B.get(l,j);
         }
     }
-    // real product for the other lines
-    for (unsigned int i=c+1;i<s;i++)
+
+    // for the other lines, one has only two non vanishing elements
+    // in the gaussian.
+    for (m_num line=c+1;line<s;++line)
     {
-        for (unsigned int j=0;j<s;j++)
+        for (m_num col=0;col<s;++col)
         {
-            ans.at(i,j)=matrixProductComponent(A,B,i,j);
+            ans.at(line,col)=B.get(line,col)+A.get(line,c)*B.get(c,col);
         }
     }
-}
-
-// SNgaussian * SNmatrix
-
-template <class U,class V,unsigned int s,unsigned int t>
-SNmatrix<U,s> operator*
-(const SNgaussian<U,s>& A, const SNmatrix<V,t>& B)
-{
-    checkSizeCompatibility(A,B);
-    SNmatrix<U,s> ans;
-    productGaussianTimesGeneric(ans,A,B);
     return ans;
 }
 
@@ -203,6 +209,82 @@ SNmultiGaussian<U,s> operator*
     }
     return ans;
 }
+
+// SNmultiGaussian * SNgeneric
+
+/** 
+ *\brief Product `SNmultiGaussian` * `SNgeneric`
+ *
+ * As far as the template parameters are concerned,
+ * the answer is `SNmatrix<T,tp_size>` with
+ *
+ * - `T` is the type of the multi-gaussian (the left operand)
+ * - `tp_size` is the common size of the two matrices.
+ *
+ * We populate the answer line by line. Let \f$ M \f$ be a multi-gaussian
+ * and \f$ E \f$ a generic matrix. We denote by \f$ c \f$ the last non-trivial
+ * column of \f$ M \f$.
+ *
+ * For computing \f$ (ME)_{ij}=\sum_kM_{ik}E_{kj} \f$ :
+ *
+ * - the first line is copied.
+ * - if \f$ i<c \f$ we compute the product with the first \f$ i-1 \f$ elements, 
+ *   and add the \f$ i \f$th.
+ * - if \f$ i\geq c \f$ we compute the first \f$ c-1 \f$ products and 
+ *   add the \f$ i \f$th.
+ *
+ * */
+
+template <class U,class V,unsigned int s,unsigned int t>
+SNmatrix<U,s> operator*
+(const SNmultiGaussian<U,s>& M, const SNgeneric<V,t>& E)
+{
+    
+    checkSizeCompatibility(M,E);
+    const unsigned int tp_size=M.getSize(); // for homogeneous notations.
+    const m_num last_col=L.getLastColumn();
+
+    debug_print<<"multigauss*generix"<<std::endl;
+
+    SNmatrix<U,s> ans;
+
+    // copy the first line
+
+    for (m_num col=0;col<tp_size;++col)
+    {
+        ans.at(0,col)=E.get(0,col);
+    }
+
+    // when the line number is smaller than 'last_col'
+    for (m_num line=1;line<last_col;++line)
+    {
+        for (m_num col=0;col<tp_size;++col)
+        {
+            U acc=0;
+            for (m_num k=0;k<line;++k)
+            {
+                acc+=M.get(line,k)*E.get(k,col);
+            }
+            ans.at(line,col)=acc+E.get(line,col);
+        }
+    }
+
+    // for the last lines
+    for (m_num line=last_col;line<tp_size;++line)
+    {
+        for (m_num col=0;col<tp_size;++col)
+        {
+            U acc=0;
+            for (m_num k=0;k<last_col;++k)
+            {
+                acc+=M.get(line,k)*E.get(k,col);
+            }
+            ans.at(line,col)=acc+E.get(line,col);
+        }
+    }
+    return ans;
+}
+
 
 // SNmultiGaussian * SNmultigaussian
 

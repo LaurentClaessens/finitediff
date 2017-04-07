@@ -133,13 +133,20 @@ class multigaussTests : public CppUnit::TestCase
         {
             echo_function_test("multi working tests");
 
-            auto E=testMatrixE();
+            auto E=testMatrixE();       //SNmatrix<double,4>
             double epsilon(0.0000001);
 
             SNgaussian<double,4> G0(E);
 
+            debug_print<<"D1"<<std::endl;
             auto G1=(G0*E).getGaussian(1);
+            debug_print<<"D2"<<std::endl;
+            auto a=G1*(G0*E);
+            debug_print<<"D2.3"<<std::endl;
+            auto b=(G1*G0)*E;
+            debug_print<<"D2.5"<<std::endl;
             auto G2=(G1*G0*E).getGaussian(2);
+            debug_print<<"D3"<<std::endl;
 
             debug_print<<"On va créer mg"<<std::endl;
 
