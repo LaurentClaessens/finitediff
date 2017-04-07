@@ -242,7 +242,7 @@ SNmatrix<U,s> operator*
     
     checkSizeCompatibility(M,E);
     const unsigned int tp_size=M.getSize(); // for homogeneous notations.
-    const m_num last_col=L.getLastColumn();
+    const m_num last_col=M.getLastColumn();
 
     debug_print<<"multigauss*generix"<<std::endl;
 
