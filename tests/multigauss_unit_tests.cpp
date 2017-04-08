@@ -136,7 +136,10 @@ class multigaussTests : public CppUnit::TestCase
             auto E=testMatrixE();       //SNmatrix<double,4>
             auto F=testMatrixF();       //SNmatrix<double,4>
             auto H=testMatrixH();       //SNmatrix<double,4>
-            double epsilon(0.0000001);
+
+            // I cannot ask epsilon to be smaller because for the
+            // answers, I copied by hand the print of Sage's answer.
+            double epsilon(0.0001);
 
             auto G0=E.getGaussian(0);
             auto G1=F.getGaussian(1);
@@ -178,19 +181,19 @@ class multigaussTests : public CppUnit::TestCase
 
 
             SNmultiGaussian<double,4> ans_210;
-            ans_21.setLastColumn(2);
+            ans_210.setLastColumn(2);
 
 //[                1.0                 0.0           0.0    0.0]
 //[              -1.25                 1.0           0.0    0.0]
 //[               4.25                -4.0           1.0    0.0]
 //[-13.606652500000001  12.953320000000001      -4.11333    1.0]
 
-            ans_10.at(1,0)=-1.25;
-            ans_10.at(2,0)=4.25;
-            ans_10.at(3,0)=-13.6066525;
-            ans_10.at(2,1)=-4;
-            ans_10.at(3,1)=12.95332;
-            ans_10.at(3,2)=-4.11333;
+            ans_210.at(1,0)=-1.25;
+            ans_210.at(2,0)=4.25;
+            ans_210.at(3,0)=-13.6066525;
+            ans_210.at(2,1)=-4;
+            ans_210.at(3,1)=12.95332;
+            ans_210.at(3,2)=-4.11333;
 
             CPPUNIT_ASSERT(t21.isNumericallyEqual(ans_21,epsilon));
             CPPUNIT_ASSERT(t10.isNumericallyEqual(ans_10,epsilon));
@@ -198,15 +201,45 @@ class multigaussTests : public CppUnit::TestCase
             CPPUNIT_ASSERT(t2_10.isNumericallyEqual(ans_210,epsilon));
             CPPUNIT_ASSERT(t210.isNumericallyEqual(ans_210,epsilon));
 
+            auto u_0E=G0*E;
+
+
             auto a=G1*(G0*E);
             auto b=(G1*G0)*E;
-            SNmultiGaussian<double,4> mag;
-            mag=G2*(G1*G0);
+            SNmatrix<double,4> ans_0E;
+            SNmatrix<double,4> ans_10E;
 
-            CPPUNIT_ASSERT(a.isNumericallyEqual(b,epsilon));
+    
+
+//[   4.0    6.0    8.0    9.0]
+//[   0.0   -6.5   -3.0 -10.25]
+//[   0.0   -2.5   -3.0  -2.75]
+//[   0.0    2.0    2.0    2.5]
+ans_0E.at(0,0)=4; ans_0E.at(0,1)=6; ans_0E.at(0,2)=8; ans_0E.at(0,3)=9;
+ans_0E.at(1,0)=0; ans_0E.at(1,1)=-6.5; ans_0E.at(1,2)=-3; ans_0E.at(1,3)=-10.25;
+ans_0E.at(2,0)=0; ans_0E.at(2,1)=-2.5; ans_0E.at(2,2)=-3; ans_0E.at(2,3)=-2.75;
+ans_0E.at(3,0)=0; ans_0E.at(3,1)=2; ans_0E.at(3,2)=2; ans_0E.at(3,3)=2.5;
+
+
+//[   4.0    6.0    8.0    9.0]
+//[   0.0   -6.5   -3.0 -10.25]
+//[   0.0   23.5    9.0  38.25]
+//[   0.0  24.75   12.5 38.375]
+
+ans_10E.at(0,0)=4; ans_10E.at(0,1)=6; ans_10E.at(0,2)=8; ans_10E.at(0,3)=9;
+ans_10E.at(1,0)=0; ans_10E.at(1,1)=-6.5; ans_10E.at(1,2)=-3; ans_10E.at(1,3)=-10.25;
+ans_10E.at(2,0)=0; ans_10E.at(2,1)=23.5; ans_10E.at(2,2)=9; ans_10E.at(2,3)=38.25;
+ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=38.375;
+
+            CPPUNIT_ASSERT(u_0E.isNumericallyEqual(ans_0E,epsilon));
+            CPPUNIT_ASSERT(a.isNumericallyEqual(ans_10E,epsilon));
+            CPPUNIT_ASSERT(b.isNumericallyEqual(ans_10E,epsilon));
 
             // This is a test for the initialization of
             // data_last_column
+
+            SNmultiGaussian<double,4> mag;
+            mag=G2*(G1*G0);
             CPPUNIT_ASSERT(mag.isNumericallyEqual(t210,epsilon));
         }
         void multi_working_tests()
@@ -223,8 +256,6 @@ class multigaussTests : public CppUnit::TestCase
 
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
             auto prod=mg*E;
-
-            debug_matrix_print("prod",prod);
 
             echo_single_test("check vanishing components og G2*G1*G0*E");
             CPPUNIT_ASSERT(prod.get(1,0)==0);

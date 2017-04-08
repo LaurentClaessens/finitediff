@@ -237,8 +237,6 @@ SNmatrix<U,s> operator*
     const unsigned int tp_size=M.getSize(); // for homogeneous notations.
     const m_num last_col=M.getLastColumn();
 
-    debug_print<<"multigauss*generix"<<std::endl;
-
     SNmatrix<U,s> ans;
 
     // copy the first line
@@ -249,12 +247,12 @@ SNmatrix<U,s> operator*
     }
 
     // when the line number is smaller than 'last_col'
-    for (m_num line=1;line<last_col;++line)
+    for (m_num line=1;line <= last_col;++line)
     {
         for (m_num col=0;col<tp_size;++col)
         {
             U acc=0;
-            for (m_num k=0;k<line;++k)
+            for (m_num k=0; k < line;++k)
             {
                 acc+=M.get(line,k)*E.get(k,col);
             }
@@ -263,12 +261,12 @@ SNmatrix<U,s> operator*
     }
 
     // for the last lines
-    for (m_num line=last_col;line<tp_size;++line)
+    for (m_num line=last_col+1;line<tp_size;++line)
     {
         for (m_num col=0;col<tp_size;++col)
         {
             U acc=0;
-            for (m_num k=0;k<last_col;++k)
+            for (m_num k=0;k <= last_col;++k)
             {
                 acc+=M.get(line,k)*E.get(k,col);
             }
@@ -377,7 +375,7 @@ SNmultiGaussian<U,s> operator*
     const m_num last_col=M.getLastColumn();
 
     SNmultiGaussian<U,s> ans;
-    ans.setLastColumn(  std::max(G.getColumn(),M.getLastColumn())  );
+    ans.setLastColumn(  std::max(col,last_col)  );
 
     ans.setFirstLines(M,col);
 
