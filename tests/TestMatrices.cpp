@@ -18,15 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../src/SNmatrices/SNmatrix.h"
 
+
 /*
  This file contains some matrices ready to be tested.
 */
 
-// To copy-paste for creating own matrix
-    //F.at(0,0)=<++>; F.at(0,1)=<++>; F.at(0,2)=<++>; F.at(0,3)=<++>;
-    //F.at(1,0)=<++>; F.at(1,1)=<++>; F.at(1,2)=<++>; F.at(1,3)=<++>;
-    //F.at(2,0)=<++>; F.at(2,1)=<++>; F.at(2,2)=<++>; F.at(2,3)=<++>;
-    //F.at(3,0)=<++>; F.at(3,1)=<++>; F.at(3,2)=<++>; F.at(3,3)=<++>;
+// Copy-paste for creating own matrix
+    //FOOOO.at(0,0)=<++>; FOO.at(0,1)=<++>; FOO.at(0,2)=<++>; FOO.at(0,3)=<++>;
+    //FOOOO.at(1,0)=<++>; FOO.at(1,1)=<++>; FOO.at(1,2)=<++>; FOO.at(1,3)=<++>;
+    //FOOOO.at(2,0)=<++>; FOO.at(2,1)=<++>; FOO.at(2,2)=<++>; FOO.at(2,3)=<++>;
+    //FOOOO.at(3,0)=<++>; FOO.at(3,1)=<++>; FOO.at(3,2)=<++>; FOO.at(3,3)=<++>;
 
 auto testMatrixA()
 /*
@@ -203,7 +204,6 @@ auto testMatrixG()
 
 auto testMatrixH()
 {
-
     SNmatrix<double,4> F;
     F.at(0,0)=0.1; F.at(0,1)=-4; F.at(0,2)=10; F.at(0,3)=3;
     F.at(1,0)=-1.1; F.at(1,1)=-6; F.at(1,2)=1./3; F.at(1,3)=4./9;
