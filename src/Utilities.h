@@ -76,5 +76,23 @@ void debug_matrix_print(const std::string& name, const M& mtr)
 }
 
 
+/**
+ * \brief Display a small warning.
+ *
+ * \param message The message to be displayed.
+ *
+ * We have several type of matrices and several overloading of the operators like
+ * `==` and `*`. These overloads are optimized for the particular structure of
+ * our matrices.
+ *
+ * However generic overloads are also implemented. We use `tooGenericWarning` to 
+ * print a warning when a generic overload is used because it could be a sign that
+ * we are lacking an overload (or that the matrices types are not the ones
+ * we believe).
+ *
+ *
+ * \see operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
+ * */
+void tooGenericWarning(const std::string& message);
 
 #endif

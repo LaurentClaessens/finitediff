@@ -22,6 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 #include <string>
 
+/** 
+ * This exception is raised when one tries to multiply or compare matrices that have not the same size.
+ * */
 class IncompatibleMatrixSizeException : public std::exception
 {
     private :

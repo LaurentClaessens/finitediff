@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-#include "../src/Utilities.cpp"
+#include "../src/Utilities.h"
 
 class UtilitiesTest : public CppUnit::TestCase
 {

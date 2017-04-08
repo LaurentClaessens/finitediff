@@ -29,3 +29,9 @@ void echo_single_test(const std::string& s)
 }
 
 std::ostream& debug_print(std::cout);
+
+
+void tooGenericWarning(const std::string& message)
+{
+    std::cout<<message<<std::endl;
+}

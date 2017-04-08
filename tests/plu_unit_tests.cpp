@@ -44,12 +44,12 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     CPPUNIT_ASSERT(ans_prod.isNumericallyEqual(atm.A,epsilon));
 
 
+    echo_single_test("U factor");
+    CPPUNIT_ASSERT(cU.isNumericallyEqual(atm.ans_U,epsilon));
     echo_single_test("P factor");
     CPPUNIT_ASSERT(cP.isNumericallyEqual(atm.ans_P,epsilon));
     echo_single_test("L factor");
     CPPUNIT_ASSERT(cL.isNumericallyEqual(atm.ans_L,epsilon));
-    echo_single_test("U factor");
-    CPPUNIT_ASSERT(cU.isNumericallyEqual(atm.ans_U,epsilon));
 
     echo_single_test("product cPLU");
     auto c_prod=cP*cL*cU;

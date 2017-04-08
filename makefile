@@ -12,7 +12,7 @@ DEL_FILE      = rm -f
 
 BUILD_DIR = build/
 SRC_DIR = src/
-SNMATRICES_DIR = $(SRC_DIR)/SNmatrices/
+SNMATRICES_DIR = $(SRC_DIR)SNmatrices/
 TESTS_DIR = tests/
 TEST_DEPENDENCIES=m_num Utilities
 
