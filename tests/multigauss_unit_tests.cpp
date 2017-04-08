@@ -129,6 +129,86 @@ class multigaussTests : public CppUnit::TestCase
             echo_single_test("G0*G1*G2");
             CPPUNIT_ASSERT(ans.isNumericallyEqual(G0*G1*G2,epsilon));
         }
+        void product_tests()
+        {
+            echo_function_test("product_tests");
+
+            auto E=testMatrixE();       //SNmatrix<double,4>
+            auto F=testMatrixF();       //SNmatrix<double,4>
+            auto H=testMatrixH();       //SNmatrix<double,4>
+            double epsilon(0.0000001);
+
+            auto G0=E.getGaussian(0);
+            auto G1=F.getGaussian(1);
+            auto G2=H.getGaussian(2);
+
+            auto t21=G2*G1;
+            auto t10=G1*G0;
+            auto t21_0=t21*G0;  //(G2*G1)*G0
+            auto t2_10=G2*t10;  //G2*(G1*G0)
+            auto t210=G2*G1*G0;
+
+            SNmultiGaussian<double,4> ans_21;
+            ans_21.setLastColumn(2);
+
+    
+//[ 1.0    0.0                0.0          0.0]
+//[ 0.0    1.0                0.0          0.0]
+//[ 0.0   -4.0                1.0          0.0]
+//[ 0.0   12.953320000000001  -4.11333     1.0]
+
+
+            ans_21.at(2,1)=-4;
+            ans_21.at(3,1)=12.95332;
+            ans_21.at(3,2)=-4.11333;
+
+            SNmultiGaussian<double,4> ans_10;
+            ans_10.setLastColumn(1);
+
+//[  1.0   0.0   0.0   0.0]
+//[-1.25   1.0   0.0   0.0]
+//[ 4.25  -4.0   1.0   0.0]
+//[3.875  -3.5   0.0   1.0]
+
+            ans_10.at(1,0)=-1.25;
+            ans_10.at(2,0)=4.25;
+            ans_10.at(3,0)=3.875;
+            ans_10.at(2,1)=-4;
+            ans_10.at(3,1)=-3.5;
+
+
+            SNmultiGaussian<double,4> ans_210;
+            ans_21.setLastColumn(2);
+
+//[                1.0                 0.0           0.0    0.0]
+//[              -1.25                 1.0           0.0    0.0]
+//[               4.25                -4.0           1.0    0.0]
+//[-13.606652500000001  12.953320000000001      -4.11333    1.0]
+
+            ans_10.at(1,0)=-1.25;
+            ans_10.at(2,0)=4.25;
+            ans_10.at(3,0)=-13.6066525;
+            ans_10.at(2,1)=-4;
+            ans_10.at(3,1)=12.95332;
+            ans_10.at(3,2)=-4.11333;
+
+            CPPUNIT_ASSERT(t21.isNumericallyEqual(ans_21,epsilon));
+            CPPUNIT_ASSERT(t10.isNumericallyEqual(ans_10,epsilon));
+            CPPUNIT_ASSERT(t21_0.isNumericallyEqual(ans_210,epsilon));
+            CPPUNIT_ASSERT(t2_10.isNumericallyEqual(ans_210,epsilon));
+            CPPUNIT_ASSERT(t210.isNumericallyEqual(ans_210,epsilon));
+
+            auto a=G1*(G0*E);
+            auto b=(G1*G0)*E;
+            SNmultiGaussian<double,4> mag;
+            mag=G2*(G1*G0);
+
+            CPPUNIT_ASSERT(a.isNumericallyEqual(b,epsilon));
+
+            // This is a test for the initialization of
+            // data_last_column
+            CPPUNIT_ASSERT(mag.isNumericallyEqual(t210,epsilon));
+        }
         void multi_working_tests()
         {
             echo_function_test("multi working tests");
@@ -138,39 +218,15 @@ class multigaussTests : public CppUnit::TestCase
 
             SNgaussian<double,4> G0(E);
 
-            debug_print<<"D1"<<std::endl;
             auto G1=(G0*E).getGaussian(1);
-            debug_print<<"D2"<<std::endl;
-            auto a=G1*(G0*E);
-            debug_print<<"D2.3"<<std::endl;
-            auto b=(G1*G0)*E;
-            debug_print<<"D2.5"<<std::endl;
             auto G2=(G1*G0*E).getGaussian(2);
-            debug_print<<"D3"<<std::endl;
-
-            debug_print<<"On va créer mg"<<std::endl;
 
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
-            debug_print<<"mg est créée et son last est "<<mg.getLastColumn()<<std::endl;
-
-            debug_print<<"On va créer mag"<<std::endl;
-            SNmultiGaussian<double,4> mag;
-            debug_print<<"last de mag : "<<mag.getLastColumn()<<std::endl;
-            debug_print<<"mag est créée"<<std::endl;
-            mag=G2*(G1*G0);
-            debug_print<<"mag est assignée"<<std::endl;
-            debug_print<<"last de mag : "<<mag.getLastColumn();
-
-            debug_print<<"last de mg : "<<mg.getLastColumn()<<std::endl;
-
             auto prod=mg*E;
-
-            debug_matrix_print("mg",mg);
-            debug_matrix_print("G2*G1*G0",G2*G1*G0);
-
 
             debug_matrix_print("prod",prod);
 
+            echo_single_test("check vanishing components og G2*G1*G0*E");
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
             CPPUNIT_ASSERT(prod.get(3,0)==0);
@@ -249,6 +305,7 @@ class multigaussTests : public CppUnit::TestCase
     public:
         void runTest()
         {
+            product_tests();
             multi_working_tests();
             non_initialized_tests();
             wrong_order_works();
