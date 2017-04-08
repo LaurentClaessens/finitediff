@@ -314,6 +314,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
         }
         void inverse_tests()
         {
+            echo_function_test("inverse_tests");
             CPPUNIT_ASSERT(false);      // to be implemented.
         }
         void non_initialized_tests()
