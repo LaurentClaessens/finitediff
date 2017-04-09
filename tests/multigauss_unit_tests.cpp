@@ -337,6 +337,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
     public:
         void runTest()
         {
+            inverse_tests();
             product_tests();
             multi_working_tests();
             non_initialized_tests();
@@ -345,7 +346,6 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             working_tests();
             get_at_tests();
             constructor_tests();
-            inverse_tests();
         }
 };
 
