@@ -41,10 +41,10 @@ function launch_test
     echo "--- Ended " $1
 }
 
+launch_test "sn_gaussian_unit_tests"
 launch_test "multigauss_unit_tests"
 launch_test "plu_unit_tests"
 launch_test "m_num_unit_tests"
-launch_test "sn_gaussian_unit_tests"
 launch_test "sn_permutation_unit_tests"
 launch_test "exceptions_unit_tests"
 launch_test "repeat_function_unit_tests"
