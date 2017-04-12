@@ -2,7 +2,7 @@
 
 I'm trying to implement the finite difference method for solving differential equations.
 
-* You can read the [documentation](http://laurent.claessens-donadello.eu/finitediff/html/index.html) by Doxygen (work in progress).
+* You can read the [documentation](http://laurent.claessens-donadello.eu/finitediff/html/files.html) by Doxygen (work in progress).
 * The mathematics is developed [here](http://laurent.claessens-donadello.eu/pdf/lefrido.pdf) as I'm learning it.
 
 ## Purpose
