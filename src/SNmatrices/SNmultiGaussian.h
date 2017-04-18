@@ -250,9 +250,16 @@ SNmultiGaussian<T,tp_size> SNmultiGaussian<T,tp_size>::inverse() const
     auto ans=*this;
     for (m_num col=0;col<getLastColumn()+1;++col)
     {
+        // one can parallelize with respect to the columns,
+        // not with respect to the lines.
         for (m_num line=col+1;line<tp_size;++line)
         {
-            ans.at(line,col)= - ans.at(line,col);
+            T acc=0;
+            for (m_num k=col;k<line;++k)
+            {
+                acc+=this->get(line,k)*ans.get(k,col);
+            }
+            ans.at(line,col)= - acc;
         }
     }
     return ans;
