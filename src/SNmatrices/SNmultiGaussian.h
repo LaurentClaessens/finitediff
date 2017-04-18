@@ -86,6 +86,9 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          * */
         void operator *=(const SNgaussian<T,tp_size>& other);
 
+        /** return the inverse matrix */
+        SNmultiGaussian<T,tp_size> inverse() const;
+
         /** return the number of the last non trivial column */
         m_num getLastColumn() const;
         /** 
@@ -132,14 +135,13 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 };
 
 // CONSTRUCTORS -------------------------------------------------
-//
+
 // from nothing
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
     data_L(SNidentity<T,tp_size>()),
     data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
-{
-}
+{ }
 
 // from generic
 template <class T,unsigned int tp_size>
@@ -153,8 +155,7 @@ template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
     data_L(A.data_L),
     data_last_column(A.getLastColumn())
-{ 
-}
+{ }
 
 // from gaussian
 template <class T,unsigned int tp_size>
@@ -238,6 +239,23 @@ void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
     {
         this->at(l,other.getColumn())+=other.get(l,other.getColumn());
     }
+}
+
+// MATHEMATICS -------------------------------------------
+
+
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size> SNmultiGaussian<T,tp_size>::inverse() const
+{
+    auto ans=*this;
+    for (m_num col=0;col<getLastColumn()+1;++col)
+    {
+        for (m_num line=col+1;line<tp_size;++line)
+        {
+            ans.at(line,col)= - ans.at(line,col);
+        }
+    }
+    return ans;
 }
 
 // UTILITIES  ---------------------------------------
