@@ -247,7 +247,6 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             echo_function_test("multi working tests");
 
             auto E=testMatrixE();       //SNmatrix<double,4>
-            double epsilon(0.0000001);
 
             SNgaussian<double,4> G0(E);
 
@@ -257,7 +256,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
             auto prod=mg*E;
 
-            echo_single_test("check vanishing components og G2*G1*G0*E");
+            echo_single_test("check vanishing components in G2*G1*G0*E");
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
             CPPUNIT_ASSERT(prod.get(3,0)==0);
