@@ -378,7 +378,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             K.swapLines(3,4);
             CPPUNIT_ASSERT(K==ans);
     
-            echo_single_test("throw when swaping wrong lines");
+            echo_single_test("throw when swapping wrong lines");
             K.swapLines(3,4);
             CPPUNIT_ASSERT_THROW(K.swapLines(4,2),ProbablyNotWhatYouWantException);
         }
