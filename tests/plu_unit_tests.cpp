@@ -74,6 +74,57 @@ class pluTest : public CppUnit::TestCase
             auto_test(atm_BAR);
             auto_test(atm_ooIJXAooDhmylq);
         }
+        void plu_from_PLU_tests()
+        {
+            echo_function_test("PLU from PLU");
+
+            // We take the PLU of A and then try to get the PLU
+            // of P,L and U.
+            // The result of PLU of P should be (P,id,id).
+            // The result of PLU of L should be (id,L,id).
+            // The result of PLU of U should be (id,id,U).
+
+            auto A=testMatrixL();
+            auto plu=A.getPLU();
+
+            // Not 'auto' because I want to compute the 
+            // PLU decomposition from scratch.
+            // If 'auto', the first will be a "SNpermutation" object
+            // and is eligible to have a very optimized PLU decomposition.
+            SNmatrix<double,5> mP(plu.getP());
+            SNmatrix<double,5> mL(plu.getL());
+            SNmatrix<double,5> mU(plu.getU());
+
+            auto Pplu=mP.getPLU();
+            auto Lplu=mL.getPLU();
+            auto Uplu=mU.getPLU();
+
+            SNmatrix<double,5> PP=Pplu.getP();
+            SNmatrix<double,5> PL=Pplu.getL();
+            SNmatrix<double,5> PU=Pplu.getU();
+
+            SNmatrix<double,5> LP=Lplu.getP();
+            SNmatrix<double,5> LL=Lplu.getL();
+            SNmatrix<double,5> LU=Lplu.getU();
+
+            SNmatrix<double,5> UP=Uplu.getP();
+            SNmatrix<double,5> UL=Uplu.getL();
+            SNmatrix<double,5> UU=Uplu.getU();
+
+            auto ID=SNidentity<double,5>();
+
+            CPPUNIT_ASSERT(PP==mP);
+            CPPUNIT_ASSERT(PL==ID);
+            CPPUNIT_ASSERT(PU==ID);
+
+            CPPUNIT_ASSERT(LP==ID);
+            CPPUNIT_ASSERT(LL==mL);
+            CPPUNIT_ASSERT(LU==ID);
+
+            CPPUNIT_ASSERT(UP==ID);
+            CPPUNIT_ASSERT(UL==ID);
+            CPPUNIT_ASSERT(UU==mU);
+        }
     public:
         void runTest()
         {
@@ -82,6 +133,7 @@ class pluTest : public CppUnit::TestCase
             test_A(testMatrixD(),testMatrixD_U());
             test_A(testMatrixE(),testMatrixE_U());
             launch_auto_tests_sage();
+            plu_from_PLU_tests();
         }
 };
 
