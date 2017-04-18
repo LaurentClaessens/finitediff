@@ -38,9 +38,11 @@ class SNgaussianTest : public CppUnit::TestCase
             auto H=testMatrixH();
             auto Hg=H.getGaussian(2);
             auto iHg=Hg.inverse();
-            auto ID=SNpermutation<double,4>();
+            auto ID=SNidentity<double,4>();
 
             double epsilon(0.000001);
+
+            echo_single_test("Product with the inverse");
             CPPUNIT_ASSERT(ID.isNumericallyEqual(Hg*iHg,epsilon)  );
             CPPUNIT_ASSERT(ID.isNumericallyEqual(iHg*Hg,epsilon)  );
 

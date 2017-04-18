@@ -1,2 +1,0 @@
-This file is mainly for personal usage. It describes the purpose of each created branch.
-

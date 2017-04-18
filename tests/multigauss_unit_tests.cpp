@@ -315,7 +315,35 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
         void inverse_tests()
         {
             echo_function_test("inverse_tests");
-            CPPUNIT_ASSERT(false);      // to be implemented.
+
+            auto J=testMatrixJ();       //multigaussian
+            auto iJ=J.inverse();
+            auto ID=SNidentity<double,4>();
+            double epsilon(0.0001);
+
+            SNmultiGaussian<double,4> ans;
+            ans.setLastColumn(1);
+            ans.at(1,0)=-2; 
+            ans.at(2,0)=5; ans.at(2,1)=-4;
+            ans.at(3,0)=8; ans.at(3,1)=-7;
+
+            echo_single_test("the inverse is correctly computed");
+            CPPUNIT_ASSERT(iJ==ans);
+
+            echo_single_test("J*iJ()");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J*iJ,epsilon));
+
+            echo_single_test("J*J.inverse()");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J*J.inverse(),epsilon));
+
+            echo_single_test("iJ*J");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(iJ*J,epsilon));
+
+            echo_single_test("J.inverse()*J");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J.inverse()*J,epsilon));
+
+            echo_single_test("The inverse of the inverse");
+            CPPUNIT_ASSERT(J.isNumericallyEqual(iJ.inverse(),epsilon));
         }
         void non_initialized_tests()
         {
@@ -337,6 +365,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
     public:
         void runTest()
         {
+            inverse_tests();
             product_tests();
             multi_working_tests();
             non_initialized_tests();
@@ -345,7 +374,6 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             working_tests();
             get_at_tests();
             constructor_tests();
-            inverse_tests();
         }
 };
 

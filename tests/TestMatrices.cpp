@@ -229,6 +229,22 @@ auto testMatrixI()
     return A;
 }
 
+auto testMatrixJ()
+{
+
+    // 1 0 0 0
+    // 2 1 0 0
+    // 3 4 1 0
+    // 6 7 8 1
+
+    SNmultiGaussian<double,4> A;
+    A.setLastColumn(1);
+    A.at(1,0)=2; 
+    A.at(2,0)=3; A.at(2,1)=4;
+    A.at(3,0)=6; A.at(3,1)=7;
+    
+    return A;
+}
 
 template <class T,unsigned int tp_size>
 class AutoTestMatrix

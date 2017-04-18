@@ -117,16 +117,26 @@ SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& A, const SNgaussian<V,t>& B)
 {
     checkSizeCompatibility(A,B);
+    unsigned int tp_size=s;
 
     SNmultiGaussian<U,s> ans;
-    if (A.getColumn()>=B.getColumn())
+    if (A.getColumn()==B.getColumn())
+    {
+        ans.setLastColumn(A.getColumn());
+        m_num col=A.getColumn();
+        for (m_num line = col+1 ; line< tp_size ;++line )
+        {
+            ans.at(line,col)=A.get(line,col)+B.get(line,col);
+        }
+    }
+    else if (A.getColumn()>B.getColumn())
     {
         ans.setLastColumn(A.getColumn());
 
             // The `_at` function in in `SNmultigauss` automatically 
             // returns '0' when the column number is large than 
             // // `getLastColumn`. In other words, these are 
-            // "special values" // and attempting to access them with `_at`
+            // "special values" and attempting to access them with `_at`
             // throws a `SNchangeNotAllowedException`. 
         for (m_num col=0;col <= ans.getLastColumn() ;++col)
         {
@@ -293,7 +303,7 @@ SNmultiGaussian<U,s> operator*
         {
             U acc=0;
             // TODO : non optimal because the first and last products are 1*something and something*1.
-            for (m_num k=col;k<line;++k)
+            for (m_num k=col;k <= line;++k)
             {
                 acc+=(A.get(line,k)*B.get(k,col));
             }
