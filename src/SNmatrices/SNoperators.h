@@ -303,7 +303,7 @@ SNmultiGaussian<U,s> operator*
         {
             U acc=0;
             // TODO : non optimal because the first and last products are 1*something and something*1.
-            for (m_num k=col;k<line;++k)
+            for (m_num k=col;k <= line;++k)
             {
                 acc+=(A.get(line,k)*B.get(k,col));
             }
