@@ -35,6 +35,12 @@ m_num::m_num(const int n)
     num=n;
 }
 
+
+void m_num::swap(m_num& other)
+{
+    std::swap(num,other.num);
+}
+
 // CONVERSIONS   ----------------------------------
 
 m_num::operator unsigned int() const
@@ -64,7 +70,10 @@ bool m_num::operator >(const int& b) const
 { 
     return int(num)>b; 
 }
-bool m_num::operator <(const unsigned int& b) const { return num<b; }
+bool m_num::operator <(const unsigned int& b) const 
+{
+    return num<b;
+}
 bool m_num::operator <(const m_num& b) const { return num<b.num; }
 bool m_num::operator <(const int& b) const 
 { 

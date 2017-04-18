@@ -20,13 +20,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __SNGENERIC_H__142708_
 
 #include <cmath>
+#include <array>
+#include <string>
 
 #include "SNgaussian.h"
 #include "SNline.h"
 #include "m_num.h"
 
 #include "MathUtilities.h"
-#include "../DebugPrint.h"
+#include "../Utilities.h"
 
 
 // forward
@@ -158,9 +160,40 @@ SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(m_num l) const
 template <class V,unsigned int s>
 std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
 {
-    for (m_num l=0;l<s;l++)
+    const unsigned int tp_size=s;     // homogenize the notations.
+    std::array<int,tp_size> col_size;
+
+    // - we parse each column to know its size (max length of the elements).
+    // - the size of the columns are stored in `col_size`
+    // - we parse the matrix line by line, adding the right 
+    //   amount of ' ' (blanck) to fit the length of the column 
+    //   (+2 for aesthetics)
+
+    for (m_num col=0;col<tp_size;++col)
     {
-        stream<<snm.getSNline(l)<<std::endl;
+        unsigned int acc=0;
+        for (m_num line=0;line<tp_size;++line)
+        {
+            V value = snm.get(line,col);
+            unsigned int l_value = value_length(value);
+
+            if (l_value>acc)
+            {
+                acc=l_value;
+            }
+        }
+        col_size.at(col)=acc;
+        col_size.at(col)=10;
+    }
+
+    for (m_num l=0;l<tp_size;l++)
+    {
+        for (m_num c=0;c<tp_size;++c)
+        {
+            V value = snm.get(l,c);
+            stream<<value<<std::string(col_size.at(c)-value_length(value)+2,' ');
+        }
+        stream<<std::endl;
     }
     return stream;
 }
@@ -219,7 +252,7 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgaussian<V,s>& G)
 {
     checkSizeCompatibility(*this,G);
-    m_num c=G.column;
+    m_num c=G.getColumn();
 
     // subtract the non trivial "half column"
     for (m_num i=c+1;i<tp_size;i++)
@@ -237,6 +270,9 @@ template <class T,unsigned int tp_size>
 template <class V,unsigned int s>
 bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
 {
+
+    //tooGenericWarning("This is a very generic comparison function SNgeneric Vs SNgeneric. Cant'you be more specific ?");
+
     checkSizeCompatibility(*this,A);
     T abs_diff;
     for (m_num i=0;i<tp_size;i++)

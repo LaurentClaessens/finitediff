@@ -22,6 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 #include <string>
 
+/** 
+ * This exception is raised when one tries to multiply or compare matrices that have not the same size.
+ * */
 class IncompatibleMatrixSizeException : public std::exception
 {
     private :
@@ -43,27 +46,59 @@ class IncompatibleMatrixSizeException : public std::exception
         }
 };
 
-
 class SNchangeNotAllowedException : public std::exception
 {
     private :
-        unsigned int line;
-        unsigned int column;
+        const unsigned int line;
+        const unsigned int column;
+        const std::string message;
 
     public: 
-        SNchangeNotAllowedException(const unsigned int i, const unsigned int j): 
+        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string msg=""): 
             line(i),
-            column(j)
+            column(j),
+            message(msg)
     {}
         virtual const char* what() const throw()
         {
             std::string s_line=std::to_string(line);
             std::string s_col=std::to_string(column);
 
-            std::string text= "You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'.";
+            std::string text= "You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
             return text.c_str();
         }
 };
+
+class NotInitializedMemberException : public std::exception
+{
+    private :
+        std::string text;
+
+    public: 
+        NotInitializedMemberException(std::string t): 
+            text(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            return text.c_str();
+        }
+};
+
+class OutOfRangeColumnNumber : public std::exception
+{
+    private :
+        std::string text;
+
+    public: 
+        OutOfRangeColumnNumber(std::string t): 
+            text(t)
+    {}
+        virtual const char* what() const throw()
+        {
+            return text.c_str();
+        }
+};
+
 
 class SNoutOfRangeException : public std::exception
 {

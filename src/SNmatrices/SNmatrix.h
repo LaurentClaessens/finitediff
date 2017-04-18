@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../SNvector.h"
 #include "../SNexceptions.cpp"
 
-#include "../DebugPrint.h"
+#include "../Utilities.h"
 
 
 // forward definition
@@ -128,7 +128,9 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         void swapLines(m_num l1,m_num l2);
 
 
-        // return the PLU decomposition.
+        /** 
+         * return the PLU decomposition as a `SNplu` object.
+         */ 
         SNplu<T,tp_size> getPLU() const;
 
 };

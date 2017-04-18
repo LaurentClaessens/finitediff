@@ -17,21 +17,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-
 #ifndef __MNUM_H__094427__
 #define __MNUM_H__094427__
 
+#import <iostream>
 
-
-/*
- 
-    This class is a wrapper for (a priori) 'unsigned int'.
+/**
+    This class is a wrapper for (a priori) `unsigned int`.
 
     It represents a number of line or column in a matrix.
 
     For the moment, the template parameter for the matrix size itself
     remains 'unsigned int'.
-
 */
 
 class m_num
@@ -53,7 +50,10 @@ class m_num
         bool operator <(const m_num& b) const;
         bool operator <(const int& b) const;
 
+        /** Allows conversion to `unsigned int` */
         operator unsigned int() const;
+
+        void swap(m_num& other);
 };
 
 

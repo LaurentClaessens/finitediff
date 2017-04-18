@@ -70,10 +70,6 @@ class Mpermutation
         Mpermutation(); 
 
 
-        /**  the multiplication "permutation1 * permutation2" 
-         is the composition. */
-        Mpermutation<tp_size> operator*(const Mpermutation<tp_size> b);
-        
         /** return by value the image of `k` */
         unsigned int operator()(const unsigned int k) const;
         /** return by value the image of `k` */
@@ -117,8 +113,8 @@ Mpermutation<tp_size>::Mpermutation(const std::array<unsigned int,tp_size>& d) :
 template <unsigned int tp_size>
 Mpermutation<tp_size>::Mpermutation(const MelementaryPermutation<tp_size>& p )
 {
-    this->at(  p.elA  )=p.elB;
-    this->at(  p.elB  )=p.elA;
+    this->at(  p.getA()  )=p.getB();
+    this->at(  p.getB()  )=p.getA();
 }
 
 template <unsigned int tp_size>
@@ -136,18 +132,6 @@ template <unsigned int tp_size>
 bool Mpermutation<tp_size>::operator==(const Mpermutation<tp_size>& other) const
 {
     return data==other.data;
-}
-
-
-template <unsigned int tp_size>
-Mpermutation<tp_size> Mpermutation<tp_size>::operator*(const Mpermutation<tp_size> b)
-{
-    Mpermutation<tp_size> new_perm;
-    for (unsigned int i=0;i<tp_size;++i)
-    {
-        new_perm.at(i)=image(  b.image(i)  );
-    }
-    return new_perm;
 }
 
 template <unsigned int tp_size>
