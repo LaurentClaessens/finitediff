@@ -45,7 +45,6 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     auto ans_prod=atm.ans_P*atm.ans_L*atm.ans_U;
     CPPUNIT_ASSERT(ans_prod.isNumericallyEqual(atm.A,epsilon));
 
-
     echo_single_test("U factor");
     CPPUNIT_ASSERT(cU.isNumericallyEqual(atm.ans_U,epsilon));
     echo_single_test("P factor");
@@ -76,9 +75,6 @@ class pluTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(cU.isNumericallyEqual(A_U,epsilon));
             echo_single_test("Testing the product");
 
-            debug_matrix_print("A",A);
-            debug_matrix_print("cP*cL*cU",cP*cL*cU);
-
             CPPUNIT_ASSERT(A.isNumericallyEqual( cP*cL*cU,epsilon));
         }
         /** 
@@ -89,6 +85,9 @@ class pluTest : public CppUnit::TestCase
          * */
         void launch_auto_tests_sage()
         {
+
+            // TODO : mettre ici tous les tests de type test_A
+
             auto_test(atm_ooTBBRooWpZkfJ);
             auto_test(atm_FOO);
             auto_test(atm_BAR);
