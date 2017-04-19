@@ -247,7 +247,6 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             echo_function_test("multi working tests");
 
             auto E=testMatrixE();       //SNmatrix<double,4>
-            double epsilon(0.0000001);
 
             SNgaussian<double,4> G0(E);
 
@@ -257,7 +256,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
             auto prod=mg*E;
 
-            echo_single_test("check vanishing components og G2*G1*G0*E");
+            echo_single_test("check vanishing components in G2*G1*G0*E");
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
             CPPUNIT_ASSERT(prod.get(3,0)==0);
@@ -362,9 +361,31 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
             SNmultiGaussian<int,4> F;
             CPPUNIT_ASSERT_THROW(F.setLastColumn(7),OutOfRangeColumnNumber);
         }
+        void swap_lines_tests()
+        {
+            echo_function_test("swap_lines_tests");
+            SNmultiGaussian<double,5> K=testMatrixK();
+
+            SNmultiGaussian<double,5> ans;
+            ans.setLastColumn(2);
+            ans.at(1,0)=2; 
+            ans.at(2,0)=3; ans.at(2,1)=4;
+            ans.at(4,0)=6; ans.at(4,1)=7; ans.at(4,2)=8;
+            ans.at(3,0)=9; ans.at(3,1)=2; ans.at(3,2)=3;
+
+
+            echo_single_test("basic swap");
+            K.swapLines(3,4);
+            CPPUNIT_ASSERT(K==ans);
+    
+            echo_single_test("throw when swapping wrong lines");
+            K.swapLines(3,4);
+            CPPUNIT_ASSERT_THROW(K.swapLines(4,2),ProbablyNotWhatYouWantException);
+        }
     public:
         void runTest()
         {
+            swap_lines_tests();
             inverse_tests();
             product_tests();
             multi_working_tests();

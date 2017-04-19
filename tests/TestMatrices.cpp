@@ -24,10 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Copy-paste for creating own matrix
-    //FOOOO.at(0,0)=<++>; FOO.at(0,1)=<++>; FOO.at(0,2)=<++>; FOO.at(0,3)=<++>;
-    //FOOOO.at(1,0)=<++>; FOO.at(1,1)=<++>; FOO.at(1,2)=<++>; FOO.at(1,3)=<++>;
-    //FOOOO.at(2,0)=<++>; FOO.at(2,1)=<++>; FOO.at(2,2)=<++>; FOO.at(2,3)=<++>;
-    //FOOOO.at(3,0)=<++>; FOO.at(3,1)=<++>; FOO.at(3,2)=<++>; FOO.at(3,3)=<++>;
+    //FOO.at(0,0)=<++>; FOO.at(0,1)=<++>; FOO.at(0,2)=<++>; FOO.at(0,3)=<++>;
+    //FOO.at(1,0)=<++>; FOO.at(1,1)=<++>; FOO.at(1,2)=<++>; FOO.at(1,3)=<++>;
+    //FOO.at(2,0)=<++>; FOO.at(2,1)=<++>; FOO.at(2,2)=<++>; FOO.at(2,3)=<++>;
+    //FOO.at(3,0)=<++>; FOO.at(3,1)=<++>; FOO.at(3,2)=<++>; FOO.at(3,3)=<++>;
 
 auto testMatrixA()
 /*
@@ -235,7 +235,7 @@ auto testMatrixJ()
     // 1 0 0 0
     // 2 1 0 0
     // 3 4 1 0
-    // 6 7 8 1
+    // 6 7 0 1
 
     SNmultiGaussian<double,4> A;
     A.setLastColumn(1);
@@ -245,6 +245,46 @@ auto testMatrixJ()
     
     return A;
 }
+
+auto testMatrixK()
+{
+
+    // 1 0 0 0 0
+    // 2 1 0 0 0
+    // 3 4 1 0 0
+    // 6 7 8 1 0
+    // 9 2 3 0 1
+
+    SNmultiGaussian<double,5> A;
+    A.setLastColumn(2);
+    A.at(1,0)=2; 
+    A.at(2,0)=3; A.at(2,1)=4;
+    A.at(3,0)=6; A.at(3,1)=7; A.at(3,2)=8;
+    A.at(4,0)=9; A.at(4,1)=2; A.at(4,2)=3;
+    
+    return A;
+}
+
+auto testMatrixL()
+{
+
+    // 1 3 4 5 6
+    // 2 5 7 8 9
+    // 3 4 6 2 0
+    // 6 7 8 7 1
+    // 9 2 3 0 1
+
+    SNmatrix<double,5> A;
+
+    A.at(0,0)=1; A.at(0,1)=3; A.at(0,2)=4; A.at(0,3)=5;A.at(0,4)=6;
+    A.at(1,0)=2; A.at(1,1)=5; A.at(1,2)=7; A.at(1,3)=8;A.at(1,4)=9;
+    A.at(2,0)=3; A.at(2,1)=3; A.at(2,2)=6; A.at(2,3)=2;A.at(2,4)=0;
+    A.at(3,0)=6; A.at(3,1)=7; A.at(3,2)=8; A.at(3,3)=7;A.at(3,4)=1;
+    A.at(4,0)=9; A.at(4,1)=2; A.at(4,2)=3; A.at(4,3)=0;A.at(4,4)=1;
+    
+    return A;
+}
+
 
 template <class T,unsigned int tp_size>
 class AutoTestMatrix

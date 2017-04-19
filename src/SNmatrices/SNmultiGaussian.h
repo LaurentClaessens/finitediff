@@ -89,6 +89,18 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         /** return the inverse matrix */
         SNmultiGaussian<T,tp_size> inverse() const;
 
+        /*\brief Swap the lines \f$ i \f$ and \f$ j \f$.
+         *
+         * This only works when \f$ i \f$ and \f$ j \f$ are larger than
+         * the last non trivial column.
+         *
+         * If \f$ i \f$ or \f$ j \f$ is lower or equal to the last non trivial line,
+         * throw a `ProbablyNotWhatYouWantException`.
+         *
+         * In place replacement.
+         */
+        void swapLines(const m_num& i,const m_num& j);
+
         /** return the number of the last non trivial column */
         m_num getLastColumn() const;
         /** 
@@ -148,7 +160,7 @@ template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
     data_L(A.getGaussian(0)),
     data_last_column(0)
-{ }
+{  }
 
 // from multigaussian
 template <class T,unsigned int tp_size>
@@ -263,6 +275,20 @@ SNmultiGaussian<T,tp_size> SNmultiGaussian<T,tp_size>::inverse() const
         }
     }
     return ans;
+}
+
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::swapLines(const m_num& i,const m_num& j)
+{
+    if (i<=getLastColumn() or j<=getLastColumn())
+    {
+        throw ProbablyNotWhatYouWantException("You are trying to swap the lines "+std::to_string(i)+" and "+std::to_string(j)+" while the last non trivial column is "+std::to_string(getLastColumn()) );
+    }
+    for (m_num col=0;col<=getLastColumn();++col)
+    {
+        std::swap( this->at(i,col),this->at(j,col)  );
+    }
 }
 
 // UTILITIES  ---------------------------------------
