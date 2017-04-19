@@ -39,3 +39,10 @@ For `SNgaussian`, we set the attribute `column` as private and add the 'get' and
 
 * Regroup the small functions here and there in `Utilities.h` and `Utilities.cpp`
 * Develop and test the function `value_length`
+
+# prod_perm
+
+Work on the product of permutations.
+
+* define Mpermutation * MelementaryPermutation
+* Make non-member the other one.
