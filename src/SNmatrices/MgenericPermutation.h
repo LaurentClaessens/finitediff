@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __MGENERICPERMUTATION_H__238823794
 
 
+
 //forward
 template <unsigned int>
 class MelementaryPermutation;
@@ -35,6 +36,11 @@ class MelementaryPermutation;
  * This virtual base class provides the common operations of
  * `MelementaryPermutation` and `Mpermutation`.
  *
+ * - Mainly the product `operator*` have the same implementation for the 4
+ * possibilities of products `MelementaryPermutation` by `Mpermutation`.
+ *
+ * - Also rationalize the definition of `operator()` from the definition of
+ *   the member function `image`.
  */
 
 
