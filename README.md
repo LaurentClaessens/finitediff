@@ -18,6 +18,7 @@ Non-official purposes include
 ## Latest news
 
 * The PLU decomposition is done.
+* Next step : solving linear systems. See the branch `alpha`.
 
 ## deploy.sh
 
