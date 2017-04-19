@@ -406,7 +406,6 @@ SNmultiGaussian<U,s> operator*
  * is the composition. 
 */
 
-
 template <unsigned int tp_size>
 Mpermutation<tp_size> operator*
 (const Mpermutation<tp_size>& p1, const Mpermutation<tp_size>& p2)
@@ -417,6 +416,26 @@ Mpermutation<tp_size> operator*
         new_perm.at(i)=p1.image( p2.image(i) );
     }
     return new_perm;
+}
+
+/** 
+ *\brief Product `MgenericPermutation` * `MgenericPermutation`
+ *
+ * The product is the composition.
+ *
+ * This product defines the products of `Mpermutation` and `MelementaryPermutation` (there are 4 possibilities).
+ * 
+ * */
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> operator*(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
+{
+    Mpermutation<tp_size> tmp;
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        tmp.at(k)=A.image( B.image(k)  );
+    }
+    return tmp;
 }
 
 // SUM ---------------------------------------
@@ -478,6 +497,32 @@ template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNupperTriangular<V,t>& B)
 {
     return B==A;
+}
+
+
+/** 
+ *\brief Return true if the two permutations are equal.
+ * */
+template <unsigned int tp_size>
+bool operator==(const Mpermutation<tp_size>& A, const Mpermutation<tp_size>& B) 
+{
+    return A.data==B.data;
+}
+
+/** 
+ *\brief Return true if the two permutations are equal.
+ * */
+template <unsigned int tp_size>
+bool operator==(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        if (A(k)!=B(k)   )
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 #endif

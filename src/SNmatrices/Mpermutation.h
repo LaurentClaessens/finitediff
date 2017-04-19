@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <array>
 
+#include "MgenericPermutation.h"
 #include "MelementaryPermutation.h"
 
 // THE CLASS HEADER -----------------------------------------
@@ -54,11 +55,13 @@ d->a
 */
 
 template <unsigned int tp_size>
-class Mpermutation
+class Mpermutation : public MgenericPermutation<tp_size>
 {
 
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, Mpermutation<s>);
+    template <unsigned int s>
+    friend bool operator==(const Mpermutation<s>&,const Mpermutation<s>&);
     
     private:
         std::array<unsigned int,tp_size> data;
@@ -69,17 +72,15 @@ class Mpermutation
         /** The no-argument constructors initializes to identity */
         Mpermutation(); 
 
-
         /** return by value the image of `k` */
-        unsigned int operator()(const unsigned int k) const;
-        /** return by value the image of `k` */
-        unsigned int image(const unsigned int k) const;
+        unsigned int image(const unsigned int k) const override;
 
-        // return by reference the image of 'k' by the permutation
-        // allows to populate.
+        /** 
+         * \brief return by reference the image of 'k' by the permutation
+         *
+         * Allows to populate.
+         * */
         unsigned int& at(const unsigned int k);
-
-        bool operator==(const Mpermutation<tp_size>& other) const;
 
         /** Return the inverse permutation */
         Mpermutation<tp_size> inverse() const;
@@ -87,7 +88,6 @@ class Mpermutation
 
 
 // GETTER METHODS ----------------------------
-
 
 template <unsigned int tp_size>
 unsigned int& Mpermutation<tp_size>::at(const unsigned int k)
@@ -127,29 +127,6 @@ Mpermutation<tp_size>::Mpermutation()
 }
 
 // OPERATORS -------------------------------
-
-template <unsigned int tp_size>
-bool Mpermutation<tp_size>::operator==(const Mpermutation<tp_size>& other) const
-{
-    return data==other.data;
-}
-
-template <unsigned int tp_size>
-unsigned int Mpermutation<tp_size>::image(const unsigned int k) const
-{
-    if (k>tp_size)
-    {
-        throw PermutationIdexoutOfRangeException(k,tp_size);
-    }
-    return data.at(k);
-}
-
-template <unsigned int tp_size>
-unsigned int Mpermutation<tp_size>::operator()(const unsigned int k) const
-{
-    return image(k);
-}
-
 template <unsigned int s>
 std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
 {
@@ -162,6 +139,16 @@ std::ostream& operator<<(std::ostream& stream, Mpermutation<s> perm)
 
 
 // MATHEMATICS -------------------------------
+
+template <unsigned int tp_size>
+unsigned int Mpermutation<tp_size>::image(const unsigned int k) const
+{
+    if (k>tp_size)
+    {
+        throw PermutationIdexoutOfRangeException(k,tp_size);
+    }
+    return data.at(k);
+}
 
 
 template <unsigned int tp_size>
