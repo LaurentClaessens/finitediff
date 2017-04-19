@@ -35,6 +35,8 @@ void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
     auto plu=atm.A.getPLU();
     double epsilon(0.0000001);
 
+    // The variables with 'c' prefix are the ones computed.
+
     auto cP=plu.getP();
     auto cL=plu.getL();
     auto cU=plu.getU();
@@ -65,13 +67,29 @@ class pluTest : public CppUnit::TestCase
             echo_function_test("Testing a pair A,A_U");
 
             auto plu=A.getPLU();
-            auto mU(plu.getU());
+            auto cP(plu.getP());
+            auto cL(plu.getL());
+            auto cU(plu.getU());
 
             double epsilon(0.0000001);
-            CPPUNIT_ASSERT(mU.isNumericallyEqual(A_U,epsilon));
+            echo_single_test("Testing a U");
+            CPPUNIT_ASSERT(cU.isNumericallyEqual(A_U,epsilon));
+            echo_single_test("Testing the product");
+
+            debug_matrix_print("A",A);
+            debug_matrix_print("cP*cL*cU",cP*cL*cU);
+
+            CPPUNIT_ASSERT(A.isNumericallyEqual( cP*cL*cU,epsilon));
         }
+        /** 
+         * for adding a test here,
+         * - add the matrix in `create_tests_matrices.sage`
+         * - launch `sage create_tests_matrices` in a terminal
+         * - add here a line `auto_test(atm_<chosen name>);`
+         * */
         void launch_auto_tests_sage()
         {
+            auto_test(atm_ooTBBRooWpZkfJ);
             auto_test(atm_FOO);
             auto_test(atm_BAR);
             auto_test(atm_ooIJXAooDhmylq);
@@ -130,11 +148,11 @@ class pluTest : public CppUnit::TestCase
     public:
         void runTest()
         {
+            launch_auto_tests_sage();
             test_A(testMatrixA(),testMatrixA_U());
             test_A(testMatrixB(),testMatrixB_U());
             test_A(testMatrixD(),testMatrixD_U());
             test_A(testMatrixE(),testMatrixE_U());
-            launch_auto_tests_sage();
             plu_from_PLU_tests();
         }
 };

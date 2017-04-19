@@ -15,6 +15,7 @@ build/*
 finitediff
 tests_RepeatFunction
 tests_SNmatrix
+tests/create_tests_matrices.sage.py
 
 # DOCUMENTATION by DOXYGEN
 
