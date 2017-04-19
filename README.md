@@ -17,10 +17,7 @@ Non-official purposes include
 
 ## Latest news
 
-* I'm currently implementing the PLU decomposition.
-* P and U are done.
-* Working and debugging products of gaussian matrices.
-* Working on a better rendering when printing matrices on screen.
+* The PLU decomposition is done.
 
 ## deploy.sh
 
