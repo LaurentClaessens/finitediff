@@ -62,6 +62,8 @@ class pluTest : public CppUnit::TestCase
         template <unsigned int s>
         void test_A(  SNmatrix<double,s> A,SNmatrix<double,s> A_U  )
         {
+            echo_function_test("Testing a pair A,A_U");
+
             auto plu=A.getPLU();
             auto mU(plu.getU());
 
