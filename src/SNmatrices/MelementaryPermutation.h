@@ -65,18 +65,6 @@ class MelementaryPermutation : public MgenericPermutation<tp_size>
          */
         unsigned int image(const unsigned int k) const override;
 
-<<<<<<< HEAD
-        /** 
-         * The product is the composition of permutations.
-         *
-         * `perm1 * perm2` is the composition of the elementary permutations `perm1` and `perm2`.
-         * The result is not an *elementary* permutation anymore.
-         *
-         * \see `Mpermutation`.
-         * */
-        Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
-=======
->>>>>>> ee41acdcc1f852037e81cf4cc6983cd8fc1f2c24
 };
 
 // GETTER/SETTER METHODS ---------------------------------
