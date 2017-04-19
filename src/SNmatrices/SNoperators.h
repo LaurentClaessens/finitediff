@@ -405,7 +405,6 @@ SNmultiGaussian<U,s> operator*
  * The multiplication "permutation1 * permutation2" 
  * is the composition. 
 */
-
 template <unsigned int tp_size>
 Mpermutation<tp_size> operator*
 (const Mpermutation<tp_size>& p1, const Mpermutation<tp_size>& p2)
