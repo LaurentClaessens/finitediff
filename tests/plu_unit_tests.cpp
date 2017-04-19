@@ -92,6 +92,10 @@ class pluTest : public CppUnit::TestCase
             auto_test(atm_FOO);
             auto_test(atm_BAR);
             auto_test(atm_ooIJXAooDhmylq);
+            auto_test(atm_ooHKNYooAmJKPA);
+            auto_test(atm_ooPELTooRpdpkn);
+            auto_test(atm_ooTLBZooJIcRse);
+            auto_test(atm_ooUERUooVkkghZ);
         }
         void plu_from_PLU_tests()
         {
@@ -148,10 +152,6 @@ class pluTest : public CppUnit::TestCase
         void runTest()
         {
             launch_auto_tests_sage();
-            test_A(testMatrixA(),testMatrixA_U());
-            test_A(testMatrixB(),testMatrixB_U());
-            test_A(testMatrixD(),testMatrixD_U());
-            test_A(testMatrixE(),testMatrixE_U());
             plu_from_PLU_tests();
         }
 };
