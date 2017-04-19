@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include "../src/DebugPrint.h"
+#include "../src/Utilities.h"
 
 class SNpermutationsTest : public CppUnit::TestCase
 {
@@ -63,7 +63,7 @@ class SNpermutationsTest : public CppUnit::TestCase
          }
         void test_identity()
         {
-            echo_function_test("test_identiry");
+            echo_function_test("test_identity");
 
             std::array<unsigned int, 4> aID{ {0,1, 2, 3} };
             Mpermutation<4> permID(aID);
@@ -183,14 +183,22 @@ class SNpermutationsTest : public CppUnit::TestCase
         CPPUNIT_ASSERT(ans_iP1==iP1);
 
         }
+        void test_identity_initialization()
+        {
+            echo_function_test("The permutation initializes to identity");
+            auto pID=SNpermutation<double,4>();
+            auto ID=SNidentity<double,4>();
+            CPPUNIT_ASSERT(ID==pID);
+        }
     public:
         void runTest()
         {
             test_matrix_permutation();
             test_inverse();
             test_permutation();
-            test_identity();
+            test_identity_initialization();
             test_product();
+            test_identity();
         }
 };
 

@@ -13,8 +13,9 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-rm deploy.log
-touch deploy.log
+rm .deploy.log
+touch .deploy.log
+
 
 mkdir build > /dev/null
 git status
@@ -34,13 +35,15 @@ function launch_test
     else
             echo "----" 
             echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}"
-            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}" >> deploy.log
+            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}" >> .deploy.log
             echo "----"
     fi
     echo "--- Ended " $1
 }
 
-launch_test "sn_gaussian_unit_tests"
+launch_test "plu_unit_tests"
+launch_test "multigauss_unit_tests"
+launch_test "m_num_unit_tests"
 launch_test "sn_permutation_unit_tests"
 launch_test "exceptions_unit_tests"
 launch_test "repeat_function_unit_tests"
@@ -49,7 +52,8 @@ launch_test "multiplication_unit_tests"
 launch_test "sn_matrix_unit_tests"
 launch_test "sn_line_unit_tests"
 launch_test "sn_element_unit_tests"
-launch_test "plu_unit_tests"
 launch_test "gauss_unit_tests"
+launch_test "utilities_tests"
+launch_test "sn_gaussian_unit_tests"
 
-cat deploy.log
+cat .deploy.log

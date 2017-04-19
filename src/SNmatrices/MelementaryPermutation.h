@@ -19,69 +19,71 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __MELEMENTARYPERMUTATION_H_095019_
 #define __MELEMENTARYPERMUTATION_H_095019_
 
-#include "../DebugPrint.h"
+#include "../Utilities.h"
+#include "MgenericPermutation.h"
 
-/*
+template <unsigned int tp_size>
+class Mpermutation;
 
+/**
     This class represents an elementary permutation, that is a 
     permutation that permutes only two elements.
-
 */
 
 template <unsigned int tp_size>
-class MelementaryPermutation
+class MelementaryPermutation : public MgenericPermutation<tp_size>
 {
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
 
     private:
-        unsigned int elA;
-        unsigned int elB;
+        const unsigned int data_elA;
+        const unsigned int data_elB;
+
     public :
-        MelementaryPermutation(unsigned int A,unsigned int B); 
+        MelementaryPermutation(const unsigned int A,const unsigned int B); 
 
+        unsigned int getA() const;
+        unsigned int getB() const;
 
         /** 
         return by value the image of 'k' by the permutation.
          */
-        unsigned int operator()(const unsigned int k) const;
-        /** 
-        return by value the image of 'k' by the permutation.
-         */
-        unsigned int image(const unsigned int k) const;
+        unsigned int image(const unsigned int k) const override;
 
-        Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
 };
 
-
-// OPERATORS ---------------------------------
+// GETTER/SETTER METHODS ---------------------------------
 
 template <unsigned int tp_size>
-Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutation<tp_size>& perm) const
+unsigned int MelementaryPermutation<tp_size>::getA() const
 {
-    Mpermutation<tp_size> tmp;
-    for (unsigned int k=0;k<tp_size;++k)
-    {
-        tmp.at(k)=this->image( perm.image(k)  );
-    }
-    return tmp;
+    return data_elA;
 }
+
+template <unsigned int tp_size>
+unsigned int MelementaryPermutation<tp_size>::getB() const
+{
+    return data_elB;
+}
+
+// OPERATORS ---------------------------------
 
 template <unsigned int s>
 std::ostream& operator<<(std::ostream& stream, MelementaryPermutation<s> perm)
 {
-    stream<<perm.elA<<" <--> "<<perm.elB;
+    stream<<perm.getA()<<" <--> "<<perm.getB();
     return stream;
 }
 
 // ACTION ON THE INTEGERS ---------------------------------
 
 template <unsigned int tp_size>
-MelementaryPermutation<tp_size>::MelementaryPermutation(unsigned int A,unsigned int B) :
-    elA(A),
-    elB(B)
+MelementaryPermutation<tp_size>::MelementaryPermutation(const unsigned int A,const unsigned int B) :
+    data_elA(A),
+    data_elB(B)
 {
-    if (elA > tp_size or elB>tp_size)
+    if (getA() > tp_size or getB() > tp_size)
     {
         throw OutOfRangeConstructionElementaryPermutationException(A,B,tp_size);
     }
@@ -94,23 +96,16 @@ unsigned int MelementaryPermutation<tp_size>::image(const unsigned int k) const
     {
         throw PermutationIdexoutOfRangeException(k,tp_size);
     }
-    if (k==elA)
+    if (k==getA())
     {
-        return elB;
+        return getB();
     }
-    if (k==elB)
+    if (k==getB())
     {
-        return elA;
+        return getA();
     }
     return k;
 }
-
-template <unsigned int tp_size>
-unsigned int MelementaryPermutation<tp_size>::operator()(const unsigned int k) const
-{
-    return image(k);
-}
-
 
 #endif
 

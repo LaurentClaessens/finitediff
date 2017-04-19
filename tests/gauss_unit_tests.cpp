@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ooTQFOooJrAfLb.h"     // automatically generated, see 
 
-#include "../src/DebugPrint.h"
+#include "../src/Utilities.h"
 
 class GaussTest : public CppUnit::TestCase
 {
@@ -141,10 +141,7 @@ class GaussTest : public CppUnit::TestCase
             
             auto A=testsMatrix_ooTQFOooJrAfLb_A();
             auto ans_U=testsMatrix_ooTQFOooJrAfLb_U();
-            unsigned int size=A.getSize();
-
             auto plu=A.getPLU();
-
 
             double epsilon=0.000001;
             echo_single_test("A more realistic test");

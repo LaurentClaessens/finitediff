@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-#include "../src/SNmatrices/SNgaussianMatrix.h"
+#include "../src/SNmatrices/SNgaussian.h"
 
 #include "../src/SNmatrices/SNmatrix.h"
 #include "../src/SNmatrices/SNpermutation.h"
@@ -38,17 +38,29 @@ class SNgaussianTest : public CppUnit::TestCase
             auto H=testMatrixH();
             auto Hg=H.getGaussian(2);
             auto iHg=Hg.inverse();
-            auto ID=SNpermutation<double,4>();
+            auto ID=SNidentity<double,4>();
 
             double epsilon(0.000001);
+
+            echo_single_test("Product with the inverse");
             CPPUNIT_ASSERT(ID.isNumericallyEqual(Hg*iHg,epsilon)  );
             CPPUNIT_ASSERT(ID.isNumericallyEqual(iHg*Hg,epsilon)  );
 
         }
+    void test_assignation_to_lower_triangular()
+    {
+        echo_function_test("test_assignation_to_lower_triangular");
+        SNlowerTriangular<double,4> L;
+        auto H=testMatrixH();
+        L=H.getGaussian(0);
+
+        SNlowerTriangular<double,4> M(H.getGaussian(1));
+    }
     public:
         void runTest()
         {
             test_inverse();
+            test_assignation_to_lower_triangular();
         }
 };
 
