@@ -323,10 +323,8 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
-            permutation=el_perm*permutation; 
+            permutation=permutation*el_perm; 
             mU.swapLines(c,max_el.line);
-
-            //SNpermutation<T,tp_size> permut(el_perm);
 
             auto G=mU.getGaussian(c);
 
