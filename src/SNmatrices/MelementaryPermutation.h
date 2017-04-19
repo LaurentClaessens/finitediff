@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define __MELEMENTARYPERMUTATION_H_095019_
 
 #include "../Utilities.h"
+#include "MgenericPermutation.h"
 
 template <unsigned int tp_size>
 class Mpermutation;
@@ -30,7 +31,7 @@ class Mpermutation;
 */
 
 template <unsigned int tp_size>
-class MelementaryPermutation
+class MelementaryPermutation : public MgenericPermutation<tp_size>
 {
     template <unsigned int s>
     friend std::ostream& operator<<(std::ostream&, MelementaryPermutation<s>);
@@ -62,12 +63,9 @@ class MelementaryPermutation
         /** 
         return by value the image of 'k' by the permutation.
          */
-        unsigned int operator()(const unsigned int k) const;
-        /** 
-        return by value the image of 'k' by the permutation.
-         */
-        unsigned int image(const unsigned int k) const;
+        unsigned int image(const unsigned int k) const override;
 
+<<<<<<< HEAD
         /** 
          * The product is the composition of permutations.
          *
@@ -77,8 +75,9 @@ class MelementaryPermutation
          * \see `Mpermutation`.
          * */
         Mpermutation<tp_size> operator*(const Mpermutation<tp_size>& ) const;
+=======
+>>>>>>> ee41acdcc1f852037e81cf4cc6983cd8fc1f2c24
 };
-
 
 // GETTER/SETTER METHODS ---------------------------------
 
@@ -95,17 +94,6 @@ unsigned int MelementaryPermutation<tp_size>::getB() const
 }
 
 // OPERATORS ---------------------------------
-
-template <unsigned int tp_size>
-Mpermutation<tp_size> MelementaryPermutation<tp_size>::operator*(const Mpermutation<tp_size>& perm) const
-{
-    Mpermutation<tp_size> tmp;
-    for (unsigned int k=0;k<tp_size;++k)
-    {
-        tmp.at(k)=this->image( perm.image(k)  );
-    }
-    return tmp;
-}
 
 template <unsigned int s>
 std::ostream& operator<<(std::ostream& stream, MelementaryPermutation<s> perm)
@@ -144,13 +132,6 @@ unsigned int MelementaryPermutation<tp_size>::image(const unsigned int k) const
     }
     return k;
 }
-
-template <unsigned int tp_size>
-unsigned int MelementaryPermutation<tp_size>::operator()(const unsigned int k) const
-{
-    return image(k);
-}
-
 
 #endif
 

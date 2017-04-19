@@ -129,48 +129,134 @@ class multigaussTests : public CppUnit::TestCase
             echo_single_test("G0*G1*G2");
             CPPUNIT_ASSERT(ans.isNumericallyEqual(G0*G1*G2,epsilon));
         }
+        void product_tests()
+        {
+            echo_function_test("product_tests");
+
+            auto E=testMatrixE();       //SNmatrix<double,4>
+            auto F=testMatrixF();       //SNmatrix<double,4>
+            auto H=testMatrixH();       //SNmatrix<double,4>
+
+            // I cannot ask epsilon to be smaller because for the
+            // answers, I copied by hand the print of Sage's answer.
+            double epsilon(0.0001);
+
+            auto G0=E.getGaussian(0);
+            auto G1=F.getGaussian(1);
+            auto G2=H.getGaussian(2);
+
+            auto t21=G2*G1;
+            auto t10=G1*G0;
+            auto t21_0=t21*G0;  //(G2*G1)*G0
+            auto t2_10=G2*t10;  //G2*(G1*G0)
+            auto t210=G2*G1*G0;
+
+            SNmultiGaussian<double,4> ans_21;
+            ans_21.setLastColumn(2);
+
+    
+//[ 1.0    0.0                0.0          0.0]
+//[ 0.0    1.0                0.0          0.0]
+//[ 0.0   -4.0                1.0          0.0]
+//[ 0.0   12.953320000000001  -4.11333     1.0]
+
+
+            ans_21.at(2,1)=-4;
+            ans_21.at(3,1)=12.95332;
+            ans_21.at(3,2)=-4.11333;
+
+            SNmultiGaussian<double,4> ans_10;
+            ans_10.setLastColumn(1);
+
+//[  1.0   0.0   0.0   0.0]
+//[-1.25   1.0   0.0   0.0]
+//[ 4.25  -4.0   1.0   0.0]
+//[3.875  -3.5   0.0   1.0]
+
+            ans_10.at(1,0)=-1.25;
+            ans_10.at(2,0)=4.25;
+            ans_10.at(3,0)=3.875;
+            ans_10.at(2,1)=-4;
+            ans_10.at(3,1)=-3.5;
+
+
+            SNmultiGaussian<double,4> ans_210;
+            ans_210.setLastColumn(2);
+
+//[                1.0                 0.0           0.0    0.0]
+//[              -1.25                 1.0           0.0    0.0]
+//[               4.25                -4.0           1.0    0.0]
+//[-13.606652500000001  12.953320000000001      -4.11333    1.0]
+
+            ans_210.at(1,0)=-1.25;
+            ans_210.at(2,0)=4.25;
+            ans_210.at(3,0)=-13.6066525;
+            ans_210.at(2,1)=-4;
+            ans_210.at(3,1)=12.95332;
+            ans_210.at(3,2)=-4.11333;
+
+            CPPUNIT_ASSERT(t21.isNumericallyEqual(ans_21,epsilon));
+            CPPUNIT_ASSERT(t10.isNumericallyEqual(ans_10,epsilon));
+            CPPUNIT_ASSERT(t21_0.isNumericallyEqual(ans_210,epsilon));
+            CPPUNIT_ASSERT(t2_10.isNumericallyEqual(ans_210,epsilon));
+            CPPUNIT_ASSERT(t210.isNumericallyEqual(ans_210,epsilon));
+
+            auto u_0E=G0*E;
+
+
+            auto a=G1*(G0*E);
+            auto b=(G1*G0)*E;
+            SNmatrix<double,4> ans_0E;
+            SNmatrix<double,4> ans_10E;
+
+    
+
+//[   4.0    6.0    8.0    9.0]
+//[   0.0   -6.5   -3.0 -10.25]
+//[   0.0   -2.5   -3.0  -2.75]
+//[   0.0    2.0    2.0    2.5]
+ans_0E.at(0,0)=4; ans_0E.at(0,1)=6; ans_0E.at(0,2)=8; ans_0E.at(0,3)=9;
+ans_0E.at(1,0)=0; ans_0E.at(1,1)=-6.5; ans_0E.at(1,2)=-3; ans_0E.at(1,3)=-10.25;
+ans_0E.at(2,0)=0; ans_0E.at(2,1)=-2.5; ans_0E.at(2,2)=-3; ans_0E.at(2,3)=-2.75;
+ans_0E.at(3,0)=0; ans_0E.at(3,1)=2; ans_0E.at(3,2)=2; ans_0E.at(3,3)=2.5;
+
+
+//[   4.0    6.0    8.0    9.0]
+//[   0.0   -6.5   -3.0 -10.25]
+//[   0.0   23.5    9.0  38.25]
+//[   0.0  24.75   12.5 38.375]
+
+ans_10E.at(0,0)=4; ans_10E.at(0,1)=6; ans_10E.at(0,2)=8; ans_10E.at(0,3)=9;
+ans_10E.at(1,0)=0; ans_10E.at(1,1)=-6.5; ans_10E.at(1,2)=-3; ans_10E.at(1,3)=-10.25;
+ans_10E.at(2,0)=0; ans_10E.at(2,1)=23.5; ans_10E.at(2,2)=9; ans_10E.at(2,3)=38.25;
+ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=38.375;
+
+            CPPUNIT_ASSERT(u_0E.isNumericallyEqual(ans_0E,epsilon));
+            CPPUNIT_ASSERT(a.isNumericallyEqual(ans_10E,epsilon));
+            CPPUNIT_ASSERT(b.isNumericallyEqual(ans_10E,epsilon));
+
+            // This is a test for the initialization of
+            // data_last_column
+
+            SNmultiGaussian<double,4> mag;
+            mag=G2*(G1*G0);
+            CPPUNIT_ASSERT(mag.isNumericallyEqual(t210,epsilon));
+        }
         void multi_working_tests()
         {
             echo_function_test("multi working tests");
 
             auto E=testMatrixE();       //SNmatrix<double,4>
-            double epsilon(0.0000001);
 
             SNgaussian<double,4> G0(E);
 
-            debug_print<<"D1"<<std::endl;
             auto G1=(G0*E).getGaussian(1);
-            debug_print<<"D2"<<std::endl;
-            auto a=G1*(G0*E);
-            debug_print<<"D2.3"<<std::endl;
-            auto b=(G1*G0)*E;
-            debug_print<<"D2.5"<<std::endl;
             auto G2=(G1*G0*E).getGaussian(2);
-            debug_print<<"D3"<<std::endl;
-
-            debug_print<<"On va créer mg"<<std::endl;
 
             SNmultiGaussian<double,4> mg=G2*(G1*G0);
-            debug_print<<"mg est créée et son last est "<<mg.getLastColumn()<<std::endl;
-
-            debug_print<<"On va créer mag"<<std::endl;
-            SNmultiGaussian<double,4> mag;
-            debug_print<<"last de mag : "<<mag.getLastColumn()<<std::endl;
-            debug_print<<"mag est créée"<<std::endl;
-            mag=G2*(G1*G0);
-            debug_print<<"mag est assignée"<<std::endl;
-            debug_print<<"last de mag : "<<mag.getLastColumn();
-
-            debug_print<<"last de mg : "<<mg.getLastColumn()<<std::endl;
-
             auto prod=mg*E;
 
-            debug_matrix_print("mg",mg);
-            debug_matrix_print("G2*G1*G0",G2*G1*G0);
-
-
-            debug_matrix_print("prod",prod);
-
+            echo_single_test("check vanishing components in G2*G1*G0*E");
             CPPUNIT_ASSERT(prod.get(1,0)==0);
             CPPUNIT_ASSERT(prod.get(2,0)==0);
             CPPUNIT_ASSERT(prod.get(3,0)==0);
@@ -227,7 +313,36 @@ class multigaussTests : public CppUnit::TestCase
         }
         void inverse_tests()
         {
-            CPPUNIT_ASSERT(false);      // to be implemented.
+            echo_function_test("inverse_tests");
+
+            auto J=testMatrixJ();       //multigaussian
+            auto iJ=J.inverse();
+            auto ID=SNidentity<double,4>();
+            double epsilon(0.0001);
+
+            SNmultiGaussian<double,4> ans;
+            ans.setLastColumn(1);
+            ans.at(1,0)=-2; 
+            ans.at(2,0)=5; ans.at(2,1)=-4;
+            ans.at(3,0)=8; ans.at(3,1)=-7;
+
+            echo_single_test("the inverse is correctly computed");
+            CPPUNIT_ASSERT(iJ==ans);
+
+            echo_single_test("J*iJ()");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J*iJ,epsilon));
+
+            echo_single_test("J*J.inverse()");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J*J.inverse(),epsilon));
+
+            echo_single_test("iJ*J");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(iJ*J,epsilon));
+
+            echo_single_test("J.inverse()*J");
+            CPPUNIT_ASSERT(ID.isNumericallyEqual(J.inverse()*J,epsilon));
+
+            echo_single_test("The inverse of the inverse");
+            CPPUNIT_ASSERT(J.isNumericallyEqual(iJ.inverse(),epsilon));
         }
         void non_initialized_tests()
         {
@@ -246,9 +361,33 @@ class multigaussTests : public CppUnit::TestCase
             SNmultiGaussian<int,4> F;
             CPPUNIT_ASSERT_THROW(F.setLastColumn(7),OutOfRangeColumnNumber);
         }
+        void swap_lines_tests()
+        {
+            echo_function_test("swap_lines_tests");
+            SNmultiGaussian<double,5> K=testMatrixK();
+
+            SNmultiGaussian<double,5> ans;
+            ans.setLastColumn(2);
+            ans.at(1,0)=2; 
+            ans.at(2,0)=3; ans.at(2,1)=4;
+            ans.at(4,0)=6; ans.at(4,1)=7; ans.at(4,2)=8;
+            ans.at(3,0)=9; ans.at(3,1)=2; ans.at(3,2)=3;
+
+
+            echo_single_test("basic swap");
+            K.swapLines(3,4);
+            CPPUNIT_ASSERT(K==ans);
+    
+            echo_single_test("throw when swapping wrong lines");
+            K.swapLines(3,4);
+            CPPUNIT_ASSERT_THROW(K.swapLines(4,2),ProbablyNotWhatYouWantException);
+        }
     public:
         void runTest()
         {
+            swap_lines_tests();
+            inverse_tests();
+            product_tests();
             multi_working_tests();
             non_initialized_tests();
             wrong_order_works();
@@ -256,7 +395,6 @@ class multigaussTests : public CppUnit::TestCase
             working_tests();
             get_at_tests();
             constructor_tests();
-            inverse_tests();
         }
 };
 

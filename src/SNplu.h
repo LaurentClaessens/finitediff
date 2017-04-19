@@ -40,13 +40,21 @@ class SNplu
         SNupperTriangular<T,tp_size> data_U;
 
         /**  '_setU' takes a matrix and says that this is the 'U' one.
-           - do not check that A is actually upper diagonale
-           - erase the old U matrix.
+           - does not check that A is actually upper diagonale
+           - erases the old U matrix.
            - only to be used at the end of the building process of the PLU
              decomposition, when the initial matrix is transformed into
              an upper diagonal one.
            */
         void _setU(const SNmatrix<T,tp_size>& A);
+        /**  '_setL' takes a matrix and says that this is the 'L' one.
+           - does not check that A is actually lower diagonale
+           - erases the old L matrix.
+           - only to be used at the end of the building process of the PLU
+             decomposition, when the initial matrix is transformed into
+             the lower diagonal one.
+           */
+        void _setL(const SNmatrix<T,tp_size>& A);
     public:
 
         SNpermutation<T,tp_size> getP() const;
@@ -64,6 +72,13 @@ void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A)
 {
     // TODO : non optimal because one could try to copy only the useful part.
     data_U=A;
+}
+
+template <class T,unsigned int tp_size>
+void SNplu<T,tp_size>::_setL(const SNmatrix<T,tp_size>& A) 
+{
+    // TODO : non optimal because one could try to copy only the useful part.
+    data_L=A;
 }
 
 // GETTER METHODS -----------------------

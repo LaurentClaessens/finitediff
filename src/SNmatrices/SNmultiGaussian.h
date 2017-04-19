@@ -86,45 +86,88 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          * */
         void operator *=(const SNgaussian<T,tp_size>& other);
 
+        /** return the inverse matrix */
+        SNmultiGaussian<T,tp_size> inverse() const;
+
+        /*\brief Swap the lines \f$ i \f$ and \f$ j \f$.
+         *
+         * This only works when \f$ i \f$ and \f$ j \f$ are larger than
+         * the last non trivial column.
+         *
+         * If \f$ i \f$ or \f$ j \f$ is lower or equal to the last non trivial line,
+         * throw a `ProbablyNotWhatYouWantException`.
+         *
+         * In place replacement.
+         */
+        void swapLines(const m_num& i,const m_num& j);
+
         /** return the number of the last non trivial column */
         m_num getLastColumn() const;
-        /** Set the number of the last non trivial column
+        /** 
+         * \brief Set the number of the last non trivial column
          *
          * Needed for optimization purpose : during the PLU decomposition,
          * one need to modify a multi-gaussian matrix at each step. The point
          * is to *modify* it, not re-creating a new one each time.
          * */
         void setLastColumn(const m_num& lc);
+
+        /** 
+         * \brief copies the first `max_l` lines from `other` to `this`.
+         *
+         * The first `max_l` lines are copied from `other` taking into account :
+         * - the elements that cannot be changed here will not be changed.
+         *   Typically, the element (0,0) of `other` will be neglected. Also every
+         *   diagonal elements are ignored, and all the elements that are beyond
+         *   `this->getLastColumn()`.
+         * - The size of `other` must be the same.
+         * - The template type of `other` must be convertible to the template
+         *   type of `this`.
+         * - The copy copies each line from column 0 to the diagonal (exclusively).
+         *   It does not restrict itself to something like the minimum between
+         *   the diagonal and `this->getLastColumn()`. Thus : **the real
+         *   last column of the resulting matrix could be incorrect**.
+         *
+         *   The last point needs attention. One *could* just take care of that
+         *   issue during the copying process by looking at non zero elements 
+         *   located beyond the `data_last_column` column.
+         *   But if these elements are "fake zeroes" like they should be zero but
+         *   are, for numerical reasons, non vanishing; in this case we loose a
+         *   good occasion to make then real zeroes.
+         *
+         *   You have to set by hand the last column attribute *before* to 
+         *   call `setLastColumn`.
+         *
+         * \see `setLastColumn`
+         *
+         * \see copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num max_l)
+         */
+        template <class U,unsigned int s>
+        void setFirstLines(const SNgeneric<U,s>& other,const m_num max_l);
 };
 
 // CONSTRUCTORS -------------------------------------------------
-//
+
 // from nothing
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
     data_L(SNidentity<T,tp_size>()),
     data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
-{
-debug_print<<"constructeur sans argument"<<std::endl;
-}
+{ }
 
 // from generic
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgeneric<T,tp_size>& A):
     data_L(A.getGaussian(0)),
     data_last_column(0)
-{ }
+{  }
 
 // from multigaussian
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A):
     data_L(A.data_L),
     data_last_column(A.getLastColumn())
-{ 
-    debug_print<<"constructeur SNmultiGaussian"<<std::endl;
-    debug_print<<"this -> last : "<<this->getLastColumn()<<std::endl;
-    debug_print<<"A-> last : "<<A.getLastColumn()<<std::endl;
-}
+{ }
 
 // from gaussian
 template <class T,unsigned int tp_size>
@@ -147,9 +190,6 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
 template <class T,unsigned int tp_size>
 void SNmultiGaussian<T,tp_size>::swap(SNmultiGaussian<T,tp_size>& other)
 {
-    debug_print<<"Dans le swap de multigaussian "<<std::endl;
-    debug_print<<"last this : "<<getLastColumn()<<std::endl;
-    debug_print<<"last other : "<<other.getLastColumn()<<std::endl;
     data_L.swap(other.data_L);
     data_last_column.swap(other.data_last_column);
 }
@@ -158,7 +198,6 @@ void SNmultiGaussian<T,tp_size>::swap(SNmultiGaussian<T,tp_size>& other)
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>& SNmultiGaussian<T,tp_size>::operator=(SNmultiGaussian<T,tp_size> other)
 {
-    debug_print<<"je passe par operator= dans SNmultiGaussian"<<std::endl;
     swap(other);
     return *this;
 }
@@ -183,6 +222,20 @@ void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
     data_last_column=lc;
 }
 
+template <class T,unsigned int tp_size>
+template <class U,unsigned int s>
+void SNmultiGaussian<T,tp_size>::setFirstLines
+        (const SNgeneric<U,s>& other,const m_num max_l)
+{
+    for (m_num line=0;line<max_l+1;line++)
+    {
+        for (m_num col=0; col < line ;++col)
+        {
+            this->at(line,col)=other.get(line,col);
+        }
+    }
+}
+
 // OPERATORS  ---------------------------------------
 
 template <class T,unsigned int tp_size>
@@ -197,6 +250,44 @@ void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
     for (m_num l=other.getColumn()+1;l<tp_size;++l)
     {
         this->at(l,other.getColumn())+=other.get(l,other.getColumn());
+    }
+}
+
+// MATHEMATICS -------------------------------------------
+
+
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size> SNmultiGaussian<T,tp_size>::inverse() const
+{
+    auto ans=*this;
+    for (m_num col=0;col<getLastColumn()+1;++col)
+    {
+        // one can parallelize with respect to the columns,
+        // not with respect to the lines.
+        for (m_num line=col+1;line<tp_size;++line)
+        {
+            T acc=0;
+            for (m_num k=col;k<line;++k)
+            {
+                acc+=this->get(line,k)*ans.get(k,col);
+            }
+            ans.at(line,col)= - acc;
+        }
+    }
+    return ans;
+}
+
+
+template <class T,unsigned int tp_size>
+void SNmultiGaussian<T,tp_size>::swapLines(const m_num& i,const m_num& j)
+{
+    if (i<=getLastColumn() or j<=getLastColumn())
+    {
+        throw ProbablyNotWhatYouWantException("You are trying to swap the lines "+std::to_string(i)+" and "+std::to_string(j)+" while the last non trivial column is "+std::to_string(getLastColumn()) );
+    }
+    for (m_num col=0;col<=getLastColumn();++col)
+    {
+        std::swap( this->at(i,col),this->at(j,col)  );
     }
 }
 
@@ -261,5 +352,7 @@ T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j)
     }
     return data_L.at(i,j);  //if you change here, you have to change _get
 }
+
+
 
 #endif

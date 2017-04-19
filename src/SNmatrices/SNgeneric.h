@@ -270,6 +270,9 @@ template <class T,unsigned int tp_size>
 template <class V,unsigned int s>
 bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const double& epsilon) const
 {
+
+    //tooGenericWarning("This is a very generic comparison function SNgeneric Vs SNgeneric. Cant'you be more specific ?");
+
     checkSizeCompatibility(*this,A);
     T abs_diff;
     for (m_num i=0;i<tp_size;i++)

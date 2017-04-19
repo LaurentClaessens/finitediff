@@ -117,16 +117,26 @@ SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& A, const SNgaussian<V,t>& B)
 {
     checkSizeCompatibility(A,B);
+    unsigned int tp_size=s;
 
     SNmultiGaussian<U,s> ans;
-    if (A.getColumn()>=B.getColumn())
+    if (A.getColumn()==B.getColumn())
+    {
+        ans.setLastColumn(A.getColumn());
+        m_num col=A.getColumn();
+        for (m_num line = col+1 ; line< tp_size ;++line )
+        {
+            ans.at(line,col)=A.get(line,col)+B.get(line,col);
+        }
+    }
+    else if (A.getColumn()>B.getColumn())
     {
         ans.setLastColumn(A.getColumn());
 
             // The `_at` function in in `SNmultigauss` automatically 
             // returns '0' when the column number is large than 
             // // `getLastColumn`. In other words, these are 
-            // "special values" // and attempting to access them with `_at`
+            // "special values" and attempting to access them with `_at`
             // throws a `SNchangeNotAllowedException`. 
         for (m_num col=0;col <= ans.getLastColumn() ;++col)
         {
@@ -237,8 +247,6 @@ SNmatrix<U,s> operator*
     const unsigned int tp_size=M.getSize(); // for homogeneous notations.
     const m_num last_col=M.getLastColumn();
 
-    debug_print<<"multigauss*generix"<<std::endl;
-
     SNmatrix<U,s> ans;
 
     // copy the first line
@@ -249,12 +257,12 @@ SNmatrix<U,s> operator*
     }
 
     // when the line number is smaller than 'last_col'
-    for (m_num line=1;line<last_col;++line)
+    for (m_num line=1;line <= last_col;++line)
     {
         for (m_num col=0;col<tp_size;++col)
         {
             U acc=0;
-            for (m_num k=0;k<line;++k)
+            for (m_num k=0; k < line;++k)
             {
                 acc+=M.get(line,k)*E.get(k,col);
             }
@@ -263,12 +271,12 @@ SNmatrix<U,s> operator*
     }
 
     // for the last lines
-    for (m_num line=last_col;line<tp_size;++line)
+    for (m_num line=last_col+1;line<tp_size;++line)
     {
         for (m_num col=0;col<tp_size;++col)
         {
             U acc=0;
-            for (m_num k=0;k<last_col;++k)
+            for (m_num k=0;k <= last_col;++k)
             {
                 acc+=M.get(line,k)*E.get(k,col);
             }
@@ -295,7 +303,7 @@ SNmultiGaussian<U,s> operator*
         {
             U acc=0;
             // TODO : non optimal because the first and last products are 1*something and something*1.
-            for (m_num k=col;k<line;++k)
+            for (m_num k=col;k <= line;++k)
             {
                 acc+=(A.get(line,k)*B.get(k,col));
             }
@@ -370,30 +378,22 @@ SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& G, const SNmultiGaussian<V,t>& M)
 {
 
-    // gaussian * multi-gaussian -> multigaussian
-
     checkSizeCompatibility(G,M);
 
-    const unsigned int size=G.getSize();
+    const unsigned int tp_size=G.getSize(); // for homogeneity
     const m_num col=G.getColumn();
-    const m_num last_col=M.getColumn();
+    const m_num last_col=M.getLastColumn();
 
     SNmultiGaussian<U,s> ans;
-    debug_print<<"Ok, je suis ici en fait"<<std::endl;
-    return ans;
+    ans.setLastColumn(  std::max(col,last_col)  );
 
-    for (unsigned int i=0;i<c+1;i++)
+    ans.setFirstLines(M,col);
+
+    for (m_num i=col+1;i<tp_size;++i)   // loop over the next lines
     {
-        for (unsigned int j=0;j<i+1;j++)
+        for (m_num j=0;j<i;++j)
         {
-            ans.at(i,j)=B.get(i,j);
-        }
-    }
-    for (unsigned int i=c+1;i<size;i++)
-    {
-        for (unsigned int j=0;j<i+1;j++)
-        {
-            ans.at(i,j)=matrixProductComponent(A,B,i,j);
+            ans.at(i,j)=M.get(i,j)+G.get(i,col)*M.get(col,j);
         }
     }
     return ans;
@@ -405,8 +405,6 @@ SNmultiGaussian<U,s> operator*
  * The multiplication "permutation1 * permutation2" 
  * is the composition. 
 */
-
-
 template <unsigned int tp_size>
 Mpermutation<tp_size> operator*
 (const Mpermutation<tp_size>& p1, const Mpermutation<tp_size>& p2)
@@ -414,9 +412,29 @@ Mpermutation<tp_size> operator*
     Mpermutation<tp_size> new_perm;
     for (unsigned int i=0;i<tp_size;++i)
     {
-        new_perm.at(i)=p1.image(  p2.image(i)  );
+        new_perm.at(i)=p1.image( p2.image(i) );
     }
     return new_perm;
+}
+
+/** 
+ *\brief Product `MgenericPermutation` * `MgenericPermutation`
+ *
+ * The product is the composition.
+ *
+ * This product defines the products of `Mpermutation` and `MelementaryPermutation` (there are 4 possibilities).
+ * 
+ * */
+
+template <unsigned int tp_size>
+Mpermutation<tp_size> operator*(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
+{
+    Mpermutation<tp_size> tmp;
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        tmp.at(k)=A.image( B.image(k)  );
+    }
+    return tmp;
 }
 
 // SUM ---------------------------------------
@@ -478,6 +496,32 @@ template <class U,unsigned int s,class V,unsigned int t>
 bool operator==(const SNmatrix<U,s>& A,const SNupperTriangular<V,t>& B)
 {
     return B==A;
+}
+
+
+/** 
+ *\brief Return true if the two permutations are equal.
+ * */
+template <unsigned int tp_size>
+bool operator==(const Mpermutation<tp_size>& A, const Mpermutation<tp_size>& B) 
+{
+    return A.data==B.data;
+}
+
+/** 
+ *\brief Return true if the two permutations are equal.
+ * */
+template <unsigned int tp_size>
+bool operator==(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
+{
+    for (unsigned int k=0;k<tp_size;++k)
+    {
+        if (A(k)!=B(k)   )
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 #endif

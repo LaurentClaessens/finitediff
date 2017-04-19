@@ -307,8 +307,12 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNplu<T,tp_size> plu;
 
     Mpermutation<tp_size>& permutation=plu.data_P;
-    SNlowerTriangular<T,tp_size>& L=plu.data_L;
-    SNmatrix<T,tp_size> mU=*this;    // this will progressively become U
+
+    // progressively become L
+    SNmultiGaussian<T,tp_size> mM=SNidentity<T,tp_size>();  
+    // this will progressively become U
+    SNmatrix<T,tp_size> mU=*this;  
+
 
     for (m_num c=0;c<tp_size;c++)
     {
@@ -319,12 +323,21 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
-            permutation=el_perm*permutation; 
+            permutation=permutation*el_perm; 
             mU.swapLines(c,max_el.line);
 
-            SNpermutation<T,tp_size> permut(el_perm);
+            auto G=mU.getGaussian(c);
 
-            auto M=mU.getGaussian(c);
+            // On the first iteration, there is nothing to swap.
+            if (c!=0)
+            {
+                mM.swapLines(c,max_el.line);
+                mM*=G.inverse();
+            }
+            else
+            {
+                mM=G.inverse();
+            }
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
             {
@@ -338,6 +351,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     }
     // at this point, the matrix mU should be the correct one.
     plu._setU(mU);
+    plu._setL(mM);
     return plu;
 }
 

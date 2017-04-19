@@ -3,6 +3,10 @@
 # https://sagemath.org
 
 
+# Usage :
+# type in a terminal 
+# sage create_tests_matrices.sage
+# then the file 'auto_tests_matrices.h' is generated.
 
 # Note : for the permutation matrix, one cannot create a
 # SNpermutation<TYPE,SIZE>
@@ -104,6 +108,11 @@ test_matrix_list=[]
 test_matrix_list.append( OneTestMatrix(  matrix( RDF, [ [1,2],[3,4] ] )   ,"FOO")   )
 test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,6.2],[-3,2.5,4],[0.33,0.666,1.33333] ] )   ,"BAR")   )
 test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [-1,2,-6.2],[3,2.5,-4],[1/3,2/3,4/3] ] )   ,"ooIJXAooDhmylq")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,3],[2,5,0],[3,8,0]  ] )   ,"ooTBBRooWpZkfJ")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [0,3,6],[0,0,2],[0,3,6]  ] )   ,"ooHKNYooAmJKPA")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,3],[2,5,0],[3,8,0]  ] )   ,"ooPELTooRpdpkn")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [1,2,3],[4,5,6],[7,8,9]  ] )   ,"ooTLBZooJIcRse")   )
+test_matrix_list.append( OneTestMatrix(  matrix( RDF,  [ [4,6,8,9],[5,1,7,1],[3,2,3,4],[2,5,6,7] ] )   ,"ooUERUooVkkghZ")   )
 
 auto_filename="auto_tests_matrices.h"
 
