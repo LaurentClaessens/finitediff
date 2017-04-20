@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestAssert.h>
 
 #include "../src/SNmatrices/SNmatrix.h"
-#include "../src/SNexceptions.cpp"
+#include "../src/exceptions/SNexceptions.cpp"
 #include "TestMatrices.cpp"
 
 class ExceptionsTests : public CppUnit::TestCase

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SNgeneric.h"
 #include "m_num.h"
-#include "../SNexceptions.cpp"
+#include "../exceptions/SNexceptions.cpp"
 #include "../Utilities.h"
 
 

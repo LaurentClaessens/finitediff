@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 
 #include "SNgeneric.h"
-#include "../SNexceptions.cpp"
+#include "../exceptions/SNexceptions.cpp"
 
 /*
    This represents a lower triangular matrix (the diagonal can be non zero).
