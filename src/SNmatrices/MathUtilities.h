@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __MATHUTILITIES_H__055253__
 #define __MATHUTILITIES_H__055253__
 
-#include "../SNexceptions.cpp"
+#include "../exceptions/SNexceptions.cpp"
 
 
 // forward

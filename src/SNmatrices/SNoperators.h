@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNlowerTriangular.h"
 #include "SNupperTriangular.h"
 #include "MathUtilities.h"
-#include "../SNexceptions.cpp"
+#include "../exceptions/SNexceptions.cpp"
 
 
 // PRODUCTS ------------------------------------------
