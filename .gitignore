@@ -19,7 +19,7 @@ tests/create_tests_matrices.sage.py
 
 # DOCUMENTATION by DOXYGEN
 
-doc/*
+doc/html/*
 
 # OTHERS 
 
