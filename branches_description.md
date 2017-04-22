@@ -46,3 +46,7 @@ Work on the product of permutations.
 
 * define Mpermutation * MelementaryPermutation
 * Make non-member the other one.
+
+# examples
+
+Create examples of the functionalities.
