@@ -12,6 +12,7 @@ DEL_FILE      = rm -f
 
 BUILD_DIR = build/
 SRC_DIR = src/
+EXAMPLES_DIR = examples/
 SNMATRICES_DIR = $(SRC_DIR)SNmatrices/
 TESTS_DIR = tests/
 TEST_DEPENDENCIES=m_num Utilities
@@ -30,12 +31,14 @@ clean:
 RepeatFunction : $(SRC_DIR)RepeatFunction.cpp $(SRC_DIR)RepeatFunction.h
 	$(COMPILATOR) $(CXXFLAGS)  -c   $(SRC_DIR)RepeatFunction.cpp   -o $(BUILD_DIR)RepeatFunction.o
 finitediff: RepeatFunction $(SRC_DIR)RepeatFunction.cpp $(SRC_DIR)RepeatFunction.h
-	$(COMPILATOR) $(CXXFLAGS)   $(SRC_DIR)finitediff.cpp $(BUILD_DIR)RepeatFunction.o  -o $(BUILD_DIR)finitediff
+	$(COMPILATOR) $(CXXLAGS)   $(SRC_DIR)finitediff.cpp $(BUILD_DIR)RepeatFunction.o  -o $(BUILD_DIR)finitediff
 repeat_function_unit_tests: RepeatFunction  $(TESTS_DIR)repeat_function_unit_tests.cpp
 	$(COMPILATOR) $(CXXFLAGS)   $(TESTS_DIR)$@.cpp $(BUILD_DIR)RepeatFunction.o  -lcppunit -o $(BUILD_DIR)$@
-
 m_num: $(SNMATRICES_DIR)m_num.cpp  $(SNMATRICES_DIR)m_num.h
 	$(COMPILATOR) $(CXXFLAGS)  -c   $(SNMATRICES_DIR)$@.cpp   -o $(BUILD_DIR)$@.o
+examples: $(EXAMPLES_DIR)examples_plu.cpp m_num Utilities
+	$(COMPILATOR) $(CXXFLAGS) -g  $(EXAMPLES_DIR)examples_plu.cpp  $(BUILD_DIR)m_num.o $(BUILD_DIR)Utilities.o  -o  $(BUILD_DIR)examples_plu 
+
 
 Utilities: $(SRC_DIR)Utilities.cpp  $(SRC_DIR)Utilities.h
 	$(COMPILATOR) $(CXXFLAGS)  -c   $(SRC_DIR)$@.cpp   -o $(BUILD_DIR)$@.o

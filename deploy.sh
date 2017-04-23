@@ -58,3 +58,7 @@ launch_test "utilities_tests"
 launch_test "sn_gaussian_unit_tests"
 
 cat .deploy.log
+
+
+echo "Still to be done : the compile line in README, after the tests pass."
+
