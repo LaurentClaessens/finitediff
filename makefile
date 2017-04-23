@@ -86,7 +86,7 @@ m_num_unit_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
 utilities_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
 	$(call test_compile_line)
 include_plu_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
-	$(call test_compile_line)
+	$(COMPILATOR) $(CXXFLAGS)  -g tests/include_plu_tests.cpp build/m_num.o  -o build/include_plu_tests
 	
 unit_tests: m_num m_num_unit_tests repeat_function_unit_tests\
 	exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
