@@ -20,13 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/extensions/TypeInfoHelper.h>
 #include <cppunit/TestAssert.h>
 
-#include "../src/SNmatrices/SNline.h"
 #include "../src/SNplu.h"
-#include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 #include "auto_tests_matrices.h"
-
-#include "../src/Utilities.h"
 
 template <class T,unsigned int tp_size>
 void auto_test( const AutoTestMatrix<T,tp_size>& atm  )
