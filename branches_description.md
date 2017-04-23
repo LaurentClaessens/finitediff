@@ -50,3 +50,7 @@ Work on the product of permutations.
 # examples
 
 Create examples of the functionalities.
+
+# include
+
+For computing the PLU decomposition of a `SNmatrix`, one should not have to include more than `SNplu` and `SNmatrix`.

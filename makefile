@@ -80,14 +80,17 @@ sn_gaussian_unit_tests: $(TESTS_DIR)sn_gaussian_unit_tests.cpp  $(TEST_DEPENDENC
 multigauss_unit_tests: $(TESTS_DIR)multigauss_unit_tests.cpp  $(TEST_DEPENDENCIES)
 	$(call test_compile_line)
 
-
 m_num_unit_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
 	$(call test_compile_line)
 
-
 utilities_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
 	$(call test_compile_line)
+include_plu_tests: $(TESTS_DIR)m_num_unit_tests.cpp  $(TEST_DEPENDENCIES)
+	$(COMPILATOR) $(CXXFLAGS)  -g tests/include_plu_tests.cpp build/m_num.o  -o build/include_plu_tests
 	
-unit_tests: m_num m_num_unit_tests repeat_function_unit_tests exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
-	sn_line_unit_tests sn_element_unit_tests gauss_unit_tests plu_unit_tests sn_multiplication_unit_tests sn_permutation_unit_tests\
-	sn_gaussian_unit_tests multigauss_unit_tests utilities_tests
+unit_tests: m_num m_num_unit_tests repeat_function_unit_tests\
+	exceptions_unit_tests multiplication_unit_tests sn_matrix_unit_tests\
+	sn_line_unit_tests sn_element_unit_tests gauss_unit_tests plu_unit_testa\
+	s sn_multiplication_unit_tests sn_permutation_unit_tests\
+	sn_gaussian_unit_tests multigauss_unit_tests utilities_tests \
+	inlcude_plu_tests.cpp
