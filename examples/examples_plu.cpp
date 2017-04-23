@@ -29,8 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 int main ()
 {
 
-    std::cout<<"hello"<<std::endl;
-
     // Here is how to create the following matrix :
 
     // 1 3 4 5 6
@@ -56,7 +54,7 @@ int main ()
     // compute the PLU decomposition :
     auto plu=A.getPLU();
 
-    // get the matrice :
+    // get the matrices :
 
     auto cP=plu.getP();     // permutation
     auto cL=plu.getL();     // lower triangular
@@ -64,10 +62,10 @@ int main ()
 
     // print :
     std::cout<<"P"<<std::endl;
-    std::cout<<P<<std::endl;
+    std::cout<<cP<<std::endl;
     std::cout<<"L"<<std::endl;
-    std::cout<<L<<std::endl;
+    std::cout<<cL<<std::endl;
     std::cout<<"U"<<std::endl;
-    std::cout<<U<<std::endl;
+    std::cout<<cU<<std::endl;
 
 }
