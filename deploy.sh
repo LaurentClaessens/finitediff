@@ -15,20 +15,20 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 CURRENT_DIR=`pwd`
-LOG_FILE=$CURRENT_DIR/.deploy.log
+DEPLOY_LOG_FILE=$CURRENT_DIR/.deploy.log
 TEST_LOG_FILE=$CURRENT_DIR/.testing.log
 
-rm $LOG_FILE
-touch $LOG_FILE
+rm $DEPLOY_LOG_FILE
+touch $DEPLOY_LOG_FILE
 rm $TEST_LOG_FILE
 touch $TEST_LOG_FILE
 
 
 mkdir build > /dev/null
-git status
+git status  > $DEPLOY_LOG_FILE
 make clean
 
 ./testing.sh $TEST_LOG_FILE
 
 echo "Deploy results -------------"
-cat $LOG_FILE
+cat $DEPLOY_LOG_FILE
