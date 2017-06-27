@@ -1,14 +1,14 @@
 #! /bin/bash
 # -*- coding: utf8 -*-
 
+
+# Takes the filepath of the log file as argument.
+
 TEST_LOG_FILE=$1
 
 echo
 echo "TESTS --------------------"
 echo
-
-echo $TEST_LOG_FILE
-exit
 
 function launch_test 
 {
