@@ -1,4 +1,5 @@
 #! /bin/bash
+# -*- coding: utf8 -*-
 
 
 # One script for
@@ -13,50 +14,21 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-rm .deploy.log
-touch .deploy.log
+CURRENT_DIR=`pwd`
+LOG_FILE=$CURRENT_DIR/.deploy.log
+TEST_LOG_FILE=$CURRENT_DIR/.testing.log
+
+rm $LOG_FILE
+touch $LOG_FILE
+rm $TEST_LOG_FILE
+touch $TEST_LOG_FILE
 
 
 mkdir build > /dev/null
 git status
 make clean
 
-echo
-echo "TESTS --------------------"
-echo
+./testing.sh $TEST_LOG_FILE
 
-function launch_test 
-{
-    echo "+++ Compilation : " $1
-    make $1
-    ./build/$1
-    if [ $? -eq 0 ]; then
-            echo "OK"
-    else
-            echo "----" 
-            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}"
-            echo -e "---- ${RED} The test ${CYAN}" $1 "${RED} got a problem ${NC}" >> .deploy.log
-            echo "----"
-    fi
-    echo "--- Ended " $1
-}
-
-launch_test "include_plu_tests"
-launch_test "plu_unit_tests"
-launch_test "multigauss_unit_tests"
-launch_test "m_num_unit_tests"
-launch_test "sn_permutation_unit_tests"
-launch_test "exceptions_unit_tests"
-launch_test "repeat_function_unit_tests"
-launch_test "sn_multiplication_unit_tests"
-launch_test "multiplication_unit_tests"
-launch_test "sn_matrix_unit_tests"
-launch_test "sn_line_unit_tests"
-launch_test "sn_element_unit_tests"
-launch_test "gauss_unit_tests"
-launch_test "utilities_tests"
-launch_test "sn_gaussian_unit_tests"
-
-cat .deploy.log
-
-
+echo "Deploy results -------------"
+cat $LOG_FILE
