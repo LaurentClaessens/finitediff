@@ -54,3 +54,7 @@ Create examples of the functionalities.
 # include
 
 For computing the PLU decomposition of a `SNmatrix`, one should not have to include more than `SNplu` and `SNmatrix`.
+
+# gradient
+
+Implement the optimal step gradient method.
