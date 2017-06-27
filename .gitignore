@@ -26,6 +26,7 @@ doc/html/*
 .kk.log
 TODO.txt
 .deploy.log
+.testinf.log
 
 # SUBDIRECTORIES's .GITIGNORE
 
