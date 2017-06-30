@@ -42,7 +42,13 @@ launch_test "gauss_unit_tests"
 launch_test "utilities_tests"
 launch_test "sn_gaussian_unit_tests"
 
+# needs 'cppcheck'
+# apt instal cppcheck
+echo "+++ cppcheck ... src ..."
+cppcheck --enable=all  src 2>> $TEST_LOG_FILE
+echo "+++ cppcheck ... tests ..."
+cppcheck --enable=all  tests 2>> $TEST_LOG_FILE
+
 echo "Tests results ---------------"
 echo "In $TEST_LOG_FILE"
 cat $TEST_LOG_FILE
-
