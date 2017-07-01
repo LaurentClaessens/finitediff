@@ -58,3 +58,7 @@ For computing the PLU decomposition of a `SNmatrix`, one should not have to incl
 # gradient
 
 Implement the optimal step gradient method.
+
+# cppcheck
+
+Take into account the advices of cppcheck
