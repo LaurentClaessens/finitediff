@@ -44,12 +44,24 @@ template <class T,unsigned int tp_size>
 class SNplu;
 
 
-/*
-This is my matrix type, designed for numerical computation. It represents a 
-square matrix.
-
-NOTE : if you want the identity matrix, there is the `SNidentity` class.
-*/
+/**
+* \brief Represent a square numerical matrix.
+*
+* This is a template class that represents a fixed size square numerical matrix
+* (SN=Square Numerical).
+*
+* ```
+* template <class T,unsigned int tp_size>
+* class SNmatrix
+* ```
+*
+* - `T` is the type of values contained in the matrix. This is expected 
+*   to be a numeric type in the sense that it has to accept comparison, 
+*   absolute value (from cmath) and other operations like that.
+* - `tp_size` is the size of the matrix.
+*
+* NOTE : if you want the identity matrix, there is the `SNidentity` class.
+**/
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
 {

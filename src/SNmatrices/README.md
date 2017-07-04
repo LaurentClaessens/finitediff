@@ -1,16 +1,6 @@
 
 ### `SNmatrix`
 
-This is a template class that represent a fixed size square numerical matrix (SN=Square Numerical).
-
-```C++
-template <class T,unsigned int tp_size>
-class SNmatrix
-```
-
-* `T` is the type of values contained in the matrix. This is expected to be a numeric type in the sense that it has to accept comparison, absolute value (from cmath) and other operations like that.
-* `tp_size` is the size of the matrix.
-
 #### Gauss's PLU decomposition
 
 An invertible matrix `A` can be written as `A=PLU`  where
