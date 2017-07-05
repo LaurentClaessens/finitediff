@@ -61,8 +61,8 @@ class MelementaryPermutation : public MgenericPermutation<tp_size>
         unsigned int getB() const;
 
         /** 
-        return by value the image of 'k' by the permutation.
-         */
+        * \brief return by value the image of 'k' by the permutation.
+        * */
         unsigned int image(const unsigned int k) const override;
 
 };

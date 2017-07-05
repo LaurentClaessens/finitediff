@@ -65,8 +65,8 @@ extern std::ostream& debug_print;
 /** 
  * Print a small message and a matrix, for debug purpose.
  *
- *\param name A small description of the matrix that will be printed.
- *\param mte the matrix to print.
+ *@param name A small description of the matrix that will be printed.
+ *@param mtr the matrix to print.
  * */
 template <class M>
 void debug_matrix_print(const std::string& name, const M& mtr)
@@ -76,9 +76,9 @@ void debug_matrix_print(const std::string& name, const M& mtr)
 }
 
 /** 
- * Print a small message and a value, for debug purpose.
+ *@brief Print a small message and a value, for debug purpose.
  *
- *\param name A small description of the value that will be printed.
+ *\param text A small description of the value that will be printed.
  *\param v The value to be printed.
  * */
 template <class T>

@@ -27,33 +27,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // THE CLASS HEADER -----------------------------------------
 
 /**
- This class represents a permutation. (not a matrix)
-
-
- The permutation is recorded in the array
-        `std::array<unsigned int,tp_size> permutations;`
- The array
- (a,b,c,d)
- represents the permutation that maps
- 1 to a
- 2 to b
- 3 to c
- 4 to d
-
- The numbers a,b,c,d must be different and in [0,tp_size].
-
-!! THIS IS NOT THE USUAL CONVENTION IN MATH !!
-
-In math, the usual convention when writing
-(a,b,c,d)
-is
-a->b
-b->c
-c->d
-d->a
-
+* @brief This class represents a permutation (not a matrix).
+*
+*
+* The permutation is recorded in the array
+* ```
+* std::array<unsigned int,tp_size> permutations;
+* ```
+* The array  \f$ (a,b,c,d) \f$ represents the permutation that maps
+* \f$ 1\to a \f$, \f$ 2\to b \f$, \f$ 3\to c \f$ and \f$ 4\to d \f$.
+*
+* The numbers  \f$  a,b,c,d\f$ must be different and in [0,tp_size].
 */
-
 template <unsigned int tp_size>
 class Mpermutation : public MgenericPermutation<tp_size>
 {
