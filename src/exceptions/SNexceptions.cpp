@@ -147,7 +147,7 @@ class SNoutOfRangeException : public std::exception
 *  ```
 *
 *  The constructor of `Mpermutation` from   `std::array<unsigned int,tp_size>`
-*  also throws when one element of the array is large than tp_size.
+*  also throws when one element of the array is larger than tp_size.
 * */
 class PermutationIdexoutOfRangeException : public std::exception
 {
