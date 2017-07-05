@@ -31,45 +31,48 @@ class IncompatibleMatrixSizeException : public std::exception
         unsigned int size1;
         unsigned int size2;
 
-        std::string _text;
+        std::string _msg;
 
-    public: 
-        IncompatibleMatrixSizeException(const unsigned int s1, const unsigned int s2): 
-            size1(s1),
-            size2(s2)
-        {}
-        virtual const char* what() const throw()
+        std::string message(const unsigned int size1, const unsigned int size2) const
         {
             std::string s_s1=std::to_string(size1);
             std::string s_s2=std::to_string(size2);
 
-            _text= "First matrix has size "+s_s1+" while second matrix has size "+s_s2;
-            return _text.c_str();
+            return "First matrix has size "+s_s1+" while second matrix has size "+s_s2;
+        };
+
+    public: 
+        IncompatibleMatrixSizeException(const unsigned int s1, const unsigned int s2): 
+            size1(s1),
+            size2(s2),
+            _msg( message(size1,size2) )
+        {}
+        virtual const char* what() const throw()
+        {
+            return _msg.c_str();
         }
 };
 
 class SNchangeNotAllowedException : public std::exception
 {
     private :
-        const unsigned int line;
-        const unsigned int column;
-        const std::string message;
+        std::string _msg;
 
-        std::string _text;
+        std::string message(const unsigned int i,const unsigned int j,const std::string& text) const
+        {
+            std::string s_line=std::to_string(i);
+            std::string s_col=std::to_string(j);
+
+            return "You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+text;
+        };
 
     public: 
-        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string& msg=""): 
-            line(i),
-            column(j),
-            message(msg)
+        SNchangeNotAllowedException(const unsigned int line, const unsigned int column,const std::string& text=""): 
+            _msg( message(line,column,text) )
         {}
         virtual const char* what() const throw()
         {
-            std::string s_line=std::to_string(line);
-            std::string s_col=std::to_string(column);
-
-            _text="You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
-            return _text.c_str();
+            return _msg.c_str();
         }
 };
 
@@ -107,26 +110,23 @@ class OutOfRangeColumnNumber : public std::exception
 class SNoutOfRangeException : public std::exception
 {
     private :
-        unsigned int line;
-        unsigned int column;
-        unsigned int tp_size;
+        std::string _msg;
+        std::string message(const unsigned int i,const unsigned int j,const unsigned int size) const 
+        {
+            std::string s_line=std::to_string(i);
+            std::string s_col=std::to_string(j);
+            std::string s_size=std::to_string(size);
 
-        std::string text;
+            return "Attempt to access element ("+s_line+" , "+s_col+" ) while the matrix has size "+s_size;
+        };
 
     public: 
         SNoutOfRangeException(const unsigned int i, const unsigned int j,const unsigned int s): 
-            line(i),
-            column(j),
-            tp_size(s)
+            _msg(message(i,j,s))
     {}
         virtual const char* what() const throw()
         {
-            std::string s_line=std::to_string(line);
-            std::string s_col=std::to_string(column);
-            std::string s_size=std::to_string(tp_size);
-
-            _text= "Attempt to access element ("+s_line+" , "+s_col+" ) while the matrix has size "+s_size;
-            return _text.c_str();
+            return _msg.c_str();
         }
 };
 
@@ -145,49 +145,46 @@ class PermutationIdexoutOfRangeException : public std::exception
      * */
 
     private :
-        unsigned int index;
-        unsigned int tp_size;
+        std::string _msg;
 
-        std::string _text;
+        std::string message(const unsigned int index, const unsigned int size) const
+        {
+            std::string s_index=std::to_string(index);
+            std::string s_size=std::to_string(size);
+
+            return "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
+        };
 
     public: 
-        PermutationIdexoutOfRangeException(const unsigned int i, const unsigned int t): 
-            index(i),
-            tp_size(t)
+        PermutationIdexoutOfRangeException(const unsigned int index, const unsigned int size): 
+            _msg(message(index,size))
     {}
         virtual const char* what() const throw()
         {
-            std::string s_index=std::to_string(index);
-            std::string s_size=std::to_string(tp_size);
-
-            _text= "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
-            return _text.c_str();
+            return _msg.c_str();
         }
 };
 
 class OutOfRangeConstructionElementaryPermutationException : public std::exception
 {
     private :
-        unsigned int elA;
-        unsigned int elB;
-        unsigned int tp_size;
-
-        std::string _text;
-
-    public: 
-        OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
-            elA(A),
-            elB(B),
-            tp_size(s)
-    {}
-        virtual const char* what() const throw()
+        std::string _msg;
+        std::string message(const unsigned int elA,const unsigned int elB,const unsigned int size) const
         {
             std::string s_elA=std::to_string(elA);
             std::string s_elB=std::to_string(elB);
-            std::string s_size=std::to_string(tp_size);
+            std::string s_size=std::to_string(size);
 
-            _text= "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
-            return _text.c_str();
+            return "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
+        }
+
+    public: 
+        OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
+            _msg(message(A,B,s))
+        {}
+        virtual const char* what() const throw()
+        {
+            return _msg.c_str();
         }
 };
 
@@ -209,19 +206,21 @@ class ProbablyNotWhatYouWantException : public std::exception
 class NegativeMatrixElementNumberException : public std::exception
 {
     private :
-        int num;
-        std::string _text;
+        std::string _msg;
+
+        std::string message(const int n)
+        {
+            std::string s_num=std::to_string(n);
+            return "Trying to access line or column with negative number : "+s_num;
+        };
 
     public: 
         explicit NegativeMatrixElementNumberException(const int n): 
-            num(n)
+            _msg(message(n))
     {}
         virtual const char* what() const throw()
         {
-            std::string s_num=std::to_string(num);
-
-            _text= "Trying to access line or column with negative number : "+s_num;
-            return _text.c_str();
+            return _msg.c_str();
         }
 };
 
