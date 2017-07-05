@@ -36,8 +36,8 @@ class m_num
     private :
         unsigned int num;
     public :
-        m_num(const unsigned int n);
-        m_num(const int n);
+        m_num(const unsigned int n);  // non explicit by choice
+        explicit m_num(const int n);  // I do not want -4 to enter here
 
         m_num operator++();  // ++i
         m_num operator++(int);  // i++
