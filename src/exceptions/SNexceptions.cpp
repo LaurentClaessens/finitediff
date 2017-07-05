@@ -54,7 +54,7 @@ class SNchangeNotAllowedException : public std::exception
         const std::string message;
 
     public: 
-        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string msg=""): 
+        SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string& msg=""): 
             line(i),
             column(j),
             message(msg)
@@ -75,7 +75,7 @@ class NotInitializedMemberException : public std::exception
         std::string text;
 
     public: 
-        NotInitializedMemberException(std::string t): 
+        explicit NotInitializedMemberException(std::string t): 
             text(t)
     {}
         virtual const char* what() const throw()
@@ -90,7 +90,7 @@ class OutOfRangeColumnNumber : public std::exception
         std::string text;
 
     public: 
-        OutOfRangeColumnNumber(std::string t): 
+        explicit OutOfRangeColumnNumber(std::string t): 
             text(t)
     {}
         virtual const char* what() const throw()
@@ -187,7 +187,7 @@ class ProbablyNotWhatYouWantException : public std::exception
         std::string message;
 
     public: 
-        ProbablyNotWhatYouWantException(const std::string m): 
+        explicit ProbablyNotWhatYouWantException(const std::string m): 
             message(m)
     {}
         virtual const char* what() const throw()
@@ -202,7 +202,7 @@ class NegativeMatrixElementNumberException : public std::exception
         int num;
 
     public: 
-        NegativeMatrixElementNumberException(const int n): 
+        explicit NegativeMatrixElementNumberException(const int n): 
             num(n)
     {}
         virtual const char* what() const throw()

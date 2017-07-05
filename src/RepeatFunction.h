@@ -31,7 +31,7 @@ class RepeatFunction
     private :
         std::function<double(double)> f;
     public :
-        RepeatFunction(std::function<double(double)>);
+        explicit RepeatFunction(std::function<double(double)>);
         double operator() (double x) const;
 };
 
