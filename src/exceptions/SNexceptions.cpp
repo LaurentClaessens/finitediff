@@ -31,6 +31,8 @@ class IncompatibleMatrixSizeException : public std::exception
         unsigned int size1;
         unsigned int size2;
 
+        std::string _text:
+
     public: 
         IncompatibleMatrixSizeException(const unsigned int s1, const unsigned int s2): 
             size1(s1),
@@ -41,8 +43,8 @@ class IncompatibleMatrixSizeException : public std::exception
             std::string s_s1=std::to_string(size1);
             std::string s_s2=std::to_string(size2);
 
-            std::string text= "First matrix has size "+s_s1+" while second matrix has size "+s_s2;
-            return text.c_str();
+            _text= "First matrix has size "+s_s1+" while second matrix has size "+s_s2;
+            return _text.c_str();
         }
 };
 
@@ -64,8 +66,10 @@ class SNchangeNotAllowedException : public std::exception
             std::string s_line=std::to_string(line);
             std::string s_col=std::to_string(column);
 
-            std::string text= "You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
-            return text.c_str();
+            std::string text="You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
+            auto a=text.c_str();
+            return a;
+            //return text.c_str();
         }
 };
 
@@ -107,6 +111,8 @@ class SNoutOfRangeException : public std::exception
         unsigned int column;
         unsigned int tp_size;
 
+        std::string text;
+
     public: 
         SNoutOfRangeException(const unsigned int i, const unsigned int j,const unsigned int s): 
             line(i),
@@ -119,8 +125,8 @@ class SNoutOfRangeException : public std::exception
             std::string s_col=std::to_string(column);
             std::string s_size=std::to_string(tp_size);
 
-            std::string text= "Attempt to access element ("+s_line+" , "+s_col+" ) while the matrix has size "+s_size;
-            return text.c_str();
+            _text= "Attempt to access element ("+s_line+" , "+s_col+" ) while the matrix has size "+s_size;
+            return _text.c_str();
         }
 };
 
@@ -142,6 +148,8 @@ class PermutationIdexoutOfRangeException : public std::exception
         unsigned int index;
         unsigned int tp_size;
 
+        std::string _text;
+
     public: 
         PermutationIdexoutOfRangeException(const unsigned int i, const unsigned int t): 
             index(i),
@@ -152,8 +160,8 @@ class PermutationIdexoutOfRangeException : public std::exception
             std::string s_index=std::to_string(index);
             std::string s_size=std::to_string(tp_size);
 
-            std::string text= "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
-            return text.c_str();
+            _text= "Attempt to access element ("+s_index+" while the I am a permutation of integers from 0 to "+s_size;
+            return _text.c_str();
         }
 };
 
@@ -163,6 +171,8 @@ class OutOfRangeConstructionElementaryPermutationException : public std::excepti
         unsigned int elA;
         unsigned int elB;
         unsigned int tp_size;
+
+        std::string _text;
 
     public: 
         OutOfRangeConstructionElementaryPermutationException(const unsigned int A, const unsigned int B,const unsigned int s): 
@@ -176,8 +186,8 @@ class OutOfRangeConstructionElementaryPermutationException : public std::excepti
             std::string s_elB=std::to_string(elB);
             std::string s_size=std::to_string(tp_size);
 
-            std::string text= "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
-            return text.c_str();
+            _text= "Cannot create the elementary permutation "+s_elA+" <--> "+s_elB+" when tp_size is "+s_size+".";
+            return _text.c_str();
         }
 };
 
@@ -200,6 +210,7 @@ class NegativeMatrixElementNumberException : public std::exception
 {
     private :
         int num;
+        std::string _text;
 
     public: 
         explicit NegativeMatrixElementNumberException(const int n): 
@@ -209,10 +220,9 @@ class NegativeMatrixElementNumberException : public std::exception
         {
             std::string s_num=std::to_string(num);
 
-            std::string text= "Trying to access line or column with negative number : "+s_num;
-            return text.c_str();
+            _text= "Trying to access line or column with negative number : "+s_num;
+            return _text.c_str();
         }
 };
-
 
 #endif
