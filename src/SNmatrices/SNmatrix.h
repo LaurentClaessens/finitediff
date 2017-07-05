@@ -61,6 +61,19 @@ class SNplu;
 * - `tp_size` is the size of the matrix.
 *
 * NOTE : if you want the identity matrix, there is the `SNidentity` class.
+*
+* For creating a matrix knowing its elements, be best way is to do something
+* like
+*
+* ```
+* SNmatrix<int,2> sn;
+* sn.at(0,0)=1;
+* sn.at(0,1)=2;
+* sn.at(1,0)=3;
+* sn.at(1,1)=4;
+* ```
+* Notice that the elements are numbered from `0` to `tp_size-1`. Not from `1`.
+*
 **/
 template <class T,unsigned int tp_size>
 class SNmatrix  : public SNgeneric<T,tp_size>
@@ -99,6 +112,7 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         //   The template type T has to accept arithmetic manipulations
         //   like abs, comparison.
         SNelement<T,tp_size> getLargerOnColumn(m_num col) const;
+
         // return the largest (absolute value) element under the diagonal
         // on the given column.
         SNelement<T,tp_size> getLargerUnderDiagonal(m_num col) const;
@@ -135,8 +149,9 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // In-place transformation !!
         void makeUpperTriangular();
 
-        // swap the lines l1 and l2. This is in-place replacement.
-        // The matrix is changed.
+        /** 
+         * \brief swap the lines `l1` and `l2`. 
+         * */ 
         void swapLines(m_num l1,m_num l2);
 
 

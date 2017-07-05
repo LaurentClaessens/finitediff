@@ -24,12 +24,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "../exceptions/SNexceptions.cpp"
 
-/*
-   This represents a lower triangular matrix (the diagonal can be non zero).
-*/
-
 // THE CLASS HEADER -----------------------------------------
 
+/**
+* \brief Represents a lower triangular matrix (the diagonal can be non zero).
+*
+*
+*
+*
+*/
 template <class T,unsigned int tp_size>
 class SNlowerTriangular : public SNgeneric<T,tp_size>
 {
@@ -37,22 +40,31 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
         T _get(const m_num,const m_num) const override;
-        T& _at(m_num,m_num) override;
+
+        /** 
+         * \brief Return by reference the content of element (`l`,`c`) of 
+         * the matrix.
+         *
+         * If `l<c`, throws `SNnonAllowedChange` because  `_at` is destinated
+         * to populate the matrix.
+         * */
+        T& _at(m_num l,m_num c) override;
     public :
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
         SNlowerTriangular();
-        /** Construct a lower diagonal matrix from a SNmatrix.
+        /** \brief Construct a lower diagonal matrix from a SNmatrix.
          *
          * Whatever was over the diagonal is forgotten.
          * */
         SNlowerTriangular(const SNmatrix<T,tp_size>& A);
-        /** Construct a lower diagonal matrix from a generic matrix.
+        /** \brief Construct a lower diagonal matrix from a generic matrix.
          *
          * Due to the way the data is recorded in `SNmatrix` and 
          * `SNlowerTriangular`, it could be faster to initialize from a
          * `SNmatrix` than from a generic one (if you have the choice ...).
          * */
         SNlowerTriangular(const SNgeneric<T,tp_size>& A);
+
         /** Construct a lower triangular from a gaussian matrix */
         SNlowerTriangular(const SNgaussian<T,tp_size>& A);
 
@@ -128,6 +140,7 @@ T SNlowerTriangular<T,tp_size>::_get(m_num l,m_num c) const
     }
     return data.at(c*tp_size+l);
 }
+
 
 template <class T,unsigned int tp_size>
 T& SNlowerTriangular<T,tp_size>::_at(m_num l,m_num c) 

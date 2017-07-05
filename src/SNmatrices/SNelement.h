@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef __SNELEMENT_H__145452__
 #define __SNELEMENT_H__145452__
 
-
 /*
 This class describes a matrix element from a matrix of type 'SNmatrix'.
 
@@ -29,14 +28,14 @@ An element contains
 - its value
 */
 
-
-// FORWARD DECLARATION ------------------------ 
-
-template <class T,unsigned int tp_size>
-class SNmatrix;
-
 // THE CLASS HEADER -----------------------------------------
 
+
+/** 
+ * \brief This is a template class that represent an element of a `SNmatrix`.
+ *
+ * The template arguments `T` and `tp_size` have the same meaning. 
+ * */
 template <class T,unsigned int tp_size>
 class SNelement
 {

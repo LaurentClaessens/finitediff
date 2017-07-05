@@ -60,7 +60,7 @@ bool componentWiseeEquality(const T& A,const U& B)
     return true;
 }
 /** 
-   \briel compute the component (i,j) of the matrix product A*B
+   \brief compute the component (i,j) of the matrix product A*B
 
      \param A a matrix
      \param B a matrix

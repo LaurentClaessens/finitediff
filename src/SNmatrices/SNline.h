@@ -24,20 +24,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "m_num.h"
 
-/*
-This class describes a matrix line from a matrix of type 'SNmatrix'.
-
-An element contains
-- its line number
-*/
-
-//forward
 
 template <class T,unsigned int tp_size>
 class SNmatrix;
 
 // THE CLASS HEADER -----------------------------------------
 
+/*
+* @brief This class describes a matrix line from a matrix of type 'SNmatrix'.
+*
+* An element contains
+* - its line number
+*/
 template <class T,unsigned int tp_size>
 class SNline
 { 
