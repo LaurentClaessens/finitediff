@@ -108,7 +108,7 @@ class OutOfRangeColumnNumber : public std::exception
 
 
 /**
-* Raised when one ask by `get` or `at` an element that is out
+* When one ask by `get` or `at` an element that is out
 * of the range of the matrix. 
 *
 * ```
