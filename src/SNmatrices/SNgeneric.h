@@ -36,38 +36,37 @@ template <class T,unsigned int tp_size>
 class SNgaussian;
 
 /**
- 
-   This is the base class for the other matrices types. 
-   A matrix can be
-   - diagonal
-   - upper/lower triangular
-   - a gaussian transformation
-   - symmetric
-   - etc.
-
-   Each of these types have different implementations for storing the elements, 
-   perform equality tests (`opertor==`), multiplication (`operator*`) and so on.
-
- 
-   What you need in your subclass :
-
-   - override  `T  _get`
-     - `_get(i,j)` has to return the value of the element (i,j) of your matrix.
-
-   - override  `T& _at`
-    - `_at(i,j)` has to return a _reference_ to the element (i,j) of your matrix.
-
-    - In consequence, `_at(i,j)` should throw 'SNchangeNotAllowedException' if the requested element cannot be modified. For example requesting the element (1,4) of a lower triangular matrix.
-            
-    - `_at` is intended to populate the matrix.
-            
-    
-As an example, on a lower diagonal matrix,
-- `_get(1,3)` returns 0 (by value)
-- `_at(1,3)` throws SNchangeNotAllowedException
-
-*/
-
+* @brief   This is the base class for the other matrices types. 
+*
+*   A matrix can be
+*   - diagonal
+*   - upper/lower triangular
+*   - a gaussian transformation
+*   - symmetric
+*   - etc.
+*
+*   Each of these types have different implementations for storing
+*   the elements, perform equality tests (`opertor==`), multiplication (`operator*`) and so on.
+*
+*   What you need in your subclass :
+*
+*   - override  `T  _get`
+*     - `_get(i,j)` has to return the value of the element 
+*     (i,j) of your matrix.
+*
+*   - override  `T& _at`
+*    - `_at(i,j)` has to return a _reference_ to the element 
+*    (i,j) of your matrix.
+*    - In consequence, `_at(i,j)` should throw 'SNchangeNotAllowedException' if the requested element cannot be modified. For example requesting the element (1,4) of a lower triangular matrix.
+*            
+*    - `_at` is intended to populate the matrix.
+*            
+*    
+*As an example, on a lower diagonal matrix,
+*- `_get(1,3)` returns 0 (by value)
+*- `_at(1,3)` throws SNchangeNotAllowedException
+*
+**/
 template <class T,unsigned int tp_size>
 class SNgeneric
 {
