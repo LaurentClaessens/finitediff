@@ -31,13 +31,13 @@ class IncompatibleMatrixSizeException : public std::exception
         unsigned int size1;
         unsigned int size2;
 
-        std::string _text:
+        std::string _text;
 
     public: 
         IncompatibleMatrixSizeException(const unsigned int s1, const unsigned int s2): 
             size1(s1),
             size2(s2)
-    {}
+        {}
         virtual const char* what() const throw()
         {
             std::string s_s1=std::to_string(size1);
@@ -55,21 +55,21 @@ class SNchangeNotAllowedException : public std::exception
         const unsigned int column;
         const std::string message;
 
+        std::string _text;
+
     public: 
         SNchangeNotAllowedException(const unsigned int i, const unsigned int j,const std::string& msg=""): 
             line(i),
             column(j),
             message(msg)
-    {}
+        {}
         virtual const char* what() const throw()
         {
             std::string s_line=std::to_string(line);
             std::string s_col=std::to_string(column);
 
-            std::string text="You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
-            auto a=text.c_str();
-            return a;
-            //return text.c_str();
+            _text="You cannot modify element ("+s_line+" , "+s_col+" ) with this kind of matrix. You should maybe use 'get' instead of 'at'."+" "+message;
+            return _text.c_str();
         }
 };
 
