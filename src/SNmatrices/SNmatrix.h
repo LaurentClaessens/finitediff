@@ -118,11 +118,6 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // return the matrix element on given (line,column).
         SNelement<T,tp_size> getElement(m_num line, m_num col) const;
 
-        // Use the Gauss'elimination to transform the SNmatrix
-        // to an upper triangular matrix.
-        // In-place transformation !!
-        void makeUpperTriangular();
-
         // swap the lines l1 and l2. This is in-place replacement.
         // The matrix is changed.
         void swapLines(m_num l1,m_num l2);
