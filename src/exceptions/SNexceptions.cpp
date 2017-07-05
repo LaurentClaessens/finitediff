@@ -100,6 +100,15 @@ class OutOfRangeColumnNumber : public std::exception
 };
 
 
+/**
+* Raised when one ask by `get` or `at` an element that is out
+* of the range of the matrix. 
+*
+* ```
+* SNmatrix<int,4> A;
+* A.get(5,1);     // raises
+* ```
+**/
 class SNoutOfRangeException : public std::exception
 {
     private :
@@ -124,19 +133,18 @@ class SNoutOfRangeException : public std::exception
         }
 };
 
+/** This exception is raised when one try to access to an element out of range of a permutation
+*  ```
+*  Mpermutation<4> perm;
+*  // populate 'perm'
+*  unsigned int k=perm(5)   // throws
+*  ```
+*
+*  The constructor of `Mpermutation` from   `std::array<unsigned int,tp_size>`
+*  also throws when one element of the array is large than tp_size.
+* */
 class PermutationIdexoutOfRangeException : public std::exception
 {
-
-    /** This exception is raised when one try to access to an element out of range of a permutation
-     *  ```
-     *  Mpermutation<4> perm;
-     *  // populate 'perm'
-     *  unsigned int k=perm(5)   // throws
-     *  ```
-     *
-     *  The constructor of `Mpermutation` from   `std::array<unsigned int,tp_size>`
-     *  also throws when one element of the array is large than tp_size.
-     * */
 
     private :
         unsigned int index;

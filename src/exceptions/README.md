@@ -1,14 +1,4 @@
-## Exceptions
 
-
-### `SNoutOfRangeException`
-
-Raised when one ask by `get` or `at` an element that is out of the range of the matrix. 
-
-```C++
-SNmatrix<int,4> A;
-A.get(5,1);     // raises
-```
 
 ### `SNchangeNotAllowed`
 
