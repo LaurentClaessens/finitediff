@@ -67,8 +67,9 @@ class SNline
         unsigned int firstNonZeroColumn() const;
 
         /**
-         divide all the elements by the first non-zero element. So the line becomes
-         (0,0,1, blah )
+        @brief divide all the elements by the first non-zero element. 
+        
+        Thus the line takes the form \f$  (0,0,1, blah )\f$
          the original matrix is not updated.
         //  */
         void makeUnit();
