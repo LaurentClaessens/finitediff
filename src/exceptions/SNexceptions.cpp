@@ -202,7 +202,7 @@ class ProbablyNotWhatYouWantException : public std::exception
         std::string message;
 
     public: 
-        explicit ProbablyNotWhatYouWantException(const std::string m): 
+        explicit ProbablyNotWhatYouWantException(const std::string& m): 
             message(m)
     {}
         virtual const char* what() const throw()
