@@ -47,7 +47,8 @@ class ExceptionsTests : public CppUnit::TestCase
             SNlowerTriangular<int,4> A;
             SNmatrix<double,2> B;
 
-            // std::cout<<  is in order to avoid the warning about "equality comparison result unused"
+            // std::cout<<  is in order to avoid the warning about 
+            // "equality comparison result unused"
             // I do no know how to do better ...
             CPPUNIT_ASSERT_THROW(std::cout<<(A==B),IncompatibleMatrixSizeException);
 
@@ -56,9 +57,26 @@ class ExceptionsTests : public CppUnit::TestCase
             CPPUNIT_ASSERT_THROW(C*D,IncompatibleMatrixSizeException);
         }
 
+        void error_message_test()
+        {
+            echo_function_test("error_message_test")
+            SNmatrix<double,2> C;
+            SNmatrix<double,3> D;
+            try
+            {
+                std::cout<<C*D;
+            }
+            catch (IncompatibleMatrixSizeException e)
+            {
+                std::string ans("First matrix has size 2 while second matrix has size 3");
+                CPPUNIT_ASSERT(e.what()==ans);
+            }
+        };
+
     public:
         void runTest()
         {
+            error_message_test();
             out_of_range_test();
             change_not_allowed_test();
             incompatible_matrix_size_test();
