@@ -59,7 +59,7 @@ class ExceptionsTests : public CppUnit::TestCase
 
         void error_message_test()
         {
-            echo_function_test("error_message_test")
+            echo_function_test("error_message_test");
             SNmatrix<double,2> C;
             SNmatrix<double,3> D;
             try
