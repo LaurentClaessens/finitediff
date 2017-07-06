@@ -23,8 +23,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 
 /** 
- * This exception is raised when one tries to multiply or compare matrices that have not the same size.
- * */
+ *
+* @brief When trying to perform operation with matrices with
+* incompatible sizes.
+*
+* ```
+* SNlowerTriangular<int,4> A;
+* SNmatrix<double,2> B;
+* bool a=(A==B);  //throws
+* ```
+*
+* ```
+* SNmatrix<double,2> A;
+* SNmatrix<double,3> B;
+* auto C=A*B;  //throws
+* ```
+*
+* */
 class IncompatibleMatrixSizeException : public std::exception
 {
     private :
@@ -53,6 +68,16 @@ class IncompatibleMatrixSizeException : public std::exception
         }
 };
 
+/**
+* When one uses the method `at` for requesting an element
+* t that cannot be changed (use `get` instead).
+*
+* ```
+* SNlowerTriangular<int,4> A;
+* A.at(1,2);     // throws
+* ```
+* A lower diagonal matrix will always have element `(1,2)` set to zero.
+  **/
 class SNchangeNotAllowedException : public std::exception
 {
     private :
