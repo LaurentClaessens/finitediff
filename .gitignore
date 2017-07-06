@@ -27,6 +27,7 @@ doc/html/*
 TODO.txt
 .deploy.log
 .testing.log
+.testing.log.cppcheck
 
 # SUBDIRECTORIES's .GITIGNORE
 

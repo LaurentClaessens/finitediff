@@ -5,6 +5,7 @@
 # Takes the filepath of the log file as argument.
 
 TEST_LOG_FILE=$1
+CPPCHECK_LOG_FILE=$TEST_LOG_FILE.cppcheck
 
 echo
 echo "TESTS --------------------"
@@ -48,17 +49,20 @@ function unit_tests
 
 function cpp_check
 {
-    # needs 'cppcheck'
-    # apt instal cppcheck
+    # needs 'cppcheck' : apt instal cppcheck
     echo "+++ cppcheck ... src ..."
-    cppcheck --enable=all  src 2>> $TEST_LOG_FILE
+    cppcheck --enable=all  src 2>> $CPPCHECK_LOG_FILE
     echo "+++ cppcheck ... tests ..."
-    cppcheck --enable=all  tests 2>> $TEST_LOG_FILE
+    cppcheck --enable=all  tests 2>> $CPPCHECK_LOG_FILE
 }
 
-unit_tests&
-cpp_check
+cpp_check&
+unit_tests
 
+wait
+
+
+cat $CPPCHECK_LOG_FILE >> $TEST_LOG_FILE
 
 echo "Tests results ---------------"
 echo "In $TEST_LOG_FILE"
