@@ -25,19 +25,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "m_num.h"
 
 /** 
-This class represent matrices that are product of gaussian matrices. They
-are "partially" the lower triangular part of the PLU decomposition
-during the process.
-
-Some of the properties of these matrices are
-- the inverse is easy
-- they commute easily with the elementary permutation matrices when the
-  indices of the latter are strictly larger than the number of non
-  trivial columns here.
-- The diagonal is filled by 1.
-
+* This class represent matrices that are product of gaussian matrices. They
+* are "partially" the lower triangular part of the PLU decomposition
+* during the process.
+*
+* Some of the properties of these matrices are
+*
+* - the inverse is easy
+* - they commute easily with the elementary permutation matrices when the
+*  indices of the latter are strictly larger than the number of non
+*  trivial columns here.
+*- The diagonal is filled by 1.
 */
-
 template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
