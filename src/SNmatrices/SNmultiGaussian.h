@@ -65,7 +65,7 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         * A gaussian matrix is a particular case of multi-gaussian matrix.
         * */
         explicit SNmultiGaussian(const SNgeneric<T,tp_size>& A);
-        explicit SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+        SNmultiGaussian(const SNgaussian<T,tp_size>& A);
 
         /**
          * @brief Initialises as the diagonal matrix full of `x`
