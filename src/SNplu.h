@@ -91,6 +91,9 @@ void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A)
 template <class T,unsigned int tp_size>
 void SNplu<T,tp_size>::_setL(const SNmatrix<T,tp_size>& A) 
 {
+
+    throw 4;
+
     // TODO : non optimal because one could try to copy only the useful part.
     data_L=A;
 }
