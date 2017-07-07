@@ -128,14 +128,19 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         void set_identity();
     public:
         SNmatrix();
+
+        //cppcheck-suppress noExplicitConstructor
         SNmatrix(const SNmatrix<T,tp_size>&);
+
         /**
          * Construct a SNmatrix as copy of a generic matrix.
          * Here we copy every elements.
          * */
+        //cppcheck-suppress noExplicitConstructor
         SNmatrix(const SNgeneric<T,tp_size>&);
+
         /** Creates a matrix full of x */
-        SNmatrix(const T& x);
+        explicit SNmatrix(const T& x);
 
 
         // return the max of the absolute values of all the matrix elements
@@ -170,6 +175,12 @@ template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const T& v): 
     data()
 {
+
+    // This constructor should not exist.
+
+    throw 4; // I wan to know who does that !!
+
+
     for (unsigned int k=0;k<tp_size*tp_size;++k)
     {
             data.at(k)=v;

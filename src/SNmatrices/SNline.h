@@ -45,8 +45,8 @@ class SNline
         unsigned int line;
 
         SNline(const std::array<T,tp_size>&);  // for testing purpose only
-    public :
 
+    public :
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
 
         template <class U,class V,unsigned int s>

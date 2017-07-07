@@ -64,9 +64,9 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         *
         * A gaussian matrix is a particular case of multi-gaussian matrix.
         * */
-        SNmultiGaussian(const SNgeneric<T,tp_size>& A);
-        SNmultiGaussian(const SNgaussian<T,tp_size>& A);
-        SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
+        explicit SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+        explicit SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+        explicit SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNmultiGaussian<T,tp_size>&);
         SNmultiGaussian<T,tp_size>& operator=(SNmultiGaussian<T,tp_size>);

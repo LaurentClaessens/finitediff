@@ -51,9 +51,9 @@ function cpp_check
 {
     # needs 'cppcheck' : apt instal cppcheck
     echo "+++ cppcheck ... src ..."
-    cppcheck --enable=all  src 2>> $CPPCHECK_LOG_FILE
+    cppcheck --enable=all --inline-suppr src 2>> $CPPCHECK_LOG_FILE
     echo "+++ cppcheck ... tests ..."
-    cppcheck --enable=all  tests 2>> $CPPCHECK_LOG_FILE
+    cppcheck --enable=all --inline-suppr  tests 2>> $CPPCHECK_LOG_FILE
 }
 
 cpp_check&

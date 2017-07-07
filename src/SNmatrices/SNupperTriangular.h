@@ -50,7 +50,7 @@ class SNupperTriangular : public SNgeneric<T,tp_size>
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
 
         SNupperTriangular();
-        SNupperTriangular(const SNmatrix<T,tp_size>& A);
+        explicit SNupperTriangular(const SNmatrix<T,tp_size>& A);
 };
 
 // CONSTRUCTOR  ---------------------------------------

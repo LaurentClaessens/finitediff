@@ -51,13 +51,15 @@ class Mpermutation : public MgenericPermutation<tp_size>
     private:
         std::array<unsigned int,tp_size> data;
     public :
-        Mpermutation(const std::array<unsigned int,tp_size>& d); 
+        explicit Mpermutation(const std::array<unsigned int,tp_size>& d); 
+
+        //cppcheck-suppress noExplicitConstructor
         Mpermutation(const MelementaryPermutation<tp_size>& ); 
 
-        /** The no-argument constructors initializes to identity */
+        /** @brief The no-argument constructors initializes to identity */
         Mpermutation(); 
 
-        /** return by value the image of `k` */
+        /** @brief return by value the image of `k` */
         unsigned int image(const unsigned int k) const override;
 
         /** 

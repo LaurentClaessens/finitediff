@@ -56,16 +56,17 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
          *
          * Whatever was over the diagonal is forgotten.
          * */
-        SNlowerTriangular(const SNmatrix<T,tp_size>& A);
+        explicit SNlowerTriangular(const SNmatrix<T,tp_size>& A);
         /** \brief Construct a lower diagonal matrix from a generic matrix.
          *
          * Due to the way the data is recorded in `SNmatrix` and 
          * `SNlowerTriangular`, it could be faster to initialize from a
          * `SNmatrix` than from a generic one (if you have the choice ...).
          * */
-        SNlowerTriangular(const SNgeneric<T,tp_size>& A);
+        explicit SNlowerTriangular(const SNgeneric<T,tp_size>& A);
 
         /** Construct a lower triangular from a gaussian matrix */
+        //cppcheck-suppress noExplicitConstructor
         SNlowerTriangular(const SNgaussian<T,tp_size>& A);
 
         void swap(SNlowerTriangular<T,tp_size>& other);
