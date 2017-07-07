@@ -43,10 +43,11 @@ class SNline
     private :
         std::array<T,tp_size> data;
         unsigned int line;
+
+        SNline(const std::array<T,tp_size>&);  // for testing purpose only
     public :
 
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
-        SNline(const std::array<T,tp_size>&);       // do not use this constructors otherwise than for testing purpose.
 
         template <class U,class V,unsigned int s>
         friend bool operator==(const SNline<U,s>&,const SNline<V,s>&);
