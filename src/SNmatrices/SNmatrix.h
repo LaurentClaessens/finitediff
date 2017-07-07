@@ -338,13 +338,11 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     // http://laurent.claessens-donadello.eu/pdf/lefrido.pdf
 
 {
-    SNplu<T,tp_size> plu;
 
-    Mpermutation<tp_size>& permutation=plu.data_P;
-
-    // progressively become L
-    SNmultiGaussian<T,tp_size> mM=SNidentity<T,tp_size>();  
-    // this will progressively become U
+    // mL will progressively become L
+    // mU will progressively become U
+    Mpermutation<tp_size> mP; // identity
+    SNmultiGaussian<T,tp_size> mL(1);   // identity
     SNmatrix<T,tp_size> mU=*this;  
 
 
@@ -357,7 +355,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
-            permutation=permutation*el_perm; 
+            mP=mP*el_perm; 
             mU.swapLines(c,max_el.line);
 
             auto G=mU.getGaussian(c);
@@ -365,12 +363,12 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             // On the first iteration, there is nothing to swap.
             if (c!=0)
             {
-                mM.swapLines(c,max_el.line);
-                mM*=G.inverse();
+                mL.swapLines(c,max_el.line);
+                mL*=G.inverse();
             }
             else
             {
-                mM=G.inverse();
+                mL=G.inverse();
             }
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
@@ -384,8 +382,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
         }
     }
     // at this point, the matrix mU should be the correct one.
-    plu._setU(mU);
-    plu._setL(mM);
+    SNplu<T,tp_size> plu(mP,mL,mU);
     return plu;
 }
 

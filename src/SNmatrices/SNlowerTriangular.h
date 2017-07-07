@@ -51,12 +51,17 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         T& _at(m_num l,m_num c) override;
     public :
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
-        SNlowerTriangular();
+        /** 
+         * @brief Initializes as a diagonal matrix full of `x`.
+         * */
+        SNlowerTriangular(const T& x);
+
         /** \brief Construct a lower diagonal matrix from a SNmatrix.
          *
          * Whatever was over the diagonal is forgotten.
          * */
         explicit SNlowerTriangular(const SNmatrix<T,tp_size>& A);
+
         /** \brief Construct a lower diagonal matrix from a generic matrix.
          *
          * Due to the way the data is recorded in `SNmatrix` and 
@@ -75,7 +80,14 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
-SNlowerTriangular<T,tp_size>::SNlowerTriangular(): data() { };
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const T& x):
+    data{}     // initialize full of zeroes.
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        this->at(i,i)=x;
+    }
+}
 
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgeneric<T,tp_size>& A)

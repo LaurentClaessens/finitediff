@@ -66,6 +66,11 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         * */
         explicit SNmultiGaussian(const SNgeneric<T,tp_size>& A);
         explicit SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+
+        /**
+         * @brief Initialises as the diagonal matrix full of `x`
+         * */
+        SNmultiGaussian(const T& x);
         SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNmultiGaussian<T,tp_size>&);
@@ -148,10 +153,22 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 
 // CONSTRUCTORS -------------------------------------------------
 
+// from one number
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const T& x):
+    data_L(x),
+    data_last_column(tp_size-1) 
+{ 
+    for (m_num i=0;i<tp_size;i++)
+    {
+        this->at(i,i)=x;
+    }
+}
+
 // from nothing
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
-    data_L(SNidentity<T,tp_size>()),
+    data_L(),
     data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
 { }
 

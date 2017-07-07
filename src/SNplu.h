@@ -35,9 +35,9 @@ class SNplu
     friend SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const;
 
     private :
-        Mpermutation<tp_size> data_P;              // we store the "mathematical" permutation, not the matrix.
-        SNlowerTriangular<T,tp_size> data_L;
-        SNupperTriangular<T,tp_size> data_U;
+        const Mpermutation<tp_size> data_P; 
+        const SNlowerTriangular<T,tp_size> data_L;
+        const SNupperTriangular<T,tp_size> data_U;
 
         /**  '_setU' takes a matrix and says that this is the 'U' one.
            - does not check that A is actually upper diagonale
@@ -57,19 +57,33 @@ class SNplu
         void _setL(const SNmatrix<T,tp_size>& A);
     public:
 
-        SNpermutation<T,tp_size> getP() const;
-        SNlowerTriangular<T,tp_size> getL() const;
-        SNupperTriangular<T,tp_size> getU() const;
+        /** @brief constructor from the already computed P,L and U.
+         * */
+        SNplu(const Mpermutation<tp_size>& mP,SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU);
 
-        Mpermutation<tp_size> getMpermutation() const;
+        const SNpermutation<T,tp_size> getP() const;
+        const SNlowerTriangular<T,tp_size> getL() const;
+        const SNupperTriangular<T,tp_size> getU() const;
+        const Mpermutation<tp_size> getMpermutation() const;
 };
 
 // CONSTRUCTORS -----------------------
 
+template <class T,unsigned int tp_size>
+SNplu<T,tp_size>::SNplu(const Mpermutation<tp_size>& mP,SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU):
+    data_P(mP),
+    data_L(mL),
+    data_U(mU)
+{}
+
+// SETTERS
 
 template <class T,unsigned int tp_size>
 void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A) 
 {
+
+    throw 4;
+
     // TODO : non optimal because one could try to copy only the useful part.
     data_U=A;
 }
@@ -84,27 +98,27 @@ void SNplu<T,tp_size>::_setL(const SNmatrix<T,tp_size>& A)
 // GETTER METHODS -----------------------
 
 template <class T,unsigned int tp_size>
-SNpermutation<T,tp_size> SNplu<T,tp_size>::getP() const
+const SNpermutation<T,tp_size> SNplu<T,tp_size>::getP() const
 {
     return SNpermutation<T,tp_size>(data_P);
 }
 
 template <class T,unsigned int tp_size>
-SNlowerTriangular<T,tp_size> SNplu<T,tp_size>::getL() const
+const SNlowerTriangular<T,tp_size> SNplu<T,tp_size>::getL() const
 {
     return data_L;
 }
 
 
 template <class T,unsigned int tp_size>
-SNupperTriangular<T,tp_size> SNplu<T,tp_size>::getU() const
+const SNupperTriangular<T,tp_size> SNplu<T,tp_size>::getU() const
 {
     return data_U;
 }
 
 
 template <class T,unsigned int tp_size>
-Mpermutation<tp_size> SNplu<T,tp_size>::getMpermutation() const
+const Mpermutation<tp_size> SNplu<T,tp_size>::getMpermutation() const
 {
     return  data_P;
 }
