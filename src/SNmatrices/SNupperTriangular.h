@@ -24,12 +24,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "../exceptions/SNexceptions.cpp"
 
-/*
-   This represents a upper triangular matrix (the diagonal can be non zero).
-*/
 
 // THE CLASS HEADER -----------------------------------------
 
+/*
+   This represents a upper triangular matrix (the diagonal can be non zero).
+**/
 template <class T,unsigned int tp_size>
 class SNupperTriangular : public SNgeneric<T,tp_size>
 {
@@ -51,14 +51,29 @@ class SNupperTriangular : public SNgeneric<T,tp_size>
 
         SNupperTriangular();
         explicit SNupperTriangular(const SNmatrix<T,tp_size>& A);
+
+        /**
+         * @brief initiate the matrix as identity.
+         * */
+        SNupperTriangular(const T& x);
 };
 
 // CONSTRUCTOR  ---------------------------------------
 
 template <class T,unsigned int tp_size>
+SNupperTriangular<T,tp_size>::SNupperTriangular(const T& x): 
+    data{}
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        this->at(i,i)=x;
+    }
+};
+
+template <class T,unsigned int tp_size>
 SNupperTriangular<T,tp_size>::SNupperTriangular(): 
     data() 
-{ };
+{};
 
 template <class T,unsigned int tp_size>
 std::array<T,tp_size*tp_size> SNupperTriangular<T,tp_size>::_get_other_data(const SNmatrix<T,tp_size>& A) const

@@ -36,8 +36,8 @@ int main ()
     
     std::cout<<"The matrix A is "<<std::endl;
     std::cout<<A<<std::endl;            // printing the matrix
-    auto plu=A.getPLU();
 
+    auto plu=A.getPLU();
     auto cP=plu.getP();     // permutation
     auto cL=plu.getL();     // lower triangular
     auto cU=plu.getU();     // upper triangular

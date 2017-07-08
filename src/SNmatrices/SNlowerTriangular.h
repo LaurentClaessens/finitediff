@@ -24,14 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNgeneric.h"
 #include "../exceptions/SNexceptions.cpp"
 
+// forward definition
+template <class T,unsigned int tp_size>
+class SNmultiGaussian;
+
 // THE CLASS HEADER -----------------------------------------
 
 /**
 * \brief Represents a lower triangular matrix (the diagonal can be non zero).
-*
-*
-*
-*
 */
 template <class T,unsigned int tp_size>
 class SNlowerTriangular : public SNgeneric<T,tp_size>
@@ -51,6 +51,12 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         T& _at(m_num l,m_num c) override;
     public :
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
+
+        /** 
+         * @brief Construct a lower triangular matrix with non initialized entries.
+         * */
+        SNlowerTriangular();
+
         /** 
          * @brief Initializes as a diagonal matrix full of `x`.
          * */
@@ -73,12 +79,22 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         /** Construct a lower triangular from a gaussian matrix */
         //cppcheck-suppress noExplicitConstructor
         SNlowerTriangular(const SNgaussian<T,tp_size>& A);
+        /** Construct a lower triangular from a multi-gaussian matrix */
+        //cppcheck-suppress noExplicitConstructor
+        SNlowerTriangular(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNlowerTriangular<T,tp_size>& other);
 };
 
 // CONSTRUCTOR  ---------------------------------------
 
+// from nothing
+template <class T,unsigned int tp_size>
+SNlowerTriangular<T,tp_size>::SNlowerTriangular():
+    data()
+{}
+
+// from SNlowerTriangular
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const T& x):
     data{}     // initialize full of zeroes.
@@ -89,6 +105,7 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const T& x):
     }
 }
 
+// from SNgeneric
 template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgeneric<T,tp_size>& A)
 {
@@ -115,18 +132,12 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmatrix<T,tp_size>& A):
 {};
 
 template <class T,unsigned int tp_size>
-SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A):
+    data{} // initialized full of zeroes.
 {
     for (m_num i=0;i<tp_size;i++)
     {
         this->at(i,i)=1;
-    }
-    for (m_num c=0;c<tp_size;++c)
-    {
-        for (m_num l=c+1;l<tp_size;++l)
-        {
-            this->at(l,c)=0;
-        }
     }
     for (m_num l= A.getColumn()+1;l<tp_size;++l )
     {
@@ -134,13 +145,30 @@ SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A)
     }
 }
 
+// from multi-gaussian
+template <class T,unsigned int tp_size>
+SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmultiGaussian<T,tp_size>& A):
+    data{} // initialized full of zeroes.
+{
+    for (m_num i=0;i<tp_size;i++)
+    {
+        this->at(i,i)=1;
+    }
+    m_num last_column(A.getLastColumn());
+    for (m_num col=0;col<last_column;col++)
+    {
+        for (m_num l= col+1;l<tp_size;++l )
+        {
+            this->at(l,col)=A.get(l,col);
+        }
+    }
+}
 
 template <class T,unsigned int tp_size>
 void SNlowerTriangular<T,tp_size>::swap(SNlowerTriangular<T,tp_size>& other)
 {
     std::swap(data,other.data);
 }
-
 
 // _GET AND _AT METHODS ---------------------------------------
 

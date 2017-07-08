@@ -155,12 +155,12 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 // from one number
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const T& x):
-    data_L(x),
+    data_L{},
     data_last_column(tp_size-1) 
-{ 
-    for (m_num i=0;i<tp_size;i++)
+{
+    if (x!=1)
     {
-        this->at(i,i)=x;
+        throw SNchangeNotAllowedException(0,0,"The one parameter constructor of 'SNmultiGaussian' only works with 1 as agrument, because the other diagonal matrices are not multigaussian.");
     }
 }
 
@@ -188,15 +188,9 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A)
 // from gaussian
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
+    data_L(1),       // initiate as the unit matrix
     data_last_column(A.getColumn())
 { 
-    for (m_num c=0;c<A.getColumn();++c)
-    {
-        for (m_num l=c+1;l<tp_size;++l)
-        {
-            this->at(l,c)=A.get(l,c);
-        }
-    }
     for (m_num l=A.getColumn()+1;l<tp_size;++l)
     {
         this->at(l,A.getColumn())=A.get(l,A.getColumn());

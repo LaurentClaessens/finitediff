@@ -59,7 +59,7 @@ class SNplu
 
         /** @brief constructor from the already computed P,L and U.
          * */
-        SNplu(const Mpermutation<tp_size>& mP,SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU);
+        SNplu(const Mpermutation<tp_size>& mP,const SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU);
 
         const SNpermutation<T,tp_size> getP() const;
         const SNlowerTriangular<T,tp_size> getL() const;
@@ -70,7 +70,7 @@ class SNplu
 // CONSTRUCTORS -----------------------
 
 template <class T,unsigned int tp_size>
-SNplu<T,tp_size>::SNplu(const Mpermutation<tp_size>& mP,SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU):
+SNplu<T,tp_size>::SNplu(const Mpermutation<tp_size>& mP,const SNlowerTriangular<T,tp_size>& mL,const SNupperTriangular<T,tp_size>& mU):
     data_P(mP),
     data_L(mL),
     data_U(mU)

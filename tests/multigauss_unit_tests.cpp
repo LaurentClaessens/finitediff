@@ -391,7 +391,7 @@ ans_10E.at(3,0)=0; ans_10E.at(3,1)=24.75; ans_10E.at(3,2)=12.5; ans_10E.at(3,3)=
         {
             SNmultiGaussian<double,5> M;
             SNlowerTriangular<double,5> L(M);
-            CPPUNIT_ASSERT_EQUAL(M,L);
+            CPPUNIT_ASSERT(M==L);
         }
     public:
         void runTest()

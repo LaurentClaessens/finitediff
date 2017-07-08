@@ -47,6 +47,10 @@ class SNline
         SNline(const std::array<T,tp_size>&);  // for testing purpose only
 
     public :
+        /** 
+         * The zero-parameter constructor initiate the line as (0,0,...,0)
+         * */
+        SNline();
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
 
         template <class U,class V,unsigned int s>
@@ -77,6 +81,11 @@ class SNline
 };
 
 // CONSTRUCTOR, ASSIGNATION, ...  -------------------------------------------
+
+template <class T,unsigned int tp_size>
+SNline<T,tp_size>::SNline() : 
+    data{}
+{}
 
 template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(unsigned int l,SNmatrix<T,tp_size>& snm) : 

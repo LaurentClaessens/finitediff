@@ -30,10 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // forward definition
 template <class T,unsigned int tp_size>
 class SNgeneric;
-//template <class T,unsigned int tp_size>
-//class SNmatrix;
-//template <class T,unsigned int tp_size>
-//class SNmultiGaussian;
 template <class T>
 class SpecialValue;
 

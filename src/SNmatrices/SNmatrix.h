@@ -345,7 +345,6 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNmultiGaussian<T,tp_size> mL(1);   // identity
     SNmatrix<T,tp_size> mU=*this;  
 
-
     for (m_num c=0;c<tp_size;c++)
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
@@ -382,7 +381,9 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
         }
     }
     // at this point, the matrix mU should be the correct one.
-    SNplu<T,tp_size> plu(mP,mL,mU);
+    // so we dare to use the *explicit* conversion from SNmatrix
+    // to SNupperTriangular.
+    SNplu<T,tp_size> plu(mP,mL,SNupperTriangular<T,tp_size>(mU));
     return plu;
 }
 

@@ -147,9 +147,20 @@ class SNmatrixTest : public CppUnit::TestCase
         CPPUNIT_ASSERT(A.max_norm()==5);
     }
 
+    /** 
+     * test if the constructors like `SNfoo(4)` initiate the matrix
+     * of type `foo` as 4*identity. 
+     * */
+    void test_initiate_other_type()
+    {
+        SNupperTriangular<double,3> U(4);
+        CPPUNIT_ASSERT(U==4*SNidentity<double,3>());
+    }
+
     public :
         void runTest()
         {
+            test_initiate_other_type();
             test_instantiate();
             test_populate();
             test_element_reference();

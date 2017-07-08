@@ -1,5 +1,16 @@
 # Finitediff's changelog
 
+
+## July 7 2017 : standard constructors for the matrices
+
+## Decisions
+
+Let `SNfoo` be a subtype of `SNgeneric`, like `SNmatrix`, `SNlowerTriangular`, ...
+
+* The constructor `SNfoo()` with no parameters initialises a matrix with no prescriptions on the elements. The entries which are not determined by the type have no guarantee.
+* The constructor `SNfoo(const T& x)` initializes as a diagonal matrix with the diagonal full of `x`. 
+* If the diagonal matrices are not of type 'foo' (mathematically; do you know a reasonable subgroup of GL(n) which does not contain the diagonal matrices ?), no guarantee.
+
 ## July 6, 2017 : the pointer returned by an exception's `what`
 
 ### Problem
