@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmultiGaussian.h"
 #include "../src/SNmatrices/SNidentity.h"
 #include "../src/SNmatrices/operators/SNoperators.h"
-#include "../src/SNmatrices/operators/multiplication.h"
 #include "TestMatrices.cpp"
 #include "../src/Utilities.h"
 
