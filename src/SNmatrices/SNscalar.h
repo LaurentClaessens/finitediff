@@ -47,8 +47,7 @@ class SNscalar : public SNgeneric<T,tp_size>
     public:
         SNscalar();
         SNscalar(const T& x);
-}
-
+};
 
 // CONSTRUCTORS --------------------------------------------
 
@@ -79,7 +78,7 @@ T SNscalar<T,tp_size>::_get(m_num l,m_num c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNupperTriangular<T,tp_size>::_at(m_num l,m_num c) 
+T& SNscalar<T,tp_size>::_at(m_num l,m_num c) 
 {
     if (l!=c)
     {

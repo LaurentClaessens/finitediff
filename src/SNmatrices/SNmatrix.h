@@ -32,7 +32,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SNpermutation.h"
 #include "MelementaryPermutation.h"
 #include "MathUtilities.h"
-#include "SNoperators.h"
+#include "operators/SNoperators.h"
+#include "operators/multiplications.h"
 #include "../SNvector.h"
 #include "../exceptions/SNexceptions.cpp"
 

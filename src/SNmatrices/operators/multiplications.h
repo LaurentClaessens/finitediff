@@ -25,6 +25,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef  MULTIPLICATIONS_H__14063_
 #define  MULTIPLICATIONS_H__14063_
 
+#include "../SNpermutation.h"
+#include "../SNgaussian.h"
+#include "../SNmultiGaussian.h"
+#include "../SNidentity.h"
+#include "../SNlowerTriangular.h"
+#include "../SNupperTriangular.h"
+#include "../SNscalar.h"
+#include "../MathUtilities.h"
+#include "../../exceptions/SNexceptions.cpp"
+
 /**
 * \brief `SNgeneric` * `SNgeneric`.
 *
@@ -50,6 +60,22 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
         }
     }
     return ans;   //relies on RVO.
+}
+
+// number * identity
+
+/** 
+ * @brief multiply a number by the identity matrix.
+ *
+ * This produces a scalar matrix.
+ *
+ * The resulting template type is the one of the number.
+ * */
+template <class U,class V,unsigned int s>
+SNscalar<U,s> operator*
+(const U& x, const SNidentity<V,s>& M)
+{
+    return SNscalar<U,s>(x);
 }
 
 // SNgaussian * SNgeneric

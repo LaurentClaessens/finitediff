@@ -24,14 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef  OPERATORS_H__064802_
 #define  OPERATORS_H__064802_
 
-#include "SNpermutation.h"
-#include "SNgaussian.h"
-#include "SNmultiGaussian.h"
-#include "SNidentity.h"
-#include "SNlowerTriangular.h"
-#include "SNupperTriangular.h"
-#include "MathUtilities.h"
-#include "../exceptions/SNexceptions.cpp"
+#include "../SNpermutation.h"
+#include "../SNgaussian.h"
+#include "../SNmultiGaussian.h"
+#include "../SNidentity.h"
+#include "../SNlowerTriangular.h"
+#include "../SNupperTriangular.h"
+#include "../MathUtilities.h"
+#include "../../exceptions/SNexceptions.cpp"
 
 
 // PRODUCTS ------------------------------------------
