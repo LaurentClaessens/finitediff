@@ -29,8 +29,8 @@ function launch_test
 
 function unit_tests
 {
-    launch_test "sn_matrix_unit_tests"
     launch_test "sn_line_unit_tests"
+    launch_test "sn_matrix_unit_tests"
     launch_test "sn_element_unit_tests"
     launch_test "gauss_unit_tests"
     launch_test "utilities_tests"

@@ -31,12 +31,11 @@ class SNlineTest : public CppUnit::TestCase
 
         void test_first_nonzero()
         {
-            std::array<double,4> d1;
-            d1.at(0)=1;
-            d1.at(1)=2;
-            d1.at(2)=3;
-            d1.at(3)=4;
-            SNline<double,4> L1(d1);
+            SNline<double,4> L1;
+            L1.at(0)=1;
+            L1.at(1)=2;
+            L1.at(2)=3;
+            L1.at(3)=4;
 
             CPPUNIT_ASSERT(L1.firstNonZeroColumn()==0);      // check the case in which the first is non zero.
 
@@ -44,18 +43,16 @@ class SNlineTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(L1.get(0)==0);                     // check re-assignation
             CPPUNIT_ASSERT(L1.firstNonZeroColumn()==1);
 
-            std::array<double,3> d2;
-            d2.at(0)=0;
-            d2.at(1)=0;
-            d2.at(2)=0;
-            SNline<double,3> L2(d2);
+            SNline<double,3> L2;
+            L2.at(0)=0;
+            L2.at(1)=0;
+            L2.at(2)=0;
             CPPUNIT_ASSERT(L2.firstNonZeroColumn()==4);      // check when they are all zero.
 
-            std::array<double,3> d3;
-            d3.at(0)=0;
-            d3.at(1)=0;
-            d3.at(2)=-0.1;
-            SNline<double,3> L3(d3);
+            SNline<double,3> L3;
+            L3.at(0)=0;
+            L3.at(1)=0;
+            L3.at(2)=-0.1;
             CPPUNIT_ASSERT(L3.firstNonZeroColumn()==2);      // check the case in which the first non-zero is the last one.
         }
         void test_make_unit()
@@ -74,32 +71,29 @@ class SNlineTest : public CppUnit::TestCase
             L1.at(0)=0;
             CPPUNIT_ASSERT(L1.get(0)==0);
             CPPUNIT_ASSERT(L1.at(0)==0);
-            std::array<double,4> a2;
-            a2.at(0)=0;
-            a2.at(1)=1;
-            a2.at(2)=1.5;
-            a2.at(3)=2;
-            SNline<double,4> A2(a2);
+            SNline<double,4> A2;
+            A2.at(0)=0;
+            A2.at(1)=1;
+            A2.at(2)=1.5;
+            A2.at(3)=2;
 
             L1.makeUnit();
             CPPUNIT_ASSERT(L1==A2);
             L1.makeUnit();
             CPPUNIT_ASSERT(L1==A2);     // twice makeUnit.
 
-            std::array<double,3> d2;
-            d2.at(0)=0;
-            d2.at(1)=0;
-            d2.at(2)=0;
             SNline<double,3> L2(d2);
+            L2.at(0)=0;
+            L2.at(1)=0;
+            L2.at(2)=0;
             SNline<double,3> A3(L2);
             L2.makeUnit();   
             CPPUNIT_ASSERT(L2==A3);
 
-            std::array<double,3> d3;
-            d3.at(0)=0;
-            d3.at(1)=0;
-            d3.at(2)=-0.1;
             SNline<double,3> L3(d3);
+            L3.at(0)=0;
+            L3.at(1)=0;
+            L3.at(2)=-0.1;
             L3.makeUnit();
             CPPUNIT_ASSERT(L3.get(0)==0);
             CPPUNIT_ASSERT(L3.get(1)==0);
