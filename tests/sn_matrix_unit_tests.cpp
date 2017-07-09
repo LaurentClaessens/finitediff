@@ -154,7 +154,8 @@ class SNmatrixTest : public CppUnit::TestCase
     void test_initiate_other_type()
     {
         SNupperTriangular<double,3> U(4);
-        CPPUNIT_ASSERT(U==4*SNidentity<double,3>());
+        SNidentity<double,3> id;
+        CPPUNIT_ASSERT(U==4*id);
     }
 
     public :

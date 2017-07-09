@@ -29,6 +29,12 @@ function launch_test
 
 function unit_tests
 {
+    launch_test "sn_matrix_unit_tests"
+    launch_test "sn_line_unit_tests"
+    launch_test "sn_element_unit_tests"
+    launch_test "gauss_unit_tests"
+    launch_test "utilities_tests"
+    launch_test "sn_gaussian_unit_tests"
     launch_test "include_plu_tests"
     launch_test "plu_unit_tests"
     launch_test "multigauss_unit_tests"
@@ -38,12 +44,6 @@ function unit_tests
     launch_test "repeat_function_unit_tests"
     launch_test "sn_multiplication_unit_tests"
     launch_test "multiplication_unit_tests"
-    launch_test "sn_matrix_unit_tests"
-    launch_test "sn_line_unit_tests"
-    launch_test "sn_element_unit_tests"
-    launch_test "gauss_unit_tests"
-    launch_test "utilities_tests"
-    launch_test "sn_gaussian_unit_tests"
 }
 
 
