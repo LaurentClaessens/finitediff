@@ -46,7 +46,7 @@ class SNscalar : public SNgeneric<T,tp_size>
         T& _at(const m_num&, const m_num&) override;
     public:
         SNscalar();
-        SNscalar(const T& x);
+        explicit SNscalar(const T& x);
 };
 
 // CONSTRUCTORS --------------------------------------------

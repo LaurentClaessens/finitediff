@@ -63,7 +63,7 @@ class mNumTest : public CppUnit::TestCase
             ans_v.at(3)=3;
             CPPUNIT_ASSERT(v==ans_v);
             std::array<int,4> w;
-            for (m_num k=0;k<4;k++)
+            for (m_num k=0;k<4;++k)
             {
                 w.at(k)=k;
             }

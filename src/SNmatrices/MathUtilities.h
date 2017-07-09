@@ -114,7 +114,7 @@ template <class U, unsigned int t,class T,unsigned int tp_size>
 void copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num& max_l)
 {
     checkSizeCompatibility(ans,A);
-    for (m_num line=0;line<max_l+1;line++)
+    for (m_num line=0;line<max_l+1;++line)
     {
         for (m_num col=0; col < tp_size;++col)
         {

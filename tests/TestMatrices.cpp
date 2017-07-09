@@ -108,37 +108,6 @@ auto testMatrixC()
     A.at(2,2)=6.1;      // test last line and decimal value
     return A;
 }
-
-auto testMatrixD()
-    /*
-    1 2 3
-    4 5 6
-    7 8 9
-    */
-{
-    throw DeprecationWarning("You do not use this testing matrix.");
-    SNmatrix<double,3> A;
-    A.at(0,0)=1; A.at(0,1)=2; A.at(0,2)=3;
-    A.at(1,0)=4; A.at(1,1)=5; A.at(1,2)=6;
-    A.at(2,0)=7; A.at(2,1)=8; A.at(2,2)=9;   
-    return A;
-}
-
-auto testMatrixD_U()
-    /*
-    7    8      9
-    0   6/7   12/7
-    0    0      0
-    */
-{
-    throw DeprecationWarning("You do not use this testing matrix.");
-    SNmatrix<double,3> A;
-    A.at(0,0)=7; A.at(0,1)=8; A.at(0,2)=9;
-    A.at(1,0)=0; A.at(1,1)=6./7; A.at(1,2)=12./7;
-    A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=0;   
-    return A;
-}
-
 auto testMatrixE()
     /*
     4 6 8 9
@@ -154,29 +123,6 @@ auto testMatrixE()
     A.at(3,0)=2; A.at(3,1)=5; A.at(3,2)=6; A.at(3,3)=7;  
     return A;
 }
-
-auto testMatrixE_U()
-{
-    SNmatrix<double,4> A;
-
- // The answer given by Sage :
- //sage: A=matrix(  [   [4,6,8,9],[5,1,7,1],[3,2,3,4],[2,5,6,7]  ]  )
- //sage: print(  A.LU()[2] )
- // 
- //[     5      1      7      1]
- //[     0   26/5   12/5   41/5]
- //[     0      0 -24/13  31/26]
- //[     0      0      0   1/24]
-
-
-    throw DeprecationWarning("You do not use this testing matrix.");
-    A.at(0,0)=5; A.at(0,1)=1; A.at(0,2)=7; A.at(0,3)=1;
-    A.at(1,0)=0; A.at(1,1)=26./5; A.at(1,2)=12./5; A.at(1,3)=41./5;
-    A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=-24./13; A.at(2,3)=31./26;  
-    A.at(3,0)=0; A.at(3,1)=0; A.at(3,2)=0; A.at(3,3)=1./24;  
-    return A;
-}
-
 auto testMatrixF()
 {
     SNmatrix<double,4> F;

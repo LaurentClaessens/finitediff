@@ -69,7 +69,7 @@ SNmatrix<U,s> operator-(const SNgeneric<U,s>& A,const SNidentity<V,t>& B)
 {
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> new_matrix(A);
-    for (m_num k=0;k<s;k++)
+    for (m_num k=0;k<s;++k)
     {
         new_matrix.at(k,k)-=1;
     }

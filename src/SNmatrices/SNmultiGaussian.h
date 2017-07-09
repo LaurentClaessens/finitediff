@@ -325,7 +325,6 @@ void SNmultiGaussian<T,tp_size>::swapLines(const m_num& i,const m_num& j)
  * - if false, the value is dummy because it means that the requested element
  *   is not special in this kind of matrix.
  * */
-
 template <class T,unsigned int tp_size>
 SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num& i,const m_num& j) const
 {

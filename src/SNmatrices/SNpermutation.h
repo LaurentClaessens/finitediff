@@ -46,6 +46,7 @@ class SNpermutation : public SNgeneric<T,tp_size>
     public :
         // cppcheck-supresss noExplicitConstructor
         SNpermutation(const Mpermutation<tp_size>& d); 
+
         // cppcheck-supresss noExplicitConstructor
         SNpermutation(const MelementaryPermutation<tp_size>& d); 
 
