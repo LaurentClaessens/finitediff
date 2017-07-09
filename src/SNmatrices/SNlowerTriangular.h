@@ -60,7 +60,7 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
         /** 
          * @brief Initializes as a diagonal matrix full of `x`.
          * */
-        SNlowerTriangular(const T& x);
+        explicit SNlowerTriangular(const T& x);
 
         /** \brief Construct a lower diagonal matrix from a SNmatrix.
          *

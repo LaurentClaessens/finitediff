@@ -29,6 +29,7 @@ TODO.txt
 .testing.log
 .testing.log.cppcheck
 .cppcheck
+.ackrc
 
 # SUBDIRECTORIES's .GITIGNORE
 

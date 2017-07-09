@@ -55,7 +55,7 @@ class SNupperTriangular : public SNgeneric<T,tp_size>
         /**
          * @brief initiate the matrix as identity.
          * */
-        SNupperTriangular(const T& x);
+        explicit SNupperTriangular(const T& x);
 };
 
 // CONSTRUCTOR  ---------------------------------------

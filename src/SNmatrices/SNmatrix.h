@@ -196,9 +196,9 @@ SNmatrix<T,tp_size>::SNmatrix(const SNgeneric<T,tp_size>& A)
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::_set_from(const SNgeneric<T,tp_size>& A)
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
-        for (m_num j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;++j)
         {
             this->at(i,j)=A.get(i,j);
         }
@@ -207,9 +207,9 @@ void SNmatrix<T,tp_size>::_set_from(const SNgeneric<T,tp_size>& A)
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::set_identity()
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
-        for (m_num j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;++j)
         {
             this->at(i,j)=0;
         }

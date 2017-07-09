@@ -64,6 +64,14 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         * A gaussian matrix is a particular case of multi-gaussian matrix.
         * */
         explicit SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+        
+        /** 
+         * @brief Construct a multi-gaussian from a gaussian one.
+         *
+         * Since a gaussian matrix is (mathematically) a multi one,
+         * the implicit conversion is allowed.
+         * */
+        //cppcheck-suppress noExplicitConstructor
         SNmultiGaussian(const SNgaussian<T,tp_size>& A);
 
         /**
