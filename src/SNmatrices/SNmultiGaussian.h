@@ -46,8 +46,8 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         m_num data_last_column;       // the last non trivial column
 
         SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
-        T _get(m_num,m_num) const override;
-        T& _at(m_num,m_num) override;
+        T _get(const m_num&, const m_num&) const override;
+        T& _at(const m_num&, const m_num&) override;
     public:
         /** 
          * The no-parameter constructor initializes `data_last_column` to
@@ -348,7 +348,7 @@ SpecialValue<T> SNmultiGaussian<T,tp_size>::checkForSpecialElements(const m_num&
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
+T SNmultiGaussian<T,tp_size>::_get(const m_num& i,const m_num& j) const
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
@@ -359,7 +359,7 @@ T SNmultiGaussian<T,tp_size>::_get(m_num i,m_num j) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNmultiGaussian<T,tp_size>::_at(m_num i,m_num j) 
+T& SNmultiGaussian<T,tp_size>::_at(const m_num& i, const m_num& j) 
 {
     if (data_last_column==tp_size+1)
     {

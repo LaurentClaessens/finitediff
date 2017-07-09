@@ -35,7 +35,8 @@ class mNumTest : public CppUnit::TestCase
             ++m;
             CPPUNIT_ASSERT(m==4);
             CPPUNIT_ASSERT(m==k);
-            ++m;
+
+            m++;
             CPPUNIT_ASSERT(m==5);
             CPPUNIT_ASSERT(m==k+1);
 
@@ -43,7 +44,7 @@ class mNumTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(n==6);
             CPPUNIT_ASSERT(m==6);
 
-            m_num s=++m;
+            m_num s=m++;
             CPPUNIT_ASSERT(s==6);
             CPPUNIT_ASSERT(m==7);
         }

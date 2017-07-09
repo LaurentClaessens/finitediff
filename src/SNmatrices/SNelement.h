@@ -44,7 +44,7 @@ class SNelement
     public :
         SNelement(const unsigned int line,const unsigned int column,const T v);
 
-        SNelement<T,tp_size> operator=(const SNelement<T,tp_size>& other);
+        SNelement<T,tp_size>& operator=(const SNelement<T,tp_size>& other);
 
         const unsigned int line;
         const unsigned int column;

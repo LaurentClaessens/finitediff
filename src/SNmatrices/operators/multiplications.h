@@ -52,9 +52,9 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
     tooGenericWarning("Warning : using a very generic product 'SNgeneric * SNgeneric'. Can't you be more specific ?");
     checkSizeCompatibility(A,B);
     SNmatrix<U,s> ans;
-    for (unsigned int i=0;i<s;i++)
+    for (unsigned int i=0;i<s;++i)
     {
-        for (unsigned int j=0;j<s;j++)
+        for (unsigned int j=0;j<s;++j)
         {
             ans.at(i,j)=matrixProductComponent(A,B,i,j);
         }
@@ -184,9 +184,9 @@ SNmultiGaussian<U,s> operator*
     {
         ans.setLastColumn(B.getColumn());
 
-        for (m_num c=0;c <= ans.getLastColumn();c++)
+        for (m_num c=0;c <= ans.getLastColumn();++c)
         {
-            for (m_num l=c+1;l<s;l++)
+            for (m_num l=c+1;l<s;++l)
             {
                 ans.at(l,c)=A.get(l,c)+B.get(l,c);
             }
@@ -218,7 +218,7 @@ SNmultiGaussian<U,s> operator*
     {
         ans.setLastColumn(G.getColumn());
 
-        for (m_num l=G.getColumn()+1;l<s;l++)
+        for (m_num l=G.getColumn()+1;l<s;++l)
         {
             ans.at(l,G.getColumn())+=G.get(l,G.getColumn());
         }
@@ -342,16 +342,16 @@ SNlowerTriangular<U,s> operator*
     unsigned int c=A.getColumn();
     SNlowerTriangular<U,s> ans;
 
-    for (unsigned int i=0;i<c+1;i++)
+    for (unsigned int i=0;i<c+1;++i)
     {
-        for (unsigned int j=0;j<i+1;j++)
+        for (unsigned int j=0;j<i+1;++j)
         {
             ans.at(i,j)=B.get(i,j);
         }
     }
-    for (unsigned int i=c+1;i<size;i++)
+    for (unsigned int i=c+1;i<size;++i)
     {
-        for (unsigned int j=0;j<i+1;j++)
+        for (unsigned int j=0;j<i+1;++j)
         {
             ans.at(i,j)=matrixProductComponent(A,B,i,j);
         }

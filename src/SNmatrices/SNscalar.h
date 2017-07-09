@@ -43,7 +43,7 @@ class SNscalar : public SNgeneric<T,tp_size>
          * Warning : modifying the element \f$ (3,3) \f$ in fact modify
          * in the same time all the elements \f$ (k,k) \f$.
          * */
-        T& _at(m_num,m_num) override;
+        T& _at(const m_num&, const m_num&) override;
     public:
         SNscalar();
         SNscalar(const T& x);
@@ -68,7 +68,7 @@ SNscalar<T,tp_size>::SNscalar(const T& x):
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNscalar<T,tp_size>::_get(m_num l,m_num c) const
+T SNscalar<T,tp_size>::_get(const m_num& l, const m_num& c) const
 {
     if (l==c)
     {
@@ -78,7 +78,7 @@ T SNscalar<T,tp_size>::_get(m_num l,m_num c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNscalar<T,tp_size>::_at(m_num l,m_num c) 
+T& SNscalar<T,tp_size>::_at(const m_num& l, const m_num& c) 
 {
     if (l!=c)
     {

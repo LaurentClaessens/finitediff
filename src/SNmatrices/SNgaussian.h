@@ -87,8 +87,8 @@ class SNgaussian : public SNgeneric<T,tp_size>
         /** Construct a matrix from its data. See the implementation of '_at' */
         SNgaussian(const std::array<T,tp_size>& d, const m_num& c);
 
-        T _get(m_num,m_num) const override;
-        T& _at(m_num,m_num) override;
+        T _get(const m_num&, const m_num&) const override;
+        T& _at(const m_num&, const m_num&) override;
     public :
         /** 
          * The non-parameter constructor initializes the member `data_column`
@@ -209,7 +209,7 @@ SpecialValue<T> SNgaussian<T,tp_size>::checkForSpecialElements(const m_num& i,co
 // _AT AND _GET METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNgaussian<T,tp_size>::_get(m_num i,m_num j) const
+T SNgaussian<T,tp_size>::_get(const m_num& i,const m_num& j) const
 {
     SpecialValue<T> sv=checkForSpecialElements(i,j);
     if (sv.special)
@@ -220,7 +220,7 @@ T SNgaussian<T,tp_size>::_get(m_num i,m_num j) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNgaussian<T,tp_size>::_at(m_num i,m_num j) 
+T& SNgaussian<T,tp_size>::_at(const m_num& i,const m_num& j) 
 
     /**
      The elements are stored in `std::array<T,tp_size> data` while

@@ -36,8 +36,9 @@ class m_num
     private :
         unsigned int num;
     public :
-        m_num(const unsigned int n);  // non explicit by choice
-        explicit m_num(const int n);  // I do not want -4 to enter here
+        //cppcheck-suppress noExplicitConstructor
+        m_num(const unsigned int n);  
+        explicit m_num(const int n); 
 
         m_num operator++();  // ++i
         m_num operator++(int);  // i++
