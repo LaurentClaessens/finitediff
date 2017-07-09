@@ -140,7 +140,9 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         //cppcheck-suppress noExplicitConstructor
         SNmatrix(const SNgeneric<T,tp_size>&);
 
-        /** Creates a matrix full of x */
+        /** 
+         * Create the matrix \f$ x*id \f$.
+         * */
         explicit SNmatrix(const T& x);
 
 
@@ -173,18 +175,13 @@ template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const SNmatrix<T,tp_size>& snm) : data(snm.data)  {};
 
 template <class T,unsigned int tp_size>
-SNmatrix<T,tp_size>::SNmatrix(const T& v): 
-    data()
+SNmatrix<T,tp_size>::SNmatrix(const T& x): 
+    data{}
 {
 
-    // This constructor should not exist.
-
-    throw 4; // I wan to know who does that !!
-
-
-    for (unsigned int k=0;k<tp_size*tp_size;++k)
+    for (unsigned int k=0;k<tp_size;++k)
     {
-            data.at(k)=v;
+        this->at(k,k)=x;
     }
 };
 
