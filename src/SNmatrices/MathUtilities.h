@@ -47,9 +47,9 @@ bool componentWiseeEquality(const T& A,const U& B)
 {
     checkSizeCompatibility(A,B);
     unsigned int s=A.getSize();
-    for (unsigned int l=0;l<s;l++)
+    for (unsigned int l=0;l<s;++l)
     {
-        for (unsigned int c=0;c<s;c++)
+        for (unsigned int c=0;c<s;++c)
         {
             if (A.get(l,c)!=B.get(l,c))
             {
@@ -78,7 +78,7 @@ template <class T,class U,unsigned int s,unsigned int t>
 T matrixProductComponent(const SNgeneric<T,s>& A,const SNgeneric<U,t>& B,unsigned int i,unsigned int j)
 {
     T acc=0;
-    for (unsigned int k=0;k<s;k++)
+    for (unsigned int k=0;k<s;++k)
     {
         acc+=A.get(i,k)*B.get(k,j);
     }

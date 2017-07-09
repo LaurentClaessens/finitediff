@@ -147,7 +147,7 @@ template <class T,unsigned int tp_size>
 SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(m_num l) const
 {
     SNline<T,tp_size> line;
-    for (m_num c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;++c)
     {
         line.at(c)=this->get(l,c);
     }
@@ -185,7 +185,7 @@ std::ostream& operator<<(std::ostream& stream,const SNgeneric<V,s>& snm)
         col_size.at(col)=10;
     }
 
-    for (m_num l=0;l<tp_size;l++)
+    for (m_num l=0;l<tp_size;++l)
     {
         for (m_num c=0;c<tp_size;++c)
         {

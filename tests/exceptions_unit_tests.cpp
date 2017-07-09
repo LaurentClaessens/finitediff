@@ -66,7 +66,7 @@ class ExceptionsTests : public CppUnit::TestCase
             {
                 std::cout<<C*D;
             }
-            catch (IncompatibleMatrixSizeException e)
+            catch (IncompatibleMatrixSizeException& e)
             {
                 std::string ans("First matrix has size 2 while second matrix has size 3");
                 CPPUNIT_ASSERT(e.what()==ans);

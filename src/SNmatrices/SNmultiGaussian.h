@@ -247,7 +247,7 @@ template <class U,unsigned int s>
 void SNmultiGaussian<T,tp_size>::setFirstLines
         (const SNgeneric<U,s>& other,const m_num& max_l)
 {
-    for (m_num line=0;line<max_l+1;line++)
+    for (m_num line=0;line<max_l+1;++line)
     {
         for (m_num col=0; col < line ;++col)
         {
@@ -266,7 +266,7 @@ void SNmultiGaussian<T,tp_size>::operator *=(const SNgaussian<T,tp_size>& other)
     {
         throw ProbablyNotWhatYouWantException("You are trying to multiply a multi-Gaussian matrix by a gaussian matrix whose column is not the next one. This is mathematically possible, but probably not what you want. However; this situation is not yet implemented.");
     }
-    data_last_column++;
+    ++data_last_column;
     for (m_num l=other.getColumn()+1;l<tp_size;++l)
     {
         this->at(l,other.getColumn())+=other.get(l,other.getColumn());

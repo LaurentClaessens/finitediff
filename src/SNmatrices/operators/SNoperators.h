@@ -55,7 +55,7 @@ SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
     // as member function.
 
     SNmatrix<U,s> new_matrix(A);
-    for (unsigned int k=0;k<s*s;k++)
+    for (unsigned int k=0;k<s*s;++k)
     {
         new_matrix.data.at(k)+=B.data.at(k);
     }
