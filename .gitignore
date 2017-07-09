@@ -30,6 +30,7 @@ TODO.txt
 .testing.log.cppcheck
 .cppcheck
 .ackrc
+deploy.log
 
 # SUBDIRECTORIES's .GITIGNORE
 
