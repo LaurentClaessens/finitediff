@@ -82,7 +82,7 @@ template <class T,unsigned int tp_size>
 void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A) 
 {
 
-    throw 4;
+    throw DeprecationWarning("_setU should not be used");
 
     // TODO : non optimal because one could try to copy only the useful part.
     data_U=A;
@@ -92,7 +92,7 @@ template <class T,unsigned int tp_size>
 void SNplu<T,tp_size>::_setL(const SNmatrix<T,tp_size>& A) 
 {
 
-    throw 4;
+    throw DeprecationWarning("_setL should not be used");
 
     // TODO : non optimal because one could try to copy only the useful part.
     data_L=A;
