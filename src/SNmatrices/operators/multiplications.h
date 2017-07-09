@@ -18,37 +18,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 /*
- This file contains operators *,== between different types of matrices.
+* This file contains the multiplication operators between the different types
+* of matrices.
 */
 
-#ifndef  OPERATORS_H__064802_
-#define  OPERATORS_H__064802_
-
-#include "SNpermutation.h"
-#include "SNgaussian.h"
-#include "SNmultiGaussian.h"
-#include "SNidentity.h"
-#include "SNlowerTriangular.h"
-#include "SNupperTriangular.h"
-#include "MathUtilities.h"
-#include "../exceptions/SNexceptions.cpp"
-
-
-// PRODUCTS ------------------------------------------
-
+#ifndef  MULTIPLICATIONS_H__14063_
+#define  MULTIPLICATIONS_H__14063_
 
 /**
-\brief `SNgeneric` * `SNgeneric`.
-
-In general, I cannot do better than compute everything. 
- 
-The very point of making many different classes is NOT to use this 'default' implementation for the product.
-
-When this product is used, a warning is displayed.
-
-\see `tooGenericWarning`
+* \brief `SNgeneric` * `SNgeneric`.
+*
+* In general, I cannot do better than compute everything. 
+*  
+* The very point of making many different classes is NOT to use this 'default' implementation for the product.
+*
+* When this product is used, a warning is displayed.
+*
+* \see `tooGenericWarning`
 */
-
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
 {
@@ -83,7 +70,6 @@ SNmatrix<U,s> operator*(const SNgeneric<U,s>& A, const SNgeneric<V,t>& B)
  * is non vanishing only with \f$ k=i \f$ and \f$ k=c \f$.
  *
  * */
-
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
 (const SNgaussian<U,s>& A, const SNgeneric<V,t>& B)
@@ -435,93 +421,6 @@ Mpermutation<tp_size> operator*(const MgenericPermutation<tp_size>& A, const Mge
         tmp.at(k)=A.image( B.image(k)  );
     }
     return tmp;
-}
-
-// SUM ---------------------------------------
-
-/** 
- * Sum of two SNmatrix.
- *
- * The return type is the one of the left argument.
- * THUS : this is *not* totally commutative. You may have
- * \f$ A+B\neq B+A \f$
- * */
-
-template <class U,unsigned int s,class V,unsigned int t>
-SNmatrix<U,s> operator+(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
-{
-
-    // TODO : since this sum is not commutative, maybe one has to implement it
-    // as member function.
-
-    SNmatrix<U,s> new_matrix(A);
-    for (unsigned int k=0;k<s*s;k++)
-    {
-        new_matrix.data.at(k)+=B.data.at(k);
-    }
-    return new_matrix;
-}
-
-// DIFFERENCE ---------------------------------------
-
-template <class U,unsigned int s,class V,unsigned int t>
-SNmatrix<U,s> operator-(const SNgeneric<U,s>& A,const SNidentity<V,t>& B)
-{
-    checkSizeCompatibility(A,B);
-    SNmatrix<U,s> new_matrix(A);
-    for (m_num k=0;k<s;k++)
-    {
-        new_matrix.at(k,k)-=1;
-    }
-    return new_matrix;
-}
-
-
-// EQUALITIES ---------------------------------------
-
-template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNgeneric<U,s>& A,const SNgeneric<V,t>& B)
-{
-    return componentWiseeEquality(A,B);
-}
-
-template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNmatrix<U,s>& A,const SNmatrix<V,t>& B)
-{
-    checkSizeCompatibility(A,B);
-    return A.data==B.data;
-}
-
-template <class U,unsigned int s,class V,unsigned int t>
-bool operator==(const SNmatrix<U,s>& A,const SNupperTriangular<V,t>& B)
-{
-    return B==A;
-}
-
-
-/** 
- *\brief Return true if the two permutations are equal.
- * */
-template <unsigned int tp_size>
-bool operator==(const Mpermutation<tp_size>& A, const Mpermutation<tp_size>& B) 
-{
-    return A.data==B.data;
-}
-
-/** 
- *\brief Return true if the two permutations are equal.
- * */
-template <unsigned int tp_size>
-bool operator==(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
-{
-    for (unsigned int k=0;k<tp_size;++k)
-    {
-        if (A(k)!=B(k)   )
-        {
-            return false;
-        }
-    }
-    return true;
 }
 
 #endif
