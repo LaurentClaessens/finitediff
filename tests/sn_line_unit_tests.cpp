@@ -57,13 +57,12 @@ class SNlineTest : public CppUnit::TestCase
         }
         void test_make_unit()
         {
-            std::array<double,4> d1;
-            d1.at(0)=1;
-            d1.at(1)=2;
-            d1.at(2)=3;
-            d1.at(3)=4;
+            SNline<double,4> L1;
+            L1.at(0)=1;
+            L1.at(1)=2;
+            L1.at(2)=3;
+            L1.at(3)=4;
 
-            SNline<double,4> L1(d1);
             SNline<double,4> A1(L1);        // check copy constructor
             L1.makeUnit();
             CPPUNIT_ASSERT(L1==A1);         // check equality operator
@@ -82,7 +81,7 @@ class SNlineTest : public CppUnit::TestCase
             L1.makeUnit();
             CPPUNIT_ASSERT(L1==A2);     // twice makeUnit.
 
-            SNline<double,3> L2(d2);
+            SNline<double,3> L2;
             L2.at(0)=0;
             L2.at(1)=0;
             L2.at(2)=0;
@@ -90,7 +89,7 @@ class SNlineTest : public CppUnit::TestCase
             L2.makeUnit();   
             CPPUNIT_ASSERT(L2==A3);
 
-            SNline<double,3> L3(d3);
+            SNline<double,3> L3;
             L3.at(0)=0;
             L3.at(1)=0;
             L3.at(2)=-0.1;
