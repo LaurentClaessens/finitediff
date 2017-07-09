@@ -7,6 +7,10 @@
 TEST_LOG_FILE=$1
 CPPCHECK_LOG_FILE=$TEST_LOG_FILE.cppcheck
 
+RED='\033[0;31m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 echo
 echo "TESTS --------------------"
 echo
