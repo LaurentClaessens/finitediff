@@ -308,7 +308,7 @@ void SNmatrix<T,tp_size>::swapLines(m_num l1, m_num l2)
 template <class T,unsigned int tp_size>
 void SNmatrix<T,tp_size>::lineMinusLine(m_num line,SNline<T,tp_size> v)
 {
-    for (m_num c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;++c)
     {
         this->at(line,c)=this->get(line,c)-v.get(c);
     }
@@ -343,7 +343,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     SNmultiGaussian<T,tp_size> mL(1);   // identity
     SNmatrix<T,tp_size> mU=*this;  
 
-    for (m_num c=0;c<tp_size;c++)
+    for (m_num c=0;c<tp_size;++c)
     {
         auto max_el = mU.getLargerUnderDiagonal(c);
 
@@ -368,7 +368,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
                 mL=G.inverse();
             }
             auto killing_line=mU.gaussEliminationLine(c);
-            for (m_num l=c+1;l<tp_size;l++)
+            for (m_num l=c+1;l<tp_size;++l)
             {
                 T m = mU.get(l,c);  // the value to be eliminated
 

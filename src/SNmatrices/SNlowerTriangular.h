@@ -48,7 +48,7 @@ class SNlowerTriangular : public SNgeneric<T,tp_size>
          * If `l<c`, throws `SNnonAllowedChange` because  `_at` is destinated
          * to populate the matrix.
          * */
-        T& _at(m_num l,m_num c) override;
+        T& _at(const m_num& l, const m_num& c) override;
     public :
         std::array<T,tp_size*tp_size> _get_other_data(const SNmatrix<T,tp_size>&) const;
 

@@ -37,7 +37,7 @@ class SNupperTriangular : public SNgeneric<T,tp_size>
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
 
         T _get(const m_num&, const m_num&) const override;
-        T& _at(m_num,m_num) override;
+        T& _at(const m_num&, const m_num&) override;
     public :
         /**
          * return `data` of the requested matrix. 
@@ -89,7 +89,7 @@ SNupperTriangular<T,tp_size>::SNupperTriangular(const SNmatrix<T,tp_size>& A):
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNupperTriangular<T,tp_size>::_get(m_num l,m_num c) const
+T SNupperTriangular<T,tp_size>::_get(const m_num& l,const m_num& c) const
 {
     if (l>c)
     {
@@ -99,7 +99,7 @@ T SNupperTriangular<T,tp_size>::_get(m_num l,m_num c) const
 }
 
 template <class T,unsigned int tp_size>
-T& SNupperTriangular<T,tp_size>::_at(m_num l,m_num c) 
+T& SNupperTriangular<T,tp_size>::_at(const m_num& l,const m_num& c) 
 {
     if (l>c)
     {
