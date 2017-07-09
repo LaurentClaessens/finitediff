@@ -156,7 +156,7 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const T& x):
     data_L{},
-    data_last_column(tp_size-1) 
+    data_last_column(0) 
 {
     if (x!=1)
     {
