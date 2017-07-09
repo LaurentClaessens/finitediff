@@ -62,3 +62,7 @@ Implement the optimal step gradient method.
 # cppcheck
 
 Take into account the advices of cppcheck
+
+# operators
+
+Move each type of operators in its own file.
