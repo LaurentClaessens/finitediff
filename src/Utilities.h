@@ -89,7 +89,7 @@ void debug_value_print(const std::string& text, const T& v)
 
 
 /**
- * \brief Display a small warning.
+ * \brief Display a small warning when on use a too generic operation.
  *
  * \param message The message to be displayed.
  *
