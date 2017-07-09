@@ -64,7 +64,7 @@ template <class T,unsigned int tp_size>
 SNupperTriangular<T,tp_size>::SNupperTriangular(const T& x): 
     data{}
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
         this->at(i,i)=x;
     }

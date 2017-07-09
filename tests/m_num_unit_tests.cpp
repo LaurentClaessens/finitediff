@@ -36,6 +36,7 @@ class mNumTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(m==4);
             CPPUNIT_ASSERT(m==k);
 
+            // cppcheck-suppress postfixOperator
             m++;
             CPPUNIT_ASSERT(m==5);
             CPPUNIT_ASSERT(m==k+1);

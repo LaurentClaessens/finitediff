@@ -45,6 +45,8 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         SNlowerTriangular<T,tp_size> data_L;
         m_num data_last_column;       // the last non trivial column
 
+
+        //cppcheck-suppress unusedPrivateFunction
         SpecialValue<T> checkForSpecialElements(const m_num&,const m_num&) const;
         T _get(const m_num&, const m_num&) const override;
         T& _at(const m_num&, const m_num&) override;

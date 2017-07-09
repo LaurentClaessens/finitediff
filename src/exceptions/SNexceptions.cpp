@@ -62,6 +62,7 @@ class IncompatibleMatrixSizeException : public std::exception
             size2(s2),
             _msg( message(size1,size2) )
         {}
+        // cppcheck-suppress    unusedFunction
         virtual const char* what() const throw()
         {
             return _msg.c_str();

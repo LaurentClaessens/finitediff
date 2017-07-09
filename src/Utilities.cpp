@@ -18,11 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Utilities.h"
 
+// cppcheck-suppress unusedFunction
 void echo_function_test(const std::string& s)
 {
     std::cout<<"   function : "<<s<<std::endl;
 }
 
+// cppcheck-suppress unusedFunction
 void echo_single_test(const std::string& s)
 {
     std::cout<<"      single test : "<<s<<std::endl;
@@ -31,6 +33,7 @@ void echo_single_test(const std::string& s)
 std::ostream& debug_print(std::cout);
 
 
+// cppcheck-suppress unusedFunction
 void tooGenericWarning(const std::string& message)
 {
     std::cout<<message<<std::endl;

@@ -44,10 +44,10 @@ class SNpermutation : public SNgeneric<T,tp_size>
         T& _at(const m_num& i,const m_num& j) override;
         T _get(const m_num& i,const m_num& j) const override;
     public :
-        // cppcheck-supress noExplicitConstructor
+        // cppcheck-suppress    noExplicitConstructor
         SNpermutation(const Mpermutation<tp_size>& d); 
 
-        // cppcheck-supress noExplicitConstructor
+        // cppcheck-suppress    noExplicitConstructor
         SNpermutation(const MelementaryPermutation<tp_size>& d); 
 
         /** The constructor with zero arguments initializes to the identity. */
