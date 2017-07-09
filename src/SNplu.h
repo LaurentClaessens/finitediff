@@ -38,23 +38,6 @@ class SNplu
         const Mpermutation<tp_size> data_P; 
         const SNlowerTriangular<T,tp_size> data_L;
         const SNupperTriangular<T,tp_size> data_U;
-
-        /**  '_setU' takes a matrix and says that this is the 'U' one.
-           - does not check that A is actually upper diagonale
-           - erases the old U matrix.
-           - only to be used at the end of the building process of the PLU
-             decomposition, when the initial matrix is transformed into
-             an upper diagonal one.
-           */
-        void _setU(const SNmatrix<T,tp_size>& A);
-        /**  '_setL' takes a matrix and says that this is the 'L' one.
-           - does not check that A is actually lower diagonale
-           - erases the old L matrix.
-           - only to be used at the end of the building process of the PLU
-             decomposition, when the initial matrix is transformed into
-             the lower diagonal one.
-           */
-        void _setL(const SNmatrix<T,tp_size>& A);
     public:
 
         /** @brief constructor from the already computed P,L and U.
@@ -75,28 +58,6 @@ SNplu<T,tp_size>::SNplu(const Mpermutation<tp_size>& mP,const SNlowerTriangular<
     data_L(mL),
     data_U(mU)
 {}
-
-// SETTERS
-
-template <class T,unsigned int tp_size>
-void SNplu<T,tp_size>::_setU(const SNmatrix<T,tp_size>& A) 
-{
-
-    throw DeprecationWarning("_setU should not be used");
-
-    // TODO : non optimal because one could try to copy only the useful part.
-    data_U=A;
-}
-
-template <class T,unsigned int tp_size>
-void SNplu<T,tp_size>::_setL(const SNmatrix<T,tp_size>& A) 
-{
-
-    throw DeprecationWarning("_setL should not be used");
-
-    // TODO : non optimal because one could try to copy only the useful part.
-    data_L=A;
-}
 
 // GETTER METHODS -----------------------
 
