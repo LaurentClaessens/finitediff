@@ -257,4 +257,26 @@ class NegativeMatrixElementNumberException : public std::exception
         }
 };
 
+/** 
+ * @brief This exception is trowed on the top of the functions that
+ * should not be used because they are about to be removed.
+ *
+ * This is merely a probe to know who use the function.
+ *
+ * */
+class DeprecationWarning : public std::exception
+{
+    private :
+        std::string _msg;
+
+    public: 
+        explicit DeprecationWarning(const std::string& msg): 
+            _msg(msg)
+    {}
+        virtual const char* what() const throw()
+        {
+            return _msg.c_str();
+        }
+};
+
 #endif
