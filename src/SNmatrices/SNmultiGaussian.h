@@ -25,19 +25,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "m_num.h"
 
 /** 
-This class represent matrices that are product of gaussian matrices. They
-are "partially" the lower triangular part of the PLU decomposition
-during the process.
-
-Some of the properties of these matrices are
-- the inverse is easy
-- they commute easily with the elementary permutation matrices when the
-  indices of the latter are strictly larger than the number of non
-  trivial columns here.
-- The diagonal is filled by 1.
-
+* This class represent matrices that are product of gaussian matrices. They
+* are "partially" the lower triangular part of the PLU decomposition
+* during the process.
+*
+* Some of the properties of these matrices are
+*
+* - the inverse is easy
+* - they commute easily with the elementary permutation matrices when the
+*  indices of the latter are strictly larger than the number of non
+*  trivial columns here.
+*- The diagonal is filled by 1.
 */
-
 template <class T,unsigned int tp_size>
 class SNmultiGaussian : public SNgeneric<T,tp_size>
 {
@@ -64,8 +63,13 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         *
         * A gaussian matrix is a particular case of multi-gaussian matrix.
         * */
-        SNmultiGaussian(const SNgeneric<T,tp_size>& A);
+        explicit SNmultiGaussian(const SNgeneric<T,tp_size>& A);
         SNmultiGaussian(const SNgaussian<T,tp_size>& A);
+
+        /**
+         * @brief Initialises as the diagonal matrix full of `x`
+         * */
+        SNmultiGaussian(const T& x);
         SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNmultiGaussian<T,tp_size>&);
@@ -148,10 +152,22 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
 
 // CONSTRUCTORS -------------------------------------------------
 
+// from one number
+template <class T,unsigned int tp_size>
+SNmultiGaussian<T,tp_size>::SNmultiGaussian(const T& x):
+    data_L{},
+    data_last_column(tp_size-1) 
+{
+    if (x!=1)
+    {
+        throw SNchangeNotAllowedException(0,0,"The one parameter constructor of 'SNmultiGaussian' only works with 1 as agrument, because the other diagonal matrices are not multigaussian.");
+    }
+}
+
 // from nothing
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian():
-    data_L(SNidentity<T,tp_size>()),
+    data_L(),
     data_last_column(tp_size+1)     //force the user to initialize (see `_at`)
 { }
 
@@ -172,15 +188,9 @@ SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A)
 // from gaussian
 template <class T,unsigned int tp_size>
 SNmultiGaussian<T,tp_size>::SNmultiGaussian(const SNgaussian<T,tp_size>& A):
+    data_L(1),       // initiate as the unit matrix
     data_last_column(A.getColumn())
 { 
-    for (m_num c=0;c<A.getColumn();++c)
-    {
-        for (m_num l=c+1;l<tp_size;++l)
-        {
-            this->at(l,c)=A.get(l,c);
-        }
-    }
     for (m_num l=A.getColumn()+1;l<tp_size;++l)
     {
         this->at(l,A.getColumn())=A.get(l,A.getColumn());

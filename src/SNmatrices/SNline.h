@@ -43,10 +43,15 @@ class SNline
     private :
         std::array<T,tp_size> data;
         unsigned int line;
-    public :
 
+        SNline(const std::array<T,tp_size>&);  // for testing purpose only
+
+    public :
+        /** 
+         * The zero-parameter constructor initiate the line as (0,0,...,0)
+         * */
+        SNline();
         SNline(unsigned int line,SNmatrix<T,tp_size>& snmatrix);
-        SNline(const std::array<T,tp_size>&);       // do not use this constructors otherwise than for testing purpose.
 
         template <class U,class V,unsigned int s>
         friend bool operator==(const SNline<U,s>&,const SNline<V,s>&);
@@ -67,14 +72,20 @@ class SNline
         unsigned int firstNonZeroColumn() const;
 
         /**
-         divide all the elements by the first non-zero element. So the line becomes
-         (0,0,1, blah )
+        @brief divide all the elements by the first non-zero element. 
+        
+        Thus the line takes the form \f$  (0,0,1, blah )\f$
          the original matrix is not updated.
         //  */
         void makeUnit();
 };
 
 // CONSTRUCTOR, ASSIGNATION, ...  -------------------------------------------
+
+template <class T,unsigned int tp_size>
+SNline<T,tp_size>::SNline() : 
+    data{}
+{}
 
 template <class T,unsigned int tp_size>
 SNline<T,tp_size>::SNline(unsigned int l,SNmatrix<T,tp_size>& snm) : 

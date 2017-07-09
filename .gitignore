@@ -28,6 +28,7 @@ TODO.txt
 .deploy.log
 .testing.log
 .testing.log.cppcheck
+.cppcheck
 
 # SUBDIRECTORIES's .GITIGNORE
 

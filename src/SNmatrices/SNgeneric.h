@@ -146,12 +146,12 @@ void SNgeneric<T,tp_size>::checkRangeCorectness(const m_num& l,const m_num& c) c
 template <class T,unsigned int tp_size>
 SNline<T,tp_size> SNgeneric<T,tp_size>::getSNline(m_num l) const
 {
-    std::array<T,tp_size> al;
+    SNline<T,tp_size> line;
     for (m_num c=0;c<tp_size;c++)
     {
-        al.at(c)=this->get(l,c);
+        line.at(c)=this->get(l,c);
     }
-    return SNline<T,tp_size>(al);
+    return line;
 }
 
 // OPERATORS ------------------------------

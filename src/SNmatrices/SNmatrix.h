@@ -128,14 +128,19 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         void set_identity();
     public:
         SNmatrix();
+
+        //cppcheck-suppress noExplicitConstructor
         SNmatrix(const SNmatrix<T,tp_size>&);
+
         /**
          * Construct a SNmatrix as copy of a generic matrix.
          * Here we copy every elements.
          * */
+        //cppcheck-suppress noExplicitConstructor
         SNmatrix(const SNgeneric<T,tp_size>&);
+
         /** Creates a matrix full of x */
-        SNmatrix(const T& x);
+        explicit SNmatrix(const T& x);
 
 
         // return the max of the absolute values of all the matrix elements
@@ -170,6 +175,12 @@ template <class T,unsigned int tp_size>
 SNmatrix<T,tp_size>::SNmatrix(const T& v): 
     data()
 {
+
+    // This constructor should not exist.
+
+    throw 4; // I wan to know who does that !!
+
+
     for (unsigned int k=0;k<tp_size*tp_size;++k)
     {
             data.at(k)=v;
@@ -327,15 +338,12 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
     // http://laurent.claessens-donadello.eu/pdf/lefrido.pdf
 
 {
-    SNplu<T,tp_size> plu;
 
-    Mpermutation<tp_size>& permutation=plu.data_P;
-
-    // progressively become L
-    SNmultiGaussian<T,tp_size> mM=SNidentity<T,tp_size>();  
-    // this will progressively become U
+    // mL will progressively become L
+    // mU will progressively become U
+    Mpermutation<tp_size> mP; // identity
+    SNmultiGaussian<T,tp_size> mL(1);   // identity
     SNmatrix<T,tp_size> mU=*this;  
-
 
     for (m_num c=0;c<tp_size;c++)
     {
@@ -346,7 +354,7 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
 
             // We swap the line 'c' with max_el.line
             MelementaryPermutation<tp_size> el_perm(c,max_el.line);
-            permutation=permutation*el_perm; 
+            mP=mP*el_perm; 
             mU.swapLines(c,max_el.line);
 
             auto G=mU.getGaussian(c);
@@ -354,12 +362,12 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
             // On the first iteration, there is nothing to swap.
             if (c!=0)
             {
-                mM.swapLines(c,max_el.line);
-                mM*=G.inverse();
+                mL.swapLines(c,max_el.line);
+                mL*=G.inverse();
             }
             else
             {
-                mM=G.inverse();
+                mL=G.inverse();
             }
             auto killing_line=mU.gaussEliminationLine(c);
             for (m_num l=c+1;l<tp_size;l++)
@@ -373,8 +381,9 @@ SNplu<T,tp_size> SNmatrix<T,tp_size>::getPLU() const
         }
     }
     // at this point, the matrix mU should be the correct one.
-    plu._setU(mU);
-    plu._setL(mM);
+    // so we dare to use the *explicit* conversion from SNmatrix
+    // to SNupperTriangular.
+    SNplu<T,tp_size> plu(mP,mL,SNupperTriangular<T,tp_size>(mU));
     return plu;
 }
 
