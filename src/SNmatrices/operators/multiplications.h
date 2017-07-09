@@ -120,8 +120,8 @@ SNmultiGaussian<U,s> operator*
         ans.setLastColumn(A.getColumn());
 
             // The `_at` function in in `SNmultigauss` automatically 
-            // returns '0' when the column number is large than 
-            // // `getLastColumn`. In other words, these are 
+            // returns '0' when the column number is larger than 
+            // `getLastColumn`. In other words, these are 
             // "special values" and attempting to access them with `_at`
             // throws a `SNchangeNotAllowedException`. 
         for (m_num col=0;col <= ans.getLastColumn() ;++col)
@@ -223,7 +223,6 @@ SNmultiGaussian<U,s> operator*
  *   add the \f$ i \f$th.
  *
  * */
-
 template <class U,class V,unsigned int s,unsigned int t>
 SNmatrix<U,s> operator*
 (const SNmultiGaussian<U,s>& M, const SNgeneric<V,t>& E)
@@ -358,7 +357,6 @@ SNlowerTriangular<U,s> operator*
  *   \f$ (GM)_{ij}=M_{ij}+G_{i,col}M_{col,j} \f$.
  *
  * */
-
 template <class U,class V,unsigned int s,unsigned int t>
 SNmultiGaussian<U,s> operator*
 (const SNgaussian<U,s>& G, const SNmultiGaussian<V,t>& M)
@@ -411,7 +409,6 @@ Mpermutation<tp_size> operator*
  * This product defines the products of `Mpermutation` and `MelementaryPermutation` (there are 4 possibilities).
  * 
  * */
-
 template <unsigned int tp_size>
 Mpermutation<tp_size> operator*(const MgenericPermutation<tp_size>& A, const MgenericPermutation<tp_size>& B) 
 {
