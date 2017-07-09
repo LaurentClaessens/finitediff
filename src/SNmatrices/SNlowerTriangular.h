@@ -99,7 +99,7 @@ template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const T& x):
     data{}     // initialize full of zeroes.
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
         this->at(i,i)=x;
     }
@@ -135,7 +135,7 @@ template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNgaussian<T,tp_size>& A):
     data{} // initialized full of zeroes.
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
         this->at(i,i)=1;
     }
@@ -150,12 +150,12 @@ template <class T,unsigned int tp_size>
 SNlowerTriangular<T,tp_size>::SNlowerTriangular(const SNmultiGaussian<T,tp_size>& A):
     data{} // initialized full of zeroes.
 {
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
         this->at(i,i)=1;
     }
     m_num last_column(A.getLastColumn());
-    for (m_num col=0;col<last_column;col++)
+    for (m_num col=0;col<last_column;++col)
     {
         for (m_num l= col+1;l<tp_size;++l )
         {
@@ -173,7 +173,7 @@ void SNlowerTriangular<T,tp_size>::swap(SNlowerTriangular<T,tp_size>& other)
 // _GET AND _AT METHODS ---------------------------------------
 
 template <class T,unsigned int tp_size>
-T SNlowerTriangular<T,tp_size>::_get(m_num l,m_num c) const
+T SNlowerTriangular<T,tp_size>::_get(const m_num& l,const m_num& c) const
 {
     if (l<c)
     {
@@ -184,7 +184,7 @@ T SNlowerTriangular<T,tp_size>::_get(m_num l,m_num c) const
 
 
 template <class T,unsigned int tp_size>
-T& SNlowerTriangular<T,tp_size>::_at(m_num l,m_num c) 
+T& SNlowerTriangular<T,tp_size>::_at(const m_num& l,const m_num& c) 
 {
     if (l<c)
     {

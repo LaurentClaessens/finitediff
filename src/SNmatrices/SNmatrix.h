@@ -267,7 +267,7 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getLargerUnder(m_num f_line, m_num col
     T max_val=0;
     m_num max_line=0;
 
-    for (m_num line=f_line;line<tp_size;line++)
+    for (m_num line=f_line;line<tp_size;++line)
     {
         if (std::abs(this->get(line,col))>max_val)
         {
@@ -295,7 +295,7 @@ void SNmatrix<T,tp_size>::swapLines(m_num l1, m_num l2)
 {
     if (l1!=l2)
     {
-        for (m_num col=0;col<tp_size;col++)
+        for (m_num col=0;col<tp_size;++col)
         {
             T tmp = this->get(l1,col);
             this->at(l1,col)=this->get(l2,col);

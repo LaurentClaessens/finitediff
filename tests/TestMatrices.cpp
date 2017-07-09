@@ -116,6 +116,7 @@ auto testMatrixD()
     7 8 9
     */
 {
+    throw DeprecationWarning("You do not use this testing matrix.");
     SNmatrix<double,3> A;
     A.at(0,0)=1; A.at(0,1)=2; A.at(0,2)=3;
     A.at(1,0)=4; A.at(1,1)=5; A.at(1,2)=6;
@@ -130,6 +131,7 @@ auto testMatrixD_U()
     0    0      0
     */
 {
+    throw DeprecationWarning("You do not use this testing matrix.");
     SNmatrix<double,3> A;
     A.at(0,0)=7; A.at(0,1)=8; A.at(0,2)=9;
     A.at(1,0)=0; A.at(1,1)=6./7; A.at(1,2)=12./7;
@@ -167,6 +169,7 @@ auto testMatrixE_U()
  //[     0      0      0   1/24]
 
 
+    throw DeprecationWarning("You do not use this testing matrix.");
     A.at(0,0)=5; A.at(0,1)=1; A.at(0,2)=7; A.at(0,3)=1;
     A.at(1,0)=0; A.at(1,1)=26./5; A.at(1,2)=12./5; A.at(1,3)=41./5;
     A.at(2,0)=0; A.at(2,1)=0; A.at(2,2)=-24./13; A.at(2,3)=31./26;  

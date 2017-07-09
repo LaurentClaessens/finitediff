@@ -73,10 +73,10 @@ class SNgeneric
     private :
 
         /** Return by value the requested element of the matrix */
-        virtual T _get(const m_num,const m_num) const=0;
+        virtual T _get(const m_num&,const m_num&) const=0;
 
         /** Return by reference the requested element of the matrix */
-        virtual T& _at(const m_num,const m_num)=0;
+        virtual T& _at(const m_num&, const m_num&)=0;
 
 
         /**
@@ -208,14 +208,14 @@ unsigned int SNgeneric<T,tp_size>::getSize() const
 // GET AND AT METHODS ------------------------------
 
 template <class T,unsigned int tp_size>
-T SNgeneric<T,tp_size>::get(const m_num i,const m_num j) const
+T SNgeneric<T,tp_size>::get(const m_num& i,const m_num& j) const
 {
     checkRangeCorectness(i,j);
     return _get(i,j);
 }
 
 template <class T,unsigned int tp_size>
-T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
+T& SNgeneric<T,tp_size>::at(const m_num& i,const m_num& j)
 {
     checkRangeCorectness(i,j);
     return _at(i,j);
@@ -226,7 +226,7 @@ T& SNgeneric<T,tp_size>::at(const m_num i,const m_num j)
 
 
 template <class T,unsigned int tp_size>
-SNgaussian<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num c) const
+SNgaussian<T,tp_size> SNgeneric<T,tp_size>::getGaussian(const m_num& c) const
 {
     return SNgaussian<T,tp_size>(*this,c);
 }
@@ -237,9 +237,9 @@ template <class V,unsigned int s>
 void SNgeneric<T,tp_size>::subtract(const SNgeneric<V,s>& S)
 {
     checkSizeCompatibility(*this,S);
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
-        for (m_num j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;++j)
         {
             this->at(i,j)-=S.get(i,j);
         }
@@ -254,12 +254,12 @@ void SNgeneric<T,tp_size>::subtract(const SNgaussian<V,s>& G)
     m_num c=G.getColumn();
 
     // subtract the non trivial "half column"
-    for (m_num i=c+1;i<tp_size;i++)
+    for (m_num i=c+1;i<tp_size;++i)
     {
         this->at(i,c)-=G.get(i,c);
     }
     // subtract the diagonal
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
         this->at(i,i)-=1;
     }
@@ -274,9 +274,9 @@ bool SNgeneric<T,tp_size>::isNumericallyEqual(const SNgeneric<V,s>& A,const doub
 
     checkSizeCompatibility(*this,A);
     T abs_diff;
-    for (m_num i=0;i<tp_size;i++)
+    for (m_num i=0;i<tp_size;++i)
     {
-        for (m_num j=0;j<tp_size;j++)
+        for (m_num j=0;j<tp_size;++j)
         {
             abs_diff=std::abs(  this->get(i,j)-A.get(i,j)  );
             if (abs_diff>epsilon)
