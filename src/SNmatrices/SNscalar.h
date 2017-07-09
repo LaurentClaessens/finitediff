@@ -35,7 +35,7 @@ class SNscalar : public SNgeneric<T,tp_size>
     private :
         T data; // the multiple.
 
-        T _get(const m_num,const m_num) const override;
+        T _get(const m_num&,const m_num&) const override;
 
         /** 
          * @brief Return a reference to the scalar defining the matrix.

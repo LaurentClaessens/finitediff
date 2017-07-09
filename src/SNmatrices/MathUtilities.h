@@ -108,10 +108,10 @@ T matrixProductComponent(const SNgeneric<T,s>& A,const SNgeneric<U,t>& B,unsigne
  *   is SNgeneric<T,tp_size>. Obviously
  *   the conversion from `T` to `U` must be possible.
  *
- * \see SNmultiGaussian<T,tp_size>::setFirstLines(const SNgeneric<U,s>& other,const m_num max_l);
+ * \see SNmultiGaussian<T,tp_size>::setFirstLines(const SNgeneric<U,s>& other,const m_num& max_l);
  */
 template <class U, unsigned int t,class T,unsigned int tp_size>
-void copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num max_l)
+void copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num& max_l)
 {
     checkSizeCompatibility(ans,A);
     for (m_num line=0;line<max_l+1;line++)

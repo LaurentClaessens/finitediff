@@ -41,8 +41,8 @@ class SNpermutation : public SNgeneric<T,tp_size>
     private:
         Mpermutation<tp_size> data;
 
-        T& _at(const m_num i,const m_num j) override;
-        T _get(const m_num i,const m_num j) const override;
+        T& _at(const m_num& i,const m_num& j) override;
+        T _get(const m_num& i,const m_num& j) const override;
     public :
         // cppcheck-supresss noExplicitConstructor
         SNpermutation(const Mpermutation<tp_size>& d); 
@@ -90,13 +90,13 @@ std::ostream& operator<<(std::ostream& stream, SNpermutation<T,s> perm)
 // _AT AND _GET -------------------------------
 
 template <class T,unsigned int tp_size>
-T& SNpermutation<T,tp_size>::_at(const m_num i,const m_num j)
+T& SNpermutation<T,tp_size>::_at(const m_num& i,const m_num& j)
 {
     throw SNchangeNotAllowedException(i,j);
 };
 
 template <class T,unsigned int tp_size>
-T SNpermutation<T,tp_size>::_get(const m_num i,const m_num j) const 
+T SNpermutation<T,tp_size>::_get(const m_num& i,const m_num& j) const 
 {
     if (getMpermutation().image(j)==i)
     {

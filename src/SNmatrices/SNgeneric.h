@@ -87,8 +87,8 @@ class SNgeneric
     public:
         virtual unsigned int getSize() const final;
 
-        virtual T& at(const m_num,const m_num) final;
-        virtual T get(const m_num,const m_num) const final;
+        virtual T& at(const m_num&,const m_num&) final;
+        virtual T get(const m_num&,const m_num&) const final;
 
         virtual SNline<T,tp_size> getSNline(m_num l) const;
 
@@ -105,7 +105,7 @@ class SNgeneric
         /** 
          * return the gaussian matrix for the requested column 'c'
          * */
-        SNgaussian<T,tp_size> getGaussian(const m_num c) const;
+        SNgaussian<T,tp_size> getGaussian(const m_num& c) const;
 
         /** 
         numerical equality test 'up to epsilon'.

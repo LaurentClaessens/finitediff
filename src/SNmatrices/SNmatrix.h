@@ -121,8 +121,8 @@ class SNmatrix  : public SNgeneric<T,tp_size>
         // From the line number "line", return a line normalized
         // in such a way that the first (non zero) element is 1.
         SNline<T,tp_size> gaussEliminationLine(m_num line);
-        T& _at(const m_num,const m_num) override;
-        T _get(const m_num,const m_num) const override;
+        T& _at(const m_num&, const m_num&) override;
+        T _get(const m_num&, const m_num&) const override;
 
         /** Set the matrix from another one */
         void _set_from(const SNgeneric<T,tp_size>&);
@@ -230,13 +230,13 @@ SNelement<T,tp_size> SNmatrix<T,tp_size>::getElement(m_num line, m_num col) cons
 // _GET AND _AT METHODS ---------------------------
 
 template <class T,unsigned int tp_size>
-T& SNmatrix<T,tp_size>::_at(const m_num i,const m_num j) 
+T& SNmatrix<T,tp_size>::_at(const m_num& i,const m_num& j) 
 {
     return data.at(j*tp_size+i);
 };
 
 template <class T,unsigned int tp_size>
-T SNmatrix<T,tp_size>::_get(const m_num i,const m_num j) const
+T SNmatrix<T,tp_size>::_get(const m_num& i,const m_num& j) const
 {
     return data.at(j*tp_size+i);
 };

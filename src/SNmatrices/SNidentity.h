@@ -28,8 +28,8 @@ template <class T,unsigned int tp_size>
 class SNidentity  : public SNgeneric<T,tp_size>
 {
     private:
-        T& _at(const m_num,const m_num) override;
-        T _get(const m_num,const m_num) const override;
+        T& _at(const m_num&, const m_num&) override;
+        T _get(const m_num&, const m_num&) const override;
 
     public:
         SNidentity();
@@ -43,13 +43,13 @@ SNidentity<T,tp_size>::SNidentity() { };
 // _GET AND _AT METHODS ---------------------------
 
 template <class T,unsigned int tp_size>
-T& SNidentity<T,tp_size>::_at(const m_num i,const m_num j) 
+T& SNidentity<T,tp_size>::_at(const m_num& i,const m_num& j) 
 {
         throw SNchangeNotAllowedException(i,j);
 };
 
 template <class T,unsigned int tp_size>
-T SNidentity<T,tp_size>::_get(const m_num i,const m_num j) const
+T SNidentity<T,tp_size>::_get(const m_num& i,const m_num& j) const
 {
     if (i==j)
     {

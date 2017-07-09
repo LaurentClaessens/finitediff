@@ -77,7 +77,9 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
         /**
          * @brief Initialises as the diagonal matrix full of `x`
          * */
-        SNmultiGaussian(const T& x);
+        explicit SNmultiGaussian(const T& x);
+        
+        //cppcheck-suppress noExplicitConstructor
         SNmultiGaussian(const SNmultiGaussian<T,tp_size>& A);
 
         void swap(SNmultiGaussian<T,tp_size>&);
@@ -152,10 +154,10 @@ class SNmultiGaussian : public SNgeneric<T,tp_size>
          *
          * \see `setLastColumn`
          *
-         * \see copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num max_l)
+         * \see copyFirstLines(SNgeneric<U,t>& ans, const SNgeneric<T,tp_size>& A,const m_num& max_l)
          */
         template <class U,unsigned int s>
-        void setFirstLines(const SNgeneric<U,s>& other,const m_num max_l);
+        void setFirstLines(const SNgeneric<U,s>& other,const m_num& max_l);
 };
 
 // CONSTRUCTORS -------------------------------------------------
@@ -243,7 +245,7 @@ void SNmultiGaussian<T,tp_size>::setLastColumn(const m_num& lc)
 template <class T,unsigned int tp_size>
 template <class U,unsigned int s>
 void SNmultiGaussian<T,tp_size>::setFirstLines
-        (const SNgeneric<U,s>& other,const m_num max_l)
+        (const SNgeneric<U,s>& other,const m_num& max_l)
 {
     for (m_num line=0;line<max_l+1;line++)
     {

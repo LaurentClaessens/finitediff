@@ -32,7 +32,7 @@ class mNumTest : public CppUnit::TestCase
             echo_function_test("increment_tests");
             unsigned int k(4);
             m_num m(3);
-            m++;
+            ++m;
             CPPUNIT_ASSERT(m==4);
             CPPUNIT_ASSERT(m==k);
             ++m;
@@ -43,7 +43,7 @@ class mNumTest : public CppUnit::TestCase
             CPPUNIT_ASSERT(n==6);
             CPPUNIT_ASSERT(m==6);
 
-            m_num s=m++;
+            m_num s=++m;
             CPPUNIT_ASSERT(s==6);
             CPPUNIT_ASSERT(m==7);
         }

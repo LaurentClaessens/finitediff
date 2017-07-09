@@ -257,7 +257,7 @@ SNmatrix<U,s> operator*
     
     checkSizeCompatibility(M,E);
     const unsigned int tp_size=M.getSize(); // for homogeneous notations.
-    const m_num last_col=M.getLastColumn();
+    const m_num& last_col=M.getLastColumn();
 
     SNmatrix<U,s> ans;
 
@@ -392,8 +392,8 @@ SNmultiGaussian<U,s> operator*
     checkSizeCompatibility(G,M);
 
     const unsigned int tp_size=G.getSize(); // for homogeneity
-    const m_num col=G.getColumn();
-    const m_num last_col=M.getLastColumn();
+    const m_num& col=G.getColumn();
+    const m_num& last_col=M.getLastColumn();
 
     SNmultiGaussian<U,s> ans;
     ans.setLastColumn(  std::max(col,last_col)  );

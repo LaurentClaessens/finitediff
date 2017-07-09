@@ -36,7 +36,7 @@ class SNupperTriangular : public SNgeneric<T,tp_size>
     private:
         std::array<T,tp_size*tp_size> data;     // many remain uninitialized
 
-        T _get(const m_num,const m_num) const override;
+        T _get(const m_num&, const m_num&) const override;
         T& _at(m_num,m_num) override;
     public :
         /**
