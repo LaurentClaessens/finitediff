@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../src/SNmatrices/SNmatrix.h"
 #include "TestMatrices.cpp"
 
-#include "ooTQFOooJrAfLb.h"     // automatically generated, see 
+#include "ooTQFOooJrAfLb.h"   
 
 #include "../src/Utilities.h"
 
