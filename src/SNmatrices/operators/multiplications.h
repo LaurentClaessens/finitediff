@@ -75,6 +75,7 @@ template <class U,class V,unsigned int s>
 SNscalar<U,s> operator*
 (const U& x, const SNidentity<V,s>& M)
 {
+    (void)M;
     return SNscalar<U,s>(x);
 }
 
